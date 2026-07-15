@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2026 Ryan
+Copyright (c) 2026 Apotropaios Project Contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,3 +19,394 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+===============================================================================
+ADDITIONAL TERMS AND NOTICES
+===============================================================================
+
+The following additional terms supplement but do not replace the MIT License
+above. In the event of a conflict, the MIT License text shall govern.
+
+-------------------------------------------------------------------------------
+1. DISCLAIMER OF WARRANTY
+-------------------------------------------------------------------------------
+
+THE SOFTWARE IS PROVIDED ON AN "AS IS" AND "AS AVAILABLE" BASIS. THE AUTHORS,
+COPYRIGHT HOLDERS, AND CONTRIBUTORS MAKE NO REPRESENTATIONS OR WARRANTIES OF
+ANY KIND, WHETHER EXPRESS, IMPLIED, STATUTORY, OR OTHERWISE, INCLUDING BUT NOT
+LIMITED TO:
+
+  (a) WARRANTIES OF MERCHANTABILITY — No warranty that the Software is of
+      merchantable quality, fit for sale, or suitable for commercial use.
+
+  (b) FITNESS FOR A PARTICULAR PURPOSE — No warranty that the Software will
+      meet your specific requirements, fulfill a particular need, or perform
+      in a manner you expect. This includes, without limitation, use in
+      production environments, critical infrastructure, safety-critical
+      systems, military systems, medical systems, or any environment where
+      software failure could result in harm to persons or property.
+
+  (c) NON-INFRINGEMENT — No warranty that the Software does not infringe
+      upon the intellectual property rights, patents, trademarks, trade
+      secrets, or copyrights of any third party.
+
+  (d) ACCURACY OR COMPLETENESS — No warranty that the Software, its
+      documentation, output, or behavior is accurate, complete, reliable,
+      current, or free of errors, defects, viruses, or harmful components.
+
+  (e) UNINTERRUPTED OR ERROR-FREE OPERATION — No warranty that the Software
+      will operate without interruption, that defects will be corrected, or
+      that the Software is free of bugs, vulnerabilities, or security flaws.
+
+  (f) COMPATIBILITY — No warranty that the Software is compatible with any
+      particular hardware, software, operating system, network configuration,
+      or third-party service, or that it will remain compatible with future
+      versions of its dependencies.
+
+  (g) SECURITY — No warranty that the Software provides adequate security
+      protections, that its security features are sufficient for any
+      particular threat model, that data transmitted through or managed by
+      the Software will be protected from unauthorized access, interception,
+      modification, or disclosure, or that the Software is free from
+      exploitable vulnerabilities.
+
+  (h) DATA INTEGRITY — No warranty that the Software will not cause loss,
+      corruption, or unauthorized modification of data, files, systems,
+      networks, or services.
+
+  (i) NETWORK AND FIREWALL OPERATIONS — No warranty that firewall rules
+      created, modified, or managed by the Software will be complete,
+      correct, properly ordered, or effective for your specific security
+      requirements, network topology, or threat model. No warranty that the
+      Software will prevent unauthorized access, network intrusions, denial
+      of service attacks, data exfiltration, or any other security breach.
+
+THE ENTIRE RISK AS TO THE QUALITY, PERFORMANCE, SECURITY, AND RESULTS
+OBTAINED FROM THE SOFTWARE IS WITH YOU. SHOULD THE SOFTWARE PROVE DEFECTIVE,
+YOU ASSUME THE COST OF ALL NECESSARY SERVICING, REPAIR, OR CORRECTION.
+
+-------------------------------------------------------------------------------
+2. LIMITATION OF LIABILITY
+-------------------------------------------------------------------------------
+
+TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT SHALL THE
+AUTHORS, COPYRIGHT HOLDERS, CONTRIBUTORS, OR ANY PARTY WHO MODIFIES AND/OR
+REDISTRIBUTES THE SOFTWARE BE LIABLE FOR ANY OF THE FOLLOWING, WHETHER BASED
+ON WARRANTY, CONTRACT, TORT (INCLUDING NEGLIGENCE), STRICT LIABILITY, OR ANY
+OTHER LEGAL THEORY, EVEN IF SUCH PARTY HAS BEEN ADVISED OF THE POSSIBILITY
+OF SUCH DAMAGES:
+
+  (a) DIRECT DAMAGES — Any direct financial loss, cost, or expense arising
+      from the use or inability to use the Software.
+
+  (b) INDIRECT DAMAGES — Any loss or damage that does not arise directly
+      from the Software but is a consequence of a direct loss.
+
+  (c) INCIDENTAL DAMAGES — Any cost incurred as a result of a primary loss
+      caused by the Software, including but not limited to costs of
+      substitute goods, services, or technology.
+
+  (d) CONSEQUENTIAL DAMAGES — Any loss resulting as a secondary consequence
+      of the use or failure of the Software, including but not limited to
+      loss of revenue, profit, business, goodwill, anticipated savings,
+      data, or use.
+
+  (e) SPECIAL DAMAGES — Any loss arising from special circumstances
+      particular to the user that were not foreseeable at the time the
+      Software was obtained.
+
+  (f) PUNITIVE OR EXEMPLARY DAMAGES — Any damages imposed as punishment
+      or to set an example, regardless of the nature of the claim.
+
+  (g) LOSS OF DATA — Any loss, corruption, destruction, or unauthorized
+      disclosure of data, regardless of whether such data was created,
+      stored, processed, transmitted, or managed by the Software.
+
+  (h) SECURITY BREACHES — Any unauthorized access to, interception of,
+      modification of, or disclosure of data or communications facilitated
+      by, passing through, or managed by the Software.
+
+  (i) SYSTEM DAMAGE — Any damage to computer systems, networks, hardware,
+      software, or infrastructure arising from the installation, use,
+      operation, or removal of the Software.
+
+  (j) NETWORK DISRUPTION — Any interruption of network services, loss of
+      connectivity, denial of service, traffic misrouting, or network
+      outage resulting from the creation, modification, deletion, or
+      application of firewall rules, network policies, or security
+      configurations by the Software or its users.
+
+  (k) THIRD-PARTY CLAIMS — Any claims brought by third parties against
+      the user arising from the user's use of the Software.
+
+IF ANY JURISDICTION DOES NOT ALLOW THE EXCLUSION OR LIMITATION OF LIABILITY
+FOR CERTAIN TYPES OF DAMAGES, THE LIABILITY OF THE AUTHORS AND CONTRIBUTORS
+SHALL BE LIMITED TO THE MAXIMUM EXTENT PERMITTED BY THE APPLICABLE LAW OF
+THAT JURISDICTION.
+
+IN NO EVENT SHALL THE TOTAL AGGREGATE LIABILITY OF THE AUTHORS, COPYRIGHT
+HOLDERS, AND CONTRIBUTORS FOR ALL CLAIMS ARISING OUT OF OR RELATED TO THE
+SOFTWARE EXCEED THE AMOUNT PAID BY YOU FOR THE SOFTWARE (WHICH IS ZERO, AS
+THE SOFTWARE IS PROVIDED FREE OF CHARGE).
+
+-------------------------------------------------------------------------------
+3. INDEMNIFICATION
+-------------------------------------------------------------------------------
+
+You agree to indemnify, defend, and hold harmless the authors, copyright
+holders, contributors, and their respective affiliates, officers, directors,
+employees, and agents from and against any and all claims, demands, actions,
+liabilities, damages, losses, costs, and expenses (including reasonable
+attorneys' fees) arising out of or related to:
+
+  (a) Your use or misuse of the Software;
+  (b) Your violation of any applicable law, regulation, or third-party right
+      in connection with your use of the Software;
+  (c) Any content, data, or traffic transmitted through or processed by the
+      Software under your control;
+  (d) Any modification you make to the Software or any derivative works you
+      create;
+  (e) Any network disruption, data loss, security incident, or system
+      compromise resulting from your use of the Software;
+  (f) Any claim that your use of the Software caused damage to a third party;
+  (g) Your failure to independently verify firewall rules, network policies,
+      or security configurations before deployment in production environments.
+
+-------------------------------------------------------------------------------
+4. FIREWALL AND NETWORK SECURITY DISCLAIMER
+-------------------------------------------------------------------------------
+
+THIS SOFTWARE IS DESIGNED TO MANAGE FIREWALL RULES AND NETWORK SECURITY
+CONFIGURATIONS ACROSS MULTIPLE FIREWALL BACKENDS (INCLUDING BUT NOT LIMITED
+TO iptables, nftables, firewalld, ufw, AND ipset). THE AUTHORS AND
+CONTRIBUTORS:
+
+  (a) DO NOT GUARANTEE that the Software will prevent all unauthorized
+      access, network intrusions, denial of service attacks, data
+      exfiltration, or any other security breach or compromise.
+
+  (b) DO NOT GUARANTEE that firewall rules created, modified, imported, or
+      managed by the Software will be complete, correct, properly ordered,
+      free of conflicts, or effective for your specific security
+      requirements, network topology, compliance obligations, or threat
+      model.
+
+  (c) ARE NOT RESPONSIBLE for any security incidents, data breaches, network
+      outages, loss of connectivity, service disruptions, or system
+      compromises that may occur while using, after using, or as a result
+      of using the Software.
+
+  (d) STRONGLY RECOMMEND that users independently verify all firewall rules,
+      chain policies, zone configurations, and security settings before
+      deploying them in production environments. The Software's rule
+      summary and confirmation prompts do not substitute for independent
+      expert review.
+
+  (e) STRONGLY RECOMMEND that users create and maintain independent backups
+      of all firewall configurations and network security policies using
+      the built-in backup system or external tools before making changes.
+
+  (f) STRONGLY RECOMMEND that users test all changes in non-production,
+      isolated environments before applying them to production systems,
+      and that users maintain out-of-band access to systems in case
+      firewall misconfiguration causes loss of remote connectivity.
+
+  (g) STRONGLY RECOMMEND that users do not rely on the Software as their
+      sole means of network security, firewall management, or access
+      control, and that defense-in-depth strategies incorporating multiple
+      independent security controls are employed.
+
+THE SOFTWARE MANAGES CRITICAL NETWORK INFRASTRUCTURE AT THE KERNEL LEVEL.
+INCORRECT USE, MISCONFIGURATION, RULE CONFLICTS, OR SOFTWARE DEFECTS MAY
+RESULT IN: COMPLETE LOSS OF NETWORK CONNECTIVITY; EXPOSURE OF SERVICES TO
+UNAUTHORIZED ACCESS; DENIAL OF SERVICE TO LEGITIMATE TRAFFIC; LOSS, CORRUPTION,
+OR INTERCEPTION OF DATA IN TRANSIT; OR FULL SYSTEM COMPROMISE. USERS ASSUME
+ALL RISK ASSOCIATED WITH THE USE OF THIS SOFTWARE FOR MANAGING NETWORK
+SECURITY.
+
+-------------------------------------------------------------------------------
+5. ASSUMPTION OF RISK
+-------------------------------------------------------------------------------
+
+YOU ACKNOWLEDGE AND AGREE THAT:
+
+  (a) The use of this Software involves inherent risks, including but not
+      limited to the risk of network disruption, loss of connectivity,
+      data loss, data exposure, unauthorized access, and system compromise.
+
+  (b) You have the technical knowledge, expertise, and experience necessary
+      to evaluate the suitability of the Software for your intended use,
+      to understand the consequences of firewall rule changes, and to
+      diagnose and recover from misconfiguration.
+
+  (c) You are solely responsible for determining whether the Software is
+      appropriate for your use case, compliance requirements, regulatory
+      obligations, and security needs.
+
+  (d) You have read and understood the documentation, including the Security
+      Policy (SECURITY.md), Setup Guide, and Usage Guide, before deploying
+      the Software in any environment.
+
+  (e) You will not rely on the Software as your sole means of network
+      security or firewall management without independent verification
+      and additional security controls.
+
+  (f) You accept full responsibility for all firewall rules, network
+      policies, and security configurations created, modified, or deleted
+      using the Software, whether through the interactive menu, command-line
+      interface, or rule import functionality.
+
+-------------------------------------------------------------------------------
+6. AUTHORIZED USE AND COMPLIANCE
+-------------------------------------------------------------------------------
+
+  (a) INTENDED PURPOSE — This Software is intended for authorized systems
+      administration, network security management, firewall configuration,
+      security hardening, network defense, compliance auditing, and
+      educational purposes.
+
+  (b) LEGAL COMPLIANCE — You are solely responsible for ensuring that your
+      use of the Software complies with all applicable local, state,
+      provincial, national, and international laws and regulations, including
+      but not limited to laws governing computer access, network security,
+      data privacy, data protection, electronic communications, and export
+      controls.
+
+  (c) AUTHORIZATION — You represent and warrant that you have obtained all
+      necessary permissions, authorizations, and consents required to use
+      the Software in your intended manner, including authorization from
+      network owners, system administrators, and data subjects as applicable.
+
+  (d) PROHIBITED USE — The authors and contributors do not authorize and
+      expressly disclaim any responsibility for the use of this Software
+      for any unlawful purpose, including but not limited to: unauthorized
+      access to computer systems or networks, unauthorized interception of
+      communications, denial of service attacks, distribution of malware,
+      circumvention of security controls without authorization, or any
+      activity that violates the rights of others.
+
+  (e) EXPORT COMPLIANCE — You are responsible for ensuring that your use,
+      distribution, and export of the Software complies with all applicable
+      export control laws and regulations in your jurisdiction, including
+      but not limited to the U.S. Export Administration Regulations (EAR)
+      and any applicable sanctions programs.
+
+  (f) NO ENDORSEMENT — Use of this Software does not imply endorsement,
+      sponsorship, or affiliation with any organization, institution, or
+      individual associated with the authors or contributors.
+
+-------------------------------------------------------------------------------
+7. THIRD-PARTY DEPENDENCIES
+-------------------------------------------------------------------------------
+
+This Software interacts with third-party firewall applications and operating
+system components that are distributed under their own respective licenses.
+The authors and contributors of this Software make no representations or
+warranties regarding these third-party components and are not responsible for
+any bugs, security vulnerabilities, behavioral changes, or incompatibilities
+in these components. The Software's correct operation depends on the correct
+functioning of these underlying tools and the operating system kernel.
+
+Users are responsible for reviewing and complying with the license terms of
+all dependencies, including but not limited to:
+
+  - iptables / xtables — GPLv2 (https://www.netfilter.org/)
+  - nftables (nft) — GPLv2 (https://www.netfilter.org/projects/nftables/)
+  - firewalld — GPLv2+ (https://firewalld.org/)
+  - ufw (Uncomplicated Firewall) — GPLv3 (https://launchpad.net/ufw)
+  - ipset — GPLv2 (https://ipset.netfilter.org/)
+  - Python 3.12+ — PSF License (https://www.python.org/psf/license/)
+  - Python Standard Library — PSF License
+  - threading, subprocess, os — Python Standard Library
+  - shutil, pathlib, tarfile — Python Standard Library
+
+The inclusion of or reliance on these dependencies does not extend this
+License to those components, nor does it alter the license terms under which
+those components are distributed.
+
+-------------------------------------------------------------------------------
+8. NO PROFESSIONAL ADVICE
+-------------------------------------------------------------------------------
+
+The Software and its documentation do not constitute professional security
+advice, network engineering guidance, legal advice, or compliance guidance.
+The Software is a tool — not a substitute for professional judgment.
+
+Users with specific security requirements, regulatory compliance obligations
+(including but not limited to PCI DSS, HIPAA, SOX, GDPR, FedRAMP, NIST
+frameworks, or ISO 27001), or critical infrastructure responsibilities should
+consult qualified security professionals, network engineers, and legal counsel
+before relying on the Software for production use.
+
+-------------------------------------------------------------------------------
+9. NO OBLIGATION OF SUPPORT
+-------------------------------------------------------------------------------
+
+The authors and contributors are under no obligation to provide technical
+support, maintenance, updates, patches, bug fixes, security advisories, or
+any other form of ongoing service or communication related to the Software.
+Any support provided is at the sole discretion of the authors and may be
+withdrawn at any time without notice.
+
+-------------------------------------------------------------------------------
+10. MODIFICATIONS AND CONTRIBUTIONS
+-------------------------------------------------------------------------------
+
+  (a) MODIFICATIONS — You may modify the Software for your own use. If you
+      distribute modified versions, you must include prominent notice that
+      you have changed the Software, include the date of the changes, and
+      retain this License in its entirety.
+
+  (b) CONTRIBUTIONS — By submitting contributions (including but not limited
+      to code, documentation, bug reports, and feature requests) to this
+      project, you grant the authors a perpetual, worldwide, non-exclusive,
+      royalty-free, irrevocable license to use, reproduce, modify, display,
+      perform, sublicense, and distribute your contributions as part of the
+      Software under the terms of this License.
+
+  (c) NO COMPENSATION — You acknowledge that contributions are made
+      voluntarily and that no compensation, credit beyond standard
+      attribution, or other consideration is owed for contributions.
+
+  (d) SECURITY CONTRIBUTIONS — Contributors who discover security
+      vulnerabilities are expected to follow the coordinated disclosure
+      process described in SECURITY.md. Public disclosure of vulnerabilities
+      before a fix is available may constitute a violation of this License.
+
+-------------------------------------------------------------------------------
+11. TERMINATION
+-------------------------------------------------------------------------------
+
+This License is effective until terminated. Your rights under this License
+will terminate automatically without notice if you fail to comply with any
+of its terms. Upon termination, you shall cease all use and distribution of
+the Software and destroy all copies in your possession. Sections 1 through 9
+and Section 12 shall survive any termination of this License.
+
+-------------------------------------------------------------------------------
+12. GOVERNING LAW AND SEVERABILITY
+-------------------------------------------------------------------------------
+
+  (a) SEVERABILITY — If any provision of this License is held to be
+      unenforceable or invalid, that provision shall be enforced to the
+      maximum extent permissible, and the remaining provisions shall
+      continue in full force and effect.
+
+  (b) ENTIRE AGREEMENT — This License constitutes the entire agreement
+      between the parties with respect to the Software and supersedes all
+      prior or contemporaneous understandings, agreements, or
+      representations.
+
+  (c) WAIVER — The failure of any party to enforce any provision of this
+      License shall not constitute a waiver of that party's right to
+      enforce that provision in the future.
+
+  (d) GOVERNING LAW — To the extent not preempted by applicable federal
+      law, the interpretation of this License and any disputes arising
+      from it shall be governed by the laws of the jurisdiction in which
+      the primary copyright holder resides, without regard to its conflict
+      of law provisions.
+
+===============================================================================
+END OF LICENSE
+===============================================================================
