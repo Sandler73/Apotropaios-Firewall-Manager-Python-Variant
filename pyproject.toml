@@ -1,0 +1,105 @@
+# ==============================================================================
+# File:         pyproject.toml
+# Project:      Apotropaios - Firewall Manager (Python Variant)
+# Synopsis:     Project build configuration, tool settings, and metadata
+# Description:  Defines project metadata, dependencies (stdlib-only runtime),
+#               dev dependencies (pytest, mypy), and tool configuration for
+#               pytest, mypy strict mode, and code formatting.
+# Version:      1.0.0
+# ==============================================================================
+
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "apotropaios"
+version = "1.2.1"
+description = "Multi-backend Linux firewall management framework"
+readme = {file = "docs/README.md", content-type = "text/markdown"}
+requires-python = ">=3.12"
+license = "MIT"
+authors = [
+    {name = "Sandler73"},
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: System Administrators",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: System :: Networking :: Firewalls",
+    "Topic :: System :: Systems Administration",
+    "Typing :: Typed",
+]
+keywords = [
+    "firewall", "iptables", "nftables", "firewalld", "ufw", "ipset",
+    "security", "linux", "network", "rule-management",
+]
+
+# Runtime: stdlib-only — no external dependencies
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "mypy>=1.10",
+]
+
+[project.scripts]
+apotropaios = "apotropaios.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/Sandler73/Apotropaios-Firewall-Manager-Python"
+Repository = "https://github.com/Sandler73/Apotropaios-Firewall-Manager-Python"
+"Bug Tracker" = "https://github.com/Sandler73/Apotropaios-Firewall-Manager-Python/issues"
+
+# ==============================================================================
+# setuptools package discovery
+# ==============================================================================
+
+[tool.setuptools.packages.find]
+include = ["apotropaios*"]
+exclude = ["tests*", "data*", "docs*", "tasks*", "conf*"]
+
+# ==============================================================================
+# pytest configuration
+# ==============================================================================
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"
+addopts = [
+    "-v",
+    "--tb=short",
+    "--strict-markers",
+]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks integration tests requiring subprocess",
+    "security: marks security/injection tests",
+]
+
+# ==============================================================================
+# mypy configuration (strict mode)
+# ==============================================================================
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+warn_unused_ignores = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_any_generics = true
+no_implicit_reexport = true
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
