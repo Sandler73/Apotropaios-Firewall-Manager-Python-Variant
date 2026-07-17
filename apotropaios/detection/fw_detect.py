@@ -7,7 +7,7 @@
 #               their running/enabled status. Results are stored in a structured
 #               FWDetectionResult dataclass containing per-backend detail.
 #
-#               Detection is non-destructive — only read-only operations are
+#               Detection is non-destructive -- only read-only operations are
 #               performed (command existence, version queries, status checks).
 #               All subprocess calls use list-form arguments (never shell=True),
 #               capture stderr, and enforce timeouts.
@@ -18,7 +18,7 @@
 #               - ipset is always considered "running" if installed (kernel tool)
 #               - Thread-safe: no shared mutable state
 #               - Parity target: bash v1.1.10 lib/detection/fw_detect.sh
-# Version:      1.2.1
+# Version:      1.6.2
 # ==============================================================================
 
 from __future__ import annotations
@@ -352,7 +352,7 @@ def _check_running(fw_id: str, installed: bool, binary_path: str = "") -> bool:
         return "running" in raw.lower()
 
     elif fw_id == "ipset":
-        # ipset is a kernel-level tool — "running" whenever installed
+        # ipset is a kernel-level tool -- "running" whenever installed
         return installed
 
     elif fw_id == "iptables":
