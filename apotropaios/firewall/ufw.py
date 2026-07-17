@@ -17,7 +17,7 @@
 #               - Supports allow/deny/reject/limit actions
 #               - stderr captured on all ufw calls (Lesson #3)
 #               - Parity target: bash v1.1.10 lib/firewall/ufw.sh
-# Version:      1.2.1
+# Version:      1.6.2
 # ==============================================================================
 
 from __future__ import annotations
@@ -371,7 +371,7 @@ class UfwBackend(FirewallBackend):
                 _log("error", f"{' '.join(args)} failed: {result.stderr.strip()}")
                 ok = False
         if not ok:
-            _log("error", "block-all did NOT fully apply — traffic may still pass")
+            _log("error", "block-all did NOT fully apply -- traffic may still pass")
             return False
         _log("info", "All traffic blocked")
         return True
