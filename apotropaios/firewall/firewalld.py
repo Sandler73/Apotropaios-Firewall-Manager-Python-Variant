@@ -22,7 +22,7 @@
 #               - Permanent rules with --reload after modification
 #               - stderr captured on all firewall-cmd calls (Lesson #3)
 #               - Parity target: bash v1.1.10 lib/firewall/firewalld.sh
-# Version:      1.2.1
+# Version:      1.6.2
 # ==============================================================================
 
 from __future__ import annotations
@@ -129,7 +129,7 @@ def _build_rich_rule(rule: dict[str, str]) -> str:
         port_fmt = dst_port.replace(":", "-")
         parts.append(f'port port="{port_fmt}" protocol="{protocol or "tcp"}"')
     elif protocol and protocol != "all":
-        # Protocol-only rule — Lesson #6: a rich rule must carry at least
+        # Protocol-only rule -- Lesson #6: a rich rule must carry at least
         # one filtering element. "protocol value=..." is the correct
         # element for every protocol including ICMP; icmp-block-inversion
         # is a zone option, not a rich-rule element, and firewalld rejects
@@ -147,7 +147,7 @@ def _build_rich_rule(rule: dict[str, str]) -> str:
 
     # Log clause (before terminal in rich rules).
     # All three values are interpolated into the rich rule string, so each
-    # is re-validated here — defense-in-depth against quote breakout.
+    # is re-validated here -- defense-in-depth against quote breakout.
     if has_log:
         log_part = "log"
         if log_prefix:
@@ -372,7 +372,7 @@ class FirewalldBackend(FirewallBackend):
         _log("warning", "Blocking ALL traffic via panic mode")
         result = _run(["firewall-cmd", "--panic-on"])
         if result.returncode != 0:
-            _log("warning", "Panic mode unavailable — falling back to drop zone")
+            _log("warning", "Panic mode unavailable -- falling back to drop zone")
             result = _run(["firewall-cmd", "--set-default-zone=drop"])
             if result.returncode != 0:
                 _log("error", f"block-all failed: {result.stderr.strip()}")
@@ -401,7 +401,7 @@ class FirewalldBackend(FirewallBackend):
         return ok
 
     def reset(self) -> bool:
-        """Reset firewalld — iterates ALL zones (Lesson #10)."""
+        """Reset firewalld -- iterates ALL zones (Lesson #10)."""
         _log("warning", "Resetting firewalld to defaults")
         zones_result = _run(["firewall-cmd", "--get-zones"])
         all_zones = zones_result.stdout.strip().split() if zones_result.stdout.strip() else ["public"]
