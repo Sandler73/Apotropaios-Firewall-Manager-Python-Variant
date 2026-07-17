@@ -15,7 +15,7 @@
 #               - File size limit: 10MB (security)
 #               - Atomic save: write temp → rename (no partial writes)
 #               - Parity target: bash v1.1.10 lib/rules/rule_index.sh
-# Version:      1.2.1
+# Version:      1.6.2
 # ==============================================================================
 
 from __future__ import annotations
@@ -35,7 +35,7 @@ from apotropaios.core.errors import (
 )
 from apotropaios.core.validation import validate_rule_id
 
-# Field order for serialization — must match bash variant exactly
+# Field order for serialization -- must match bash variant exactly
 RULE_INDEX_FIELDS: Final[tuple[str, ...]] = (
     "rule_id", "backend", "direction", "action", "protocol",
     "src_ip", "dst_ip", "src_port", "dst_port", "interface",
@@ -97,7 +97,7 @@ class RuleIndex:
             try:
                 self.load()
             except Exception:
-                _log("warning", "Failed to load existing index — starting fresh")
+                _log("warning", "Failed to load existing index -- starting fresh")
                 with self._lock:
                     self._rules.clear()
                     self._order.clear()
