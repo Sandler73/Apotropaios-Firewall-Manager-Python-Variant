@@ -1,0 +1,62 @@
+# ==============================================================================
+# File:         .github/ISSUE_TEMPLATE/platform_support.yml
+# Project:      Apotropaios - Firewall Manager (Python Variant)
+# Synopsis:     Platform / backend support request issue form
+# Description:  Collects distribution identification data (/etc/os-release),
+#               package manager, firewall tooling, and detection output for
+#               requests to support additional platforms or backends.
+# Notes:        - Detection architecture: ID match, then ID_LIKE family
+#               fallback, then package-manager probing
+# Version:      1.6.0
+# ==============================================================================
+name: Platform / Backend Support Request
+description: Request support for an additional Linux distribution or firewall backend
+title: "[Platform]: "
+labels: ["platform-support", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The framework detects platforms via `/etc/os-release` ID, ID_LIKE
+        family fallback, and package-manager probing. Complete identification
+        data below lets maintainers evaluate support without access to the
+        target system.
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Request type
+      options:
+        - New Linux distribution
+        - New firewall backend
+        - Existing platform detected incorrectly
+    validations:
+      required: true
+  - type: input
+    id: name
+    attributes:
+      label: Distribution or backend name and version
+      placeholder: "e.g., openSUSE Leap 15.6, or pf 3.x"
+    validations:
+      required: true
+  - type: textarea
+    id: os-release
+    attributes:
+      label: Contents of /etc/os-release (distributions)
+      description: Paste verbatim — ID, ID_LIKE, VERSION_ID are the fields detection uses
+      render: text
+  - type: input
+    id: pkg-manager
+    attributes:
+      label: Package manager
+      placeholder: "e.g., zypper"
+  - type: textarea
+    id: detect-output
+    attributes:
+      label: Current `detect` command output
+      description: Run `sudo python3 apotropaios.py detect` on the target platform and paste the (sanitized) output
+      render: text
+  - type: textarea
+    id: tooling
+    attributes:
+      label: Firewall tooling details (backends)
+      description: For backend requests — binary names, service management, rule syntax reference, persistence mechanism

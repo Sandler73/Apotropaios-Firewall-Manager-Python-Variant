@@ -1,0 +1,17 @@
+# ==============================================================================
+# File:         .github/ISSUE_TEMPLATE/config.yml
+# Project:      Apotropaios - Firewall Manager (Python Variant)
+# Synopsis:     Issue template chooser configuration
+# Description:  Disables blank issues and routes security disclosures and
+#               questions to the correct channels instead of public issues.
+# Notes:        - Vulnerabilities must never be filed as public issues
+# Version:      1.6.0
+# ==============================================================================
+blank_issues_enabled: false
+contact_links:
+  - name: Security Vulnerability Disclosure
+    url: https://github.com/Sandler73/Apotropaios-Firewall-Manager/blob/main/docs/SECURITY.md
+    about: Report vulnerabilities privately per the security policy — never as a public issue.
+  - name: Questions & Usage Help
+    url: https://github.com/Sandler73/Apotropaios-Firewall-Manager/wiki/Frequently-Asked-Questions-(FAQ)
+    about: Check the FAQ and wiki guides before filing an issue.

@@ -1,0 +1,91 @@
+# ==============================================================================
+# File:         .github/ISSUE_TEMPLATE/feature_request.yml
+# Project:      Apotropaios - Firewall Manager (Python Variant)
+# Synopsis:     Structured feature request issue form
+# Description:  Collects the problem statement, proposed solution, scope
+#               (backends/platforms affected), alternatives considered, and
+#               bash-variant parity context for enhancement triage.
+# Notes:        - Requests touching validation, privilege handling, or rule
+#               application flag the security-review checkbox
+# Version:      1.6.0
+# ==============================================================================
+name: Feature Request
+description: Propose an enhancement or new capability
+title: "[Feature]: "
+labels: ["enhancement", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Enhancement proposals are evaluated against the framework's core
+        constraints: stdlib-only runtime, mypy --strict compliance, whitelist
+        validation, and parity with the bash reference variant where applicable.
+  - type: checkboxes
+    id: preflight
+    attributes:
+      label: Preflight checklist
+      options:
+        - label: I searched existing issues and discussions for this proposal
+          required: true
+        - label: This capability does not already exist in the current release
+          required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem statement
+      description: What operational need or gap does this address? Describe the problem, not the solution.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: How should the framework address it? Include example CLI/menu interactions where relevant.
+    validations:
+      required: true
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Affected area
+      multiple: true
+      options:
+        - Firewall backends (iptables/nftables/firewalld/ufw/ipset)
+        - Rule engine / state tracking
+        - Detection (OS / firewall)
+        - Backup / restore
+        - CLI interface
+        - Interactive menu
+        - Logging / security subsystem
+        - Installation / packaging
+        - Documentation
+    validations:
+      required: true
+  - type: dropdown
+    id: parity
+    attributes:
+      label: Bash variant parity
+      description: Does this capability exist in the bash reference implementation?
+      options:
+        - Exists in bash variant (parity gap)
+        - New to both variants
+        - Not applicable
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Workarounds available today, and why they are insufficient
+  - type: checkboxes
+    id: security
+    attributes:
+      label: Security review flag
+      options:
+        - label: This proposal touches input validation, privilege handling, rule application, or subprocess execution and warrants security review
+  - type: checkboxes
+    id: constraints
+    attributes:
+      label: Constraint acknowledgment
+      options:
+        - label: This proposal is implementable with the Python standard library only (zero runtime dependencies)
+          required: true

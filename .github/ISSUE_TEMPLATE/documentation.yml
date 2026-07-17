@@ -1,0 +1,67 @@
+# ==============================================================================
+# File:         .github/ISSUE_TEMPLATE/documentation.yml
+# Project:      Apotropaios - Firewall Manager (Python Variant)
+# Synopsis:     Documentation defect/improvement issue form
+# Description:  Collects the affected document, location, discrepancy type,
+#               and correction proposal for documentation triage across
+#               docs/ and the wiki.
+# Notes:        - Covers inaccuracies, staleness against source, broken
+#               links, and missing coverage
+# Version:      1.6.0
+# ==============================================================================
+name: Documentation Issue
+description: Report inaccurate, stale, unclear, or missing documentation
+title: "[Docs]: "
+labels: ["documentation", "triage"]
+body:
+  - type: dropdown
+    id: document
+    attributes:
+      label: Affected document
+      options:
+        - docs/README.md
+        - docs/USAGE_GUIDE.md
+        - docs/SETUP_GUIDE.md
+        - docs/DEVELOPER_GUIDE.md
+        - docs/DEVELOPMENT_GUIDE.md
+        - docs/SECURITY.md
+        - docs/CHANGELOG.md
+        - docs/FAQ
+        - Wiki page (name it below)
+        - In-code docstring or header
+        - Multiple documents
+    validations:
+      required: true
+  - type: input
+    id: location
+    attributes:
+      label: Section / heading / line reference
+      placeholder: "e.g., docs/USAGE_GUIDE.md § Global Options, or wiki Configuration-Reference § Trust Gate"
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Issue type
+      options:
+        - Factually incorrect (contradicts actual behavior)
+        - Stale (behavior changed, documentation did not)
+        - Broken link or reference
+        - Unclear / ambiguous
+        - Missing coverage
+    validations:
+      required: true
+  - type: textarea
+    id: current
+    attributes:
+      label: What the documentation currently says
+      description: Quote or paraphrase the problematic content
+    validations:
+      required: true
+  - type: textarea
+    id: correction
+    attributes:
+      label: What it should say (or cover)
+      description: For factual issues, cite the observed behavior or source location that contradicts the documentation
+    validations:
+      required: true

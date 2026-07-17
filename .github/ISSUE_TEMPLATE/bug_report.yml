@@ -1,0 +1,127 @@
+# ==============================================================================
+# File:         .github/ISSUE_TEMPLATE/bug_report.yml
+# Project:      Apotropaios - Firewall Manager (Python Variant)
+# Synopsis:     Structured bug report issue form
+# Description:  Collects environment (platform, Python version, backend),
+#               reproduction steps, expected/actual behavior, and sanitized
+#               log excerpts for defect triage.
+# Notes:        - Reporters are reminded to sanitize logs before posting
+#               - Security vulnerabilities are routed to SECURITY.md via
+#                 config.yml, never through public issues
+# Version:      1.6.0
+# ==============================================================================
+name: Bug Report
+description: Report a defect in the framework
+title: "[Bug]: "
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for reporting a defect. Please complete every required field —
+        complete reports are triaged significantly faster.
+
+        **Do not report security vulnerabilities here.** Follow the private
+        disclosure process in [SECURITY.md](https://github.com/Sandler73/Apotropaios-Firewall-Manager/blob/main/docs/SECURITY.md).
+  - type: checkboxes
+    id: preflight
+    attributes:
+      label: Preflight checklist
+      options:
+        - label: I searched existing issues and this defect is not already reported
+          required: true
+        - label: I am running the current release (see CHANGELOG.md)
+          required: true
+        - label: This is not a security vulnerability (those go through SECURITY.md)
+          required: true
+  - type: input
+    id: version
+    attributes:
+      label: Framework version
+      description: Output of `python3 apotropaios.py --version`
+      placeholder: "Apotropaios - Firewall Manager vX.Y.Z"
+    validations:
+      required: true
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Operating system
+      options:
+        - Ubuntu
+        - Kali Linux
+        - Debian 12
+        - Rocky Linux 9
+        - AlmaLinux 9
+        - Arch Linux
+        - Other / unsupported platform (specify in environment details)
+    validations:
+      required: true
+  - type: input
+    id: python-version
+    attributes:
+      label: Python version
+      description: Output of `python3 --version`
+      placeholder: "Python 3.12.x"
+    validations:
+      required: true
+  - type: dropdown
+    id: backend
+    attributes:
+      label: Firewall backend in use
+      options:
+        - iptables
+        - nftables
+        - firewalld
+        - ufw
+        - ipset
+        - Multiple / not backend-specific
+    validations:
+      required: true
+  - type: dropdown
+    id: interface
+    attributes:
+      label: Interface used
+      options:
+        - CLI command
+        - Interactive menu
+        - Both
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: Exact commands and inputs, in order
+      placeholder: |
+        1. sudo python3 apotropaios.py detect
+        2. sudo python3 apotropaios.py add-rule --dst-port 443 --action accept
+        3. ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: Include the full error output where applicable
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant log excerpt
+      description: |
+        From the per-execution log under data/logs/. **Sanitize before
+        posting** — remove hostnames, internal addresses, and anything the
+        built-in log sanitizer did not already mask.
+      render: text
+  - type: textarea
+    id: environment
+    attributes:
+      label: Additional environment details
+      description: Container/VM, init system, kernel version, coexisting firewall tooling, etc.
