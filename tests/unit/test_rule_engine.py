@@ -1,7 +1,10 @@
 # ==============================================================================
 # File:         tests/unit/test_rule_engine.py
+# Project:      Apotropaios - Firewall Manager (Python Variant)
 # Synopsis:     Unit tests for rule index, state, engine, and import/export
-# Version:      1.2.1
+# Description:  Verifies rule creation, state transitions, index round-trips, and
+#               import/export behavior with a mock backend.
+# Version:      1.6.2
 # ==============================================================================
 
 import os
@@ -9,10 +12,10 @@ import time
 import tempfile
 import pytest
 from apotropaios.core.errors import (
-    RuleExistsError, RuleInvalidError, RuleNotFoundError,
+    RuleExistsError, RuleNotFoundError,
 )
 from apotropaios.rules.index import RuleIndex, RULE_INDEX_FIELDS
-from apotropaios.rules.state import RuleState, StateEntry
+from apotropaios.rules.state import RuleState
 
 
 # ==============================================================================
@@ -201,6 +204,8 @@ class TestImportExport:
         # Export even with no rules
         export_path = os.path.join(str(tmp_path), "export.conf")
         count = export_rules(export_path)
+        # Empty index: the returned count reflects rules actually written
+        assert count == 0
         assert os.path.isfile(export_path)
         assert os.path.isfile(f"{export_path}.sha256")
 
