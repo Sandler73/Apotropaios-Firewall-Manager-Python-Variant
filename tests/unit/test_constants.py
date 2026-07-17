@@ -1,17 +1,24 @@
 # ==============================================================================
 # File:         tests/unit/test_constants.py
+# Project:      Apotropaios - Firewall Manager (Python Variant)
 # Synopsis:     Verify constants module integrity and completeness
-# Version:      1.2.1
+# Description:  Verifies structural invariants of the constants module: supported
+#               platform/backend tables, command registry, and enum coverage.
+# Version:      1.6.2
 # ==============================================================================
 
 from apotropaios.core.constants import (
-    ALL_ACTIONS, CLI_COMMANDS, CANCEL_KEYWORDS, Color,
-    ConnState, DurationType, ErrorCode, IPTABLES_TABLES,
-    IPSET_TYPES, LogLevel, NFTABLES_TABLE_FAMILIES,
-    NON_TERMINAL_ACTIONS, Pattern, RuleAction, RuleDirection,
-    RuleState, Security, SUPPORTED_FIREWALLS, SUPPORTED_FW_IDS,
-    SUPPORTED_OS, SUPPORTED_OS_IDS, SyslogLevel, TERMINAL_ACTIONS,
-    TTLLimits, VERSION,
+    ALL_ACTIONS,
+    CLI_COMMANDS,
+    ErrorCode,
+    LogLevel,
+    NON_TERMINAL_ACTIONS,
+    Pattern,
+    SUPPORTED_FIREWALLS,
+    SUPPORTED_FW_IDS,
+    SUPPORTED_OS,
+    SUPPORTED_OS_IDS,
+    TERMINAL_ACTIONS,
 )
 
 
