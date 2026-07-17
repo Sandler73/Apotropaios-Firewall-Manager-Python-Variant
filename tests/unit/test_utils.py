@@ -1,7 +1,10 @@
 # ==============================================================================
 # File:         tests/unit/test_utils.py
+# Project:      Apotropaios - Firewall Manager (Python Variant)
 # Synopsis:     Unit tests for utilities module
-# Version:      1.2.1
+# Description:  Verifies formatting, timing, parallel execution, and filesystem
+#               helper functions.
+# Version:      1.6.2
 # ==============================================================================
 
 import os
