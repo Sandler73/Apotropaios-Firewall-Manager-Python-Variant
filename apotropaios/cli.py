@@ -35,7 +35,7 @@
 #               - Default behavior (no args) launches interactive menu
 #               - Parity target: bash v1.1.10 apotropaios.sh (_parse_args,
 #                 _initialize, _execute_command, _cli_add_rule)
-# Version:      1.2.1
+# Version:      1.6.2
 # ==============================================================================
 
 from __future__ import annotations
@@ -151,7 +151,7 @@ def _build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("status", add_help=False,
                           help="Show active firewall backend status")
 
-    # add-rule (most complex — many options)
+    # add-rule (most complex -- many options)
     add_rule = subparsers.add_parser("add-rule", add_help=False,
                                      help="Create and apply a firewall rule")
     _add_rule_options(add_rule)
@@ -458,11 +458,24 @@ def _resolve_base_dir() -> str:
     """Determine the framework base directory.
 
     Resolves to the directory containing the apotropaios package. This
-    is used for finding conf/, data/, and other relative paths.
+    is used for finding conf/, data/, and other relative paths. The
+    APOTROPAIOS_BASE_DIR environment variable overrides the default when
+    it names an existing directory, allowing packaged deployments and
+    test harnesses to relocate the data tree without touching the
+    installation directory.
 
     Returns:
         Absolute path to the framework base directory.
     """
+    override = os.environ.get("APOTROPAIOS_BASE_DIR", "")
+    if override:
+        candidate = Path(override).resolve()
+        if candidate.is_dir():
+            return str(candidate)
+        sys.stderr.write(
+            f"Warning: APOTROPAIOS_BASE_DIR is not a directory, "
+            f"using default: {override}\n"
+        )
     # The base dir is the parent of the apotropaios package directory
     package_dir = Path(__file__).resolve().parent
     return str(package_dir.parent)
@@ -582,14 +595,14 @@ def _initialize(
     # Initialize security subsystem
     init_security(base_dir, log)
 
-    # Check root privileges — warn early if not running as root.
+    # Check root privileges -- warn early if not running as root.
     # Most firewall operations require root; detection and status may
     # work partially without root but rule operations will fail.
     from apotropaios.core.security import is_root
     if not is_root():
         log.warning(
             "main",
-            "Not running as root — firewall operations will require elevated privileges",
+            "Not running as root -- firewall operations will require elevated privileges",
         )
 
     # Log startup
@@ -610,11 +623,10 @@ def _initialize(
     _state["fw_result"] = fw_result
 
     # Register all backends (imports trigger auto-registration)
-    import apotropaios.firewall.iptables   # noqa: F401
-    import apotropaios.firewall.nftables   # noqa: F401
-    import apotropaios.firewall.firewalld  # noqa: F401
-    import apotropaios.firewall.ufw        # noqa: F401
-    import apotropaios.firewall.ipset      # noqa: F401
+    # Side-effect imports: each backend module registers itself on import
+    import importlib
+    for _backend_mod in ("iptables", "nftables", "firewalld", "ufw", "ipset"):
+        importlib.import_module(f"apotropaios.firewall.{_backend_mod}")
 
     # Backend selection: explicit --backend or auto-detect first installed
     from apotropaios.firewall.common import set_backend, get_backend_name, set_logger as fw_set_logger
@@ -783,7 +795,7 @@ def _dispatch(args: argparse.Namespace) -> int:
 
 
 # ==============================================================================
-# Command Handlers — Fully Wired to Engine Implementations
+# Command Handlers -- Fully Wired to Engine Implementations
 # ==============================================================================
 
 def _cmd_menu(args: argparse.Namespace) -> int:
@@ -1063,7 +1075,7 @@ def _cmd_reset(args: argparse.Namespace) -> int:
     if not backend:
         sys.stderr.write(f"{Color.YELLOW}No backend selected. Use --backend NAME.{Color.RESET}\n")
         return ErrorCode.FW_NOT_FOUND
-    # Safety confirmation — reset is destructive (skipped in
+    # Safety confirmation -- reset is destructive (skipped in
     # --non-interactive mode per the flag's contract)
     if not _confirm_destructive(
         f"This will reset {backend} to defaults, removing all rules."
