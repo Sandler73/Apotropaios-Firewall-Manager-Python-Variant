@@ -56,7 +56,7 @@ Thank you for your interest in contributing to the Apotropaios Firewall Manager 
 # 1. Fork the repository on GitHub
 
 # 2. Clone your fork
-git clone https://github.com/YOUR_USERNAME/Apotropaios-Firewall-Manager-Python.git
+git clone https://github.com/YOUR_USERNAME/Apotropaios-Firewall-Manager-Python-Variant.git
 cd Apotropaios-Firewall-Manager-Python
 
 # 3. Create venv with dev dependencies
