@@ -10,7 +10,7 @@
 # Notes:        - Action pins follow the project standard: checkout@v6,
 #                 upload-artifact@v6
 #               - Concurrency cancels superseded runs per ref
-# Version:      1.6.0
+# Version:      1.6.2
 # ==============================================================================
 
 name: CI
@@ -96,7 +96,9 @@ jobs:
           cache: pip
 
       - name: Install dev dependencies
-        run: pip3 install pytest pytest-cov
+        # PyYAML is required by the CI meta-suite (tests/ci); without it those
+        # tests skip silently and the suite total drops below the documented count
+        run: pip3 install pytest pytest-cov pyyaml
 
       - name: Run test suite with coverage
         run: |
@@ -146,11 +148,85 @@ jobs:
           python-version: "3.12"
           cache: pip
 
-      - name: Install pytest (used by docs validator test-count check)
-        run: pip3 install pytest
+      - name: Install pytest and PyYAML
+        # The docs validator verifies the collected suite total; PyYAML must be
+        # present or the CI meta-suite is excluded from collection and the
+        # documented count cannot match
+        run: pip3 install pytest pyyaml
 
       - name: Verify version consistency
         run: python3 scripts/check_version_consistency.py
 
       - name: Verify documentation accuracy
         run: python3 scripts/validate_docs.py
+
+  # ============================================================================
+  # Badge Publication (main only, after all gates pass)
+  # ============================================================================
+  badges:
+    name: Publish Badge Data
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [lint, typecheck, test, security, consistency]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install pytest and PyYAML
+        run: pip3 install pytest pyyaml
+
+      - name: Download coverage artifact
+        uses: actions/download-artifact@v6
+        with:
+          name: coverage-py3.12
+          path: .
+
+      - name: Generate badge endpoint JSON
+        # mypy passes by gate (needs: typecheck); test count from collection;
+        # coverage percent parsed from the matrix job's coverage.xml artifact
+        run: |
+          mkdir -p badge-data
+          COUNT=$(python3 -m pytest tests/ --collect-only -q 2>/dev/null | grep -oP '\d+(?= tests collected)')
+          COVERAGE=$(python3 -c "import xml.etree.ElementTree as ET; print(f\"{float(ET.parse('coverage.xml').getroot().get('line-rate'))*100:.0f}\")")
+          python3 - "$COUNT" "$COVERAGE" << 'PYEOF'
+          import json
+          import sys
+
+          count, coverage = sys.argv[1], sys.argv[2]
+          badges = {
+              "mypy.json": {
+                  "schemaVersion": 1, "label": "mypy",
+                  "message": "strict passing", "color": "brightgreen",
+              },
+              "tests.json": {
+                  "schemaVersion": 1, "label": "pytest",
+                  "message": f"{count} passing", "color": "brightgreen",
+              },
+              "coverage.json": {
+                  "schemaVersion": 1, "label": "coverage",
+                  "message": f"{coverage}%", "color": "brightgreen",
+              },
+          }
+          for name, payload in badges.items():
+              with open(f"badge-data/{name}", "w", encoding="utf-8") as f:
+                  json.dump(payload, f)
+          PYEOF
+
+      - name: Publish to badges branch
+        run: |
+          cd badge-data
+          git init -q -b badges
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -qm "Update badge data for ${GITHUB_SHA}"
+          git push -f "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" badges
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
