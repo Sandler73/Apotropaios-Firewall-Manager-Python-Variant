@@ -12,7 +12,7 @@
 #                 subprocess call site uses validated list-form arguments
 #               - Action pins follow the project standard: checkout@v6,
 #                 upload-artifact@v6
-# Version:      1.6.0
+# Version:      1.6.2
 # ==============================================================================
 
 name: Security
