@@ -1,11 +1,15 @@
 # ==============================================================================
 # File:         tests/security/test_injection.py
+# Project:      Apotropaios - Firewall Manager (Python Variant)
 # Synopsis:     Security tests for input injection attack prevention
-# Version:      1.2.1
+# Description:  CWE-mapped negative tests: shell metacharacter, path traversal,
+#               hostname, and markup injection attempts against the validators
+#               must be rejected.
+# Version:      1.6.2
 # ==============================================================================
 
 import pytest
-from apotropaios.core.errors import ValidationError, SanitizationError
+from apotropaios.core.errors import ValidationError
 from apotropaios.core.validation import (
     sanitize_input, validate_chain, validate_description, validate_file_path,
     validate_hostname, validate_interface, validate_ip, validate_ipset_name,
