@@ -13,17 +13,17 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/Sandler73/Apotropaios-Firewall-Manager/actions/workflows/ci.yml"><img src="https://github.com/Sandler73/Apotropaios-Firewall-Manager/actions/workflows/ci.yml/badge.svg?branch=main" alt="CI"></a>
-  <a href="https://github.com/Sandler73/Apotropaios-Firewall-Manager/actions/workflows/security.yml"><img src="https://github.com/Sandler73/Apotropaios-Firewall-Manager/actions/workflows/security.yml/badge.svg?branch=main" alt="Security"></a>
-  <a href="https://github.com/Sandler73/Apotropaios-Firewall-Manager/actions/workflows/codeql.yml"><img src="https://github.com/Sandler73/Apotropaios-Firewall-Manager/actions/workflows/codeql.yml/badge.svg?branch=main" alt="CodeQL"></a>
-  <a href="https://github.com/Sandler73/Apotropaios-Firewall-Manager/actions/workflows/docs-validate.yml"><img src="https://github.com/Sandler73/Apotropaios-Firewall-Manager/actions/workflows/docs-validate.yml/badge.svg?branch=main" alt="Docs Validate"></a>
+  <a href="https://github.com/Sandler73/Apotropaios-Firewall-Manager-Python-Variant/actions/workflows/ci.yml"><img src="https://github.com/Sandler73/Apotropaios-Firewall-Manager-Python-Variant/actions/workflows/ci.yml/badge.svg?branch=main" alt="CI"></a>
+  <a href="https://github.com/Sandler73/Apotropaios-Firewall-Manager-Python-Variant/actions/workflows/security.yml"><img src="https://github.com/Sandler73/Apotropaios-Firewall-Manager-Python-Variant/actions/workflows/security.yml/badge.svg?branch=main" alt="Security"></a>
+  <a href="https://github.com/Sandler73/Apotropaios-Firewall-Manager-Python-Variant/actions/workflows/codeql.yml"><img src="https://github.com/Sandler73/Apotropaios-Firewall-Manager-Python-Variant/actions/workflows/codeql.yml/badge.svg?branch=main" alt="CodeQL"></a>
+  <a href="https://github.com/Sandler73/Apotropaios-Firewall-Manager-Python-Variant/actions/workflows/docs-validate.yml"><img src="https://github.com/Sandler73/Apotropaios-Firewall-Manager-Python-Variant/actions/workflows/docs-validate.yml/badge.svg?branch=main" alt="Docs Validate"></a>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2FSandler73%2FApotropaios-Firewall-Manager%2Fbadges%2Fmypy.json&style=flat-square" alt="mypy strict">
-  <img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2FSandler73%2FApotropaios-Firewall-Manager%2Fbadges%2Ftests.json&style=flat-square" alt="pytest suite">
-  <img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2FSandler73%2FApotropaios-Firewall-Manager%2Fbadges%2Fcoverage.json&style=flat-square" alt="coverage">
-  <img src="https://img.shields.io/badge/dynamic/toml?url=https%3A%2F%2Fraw.githubusercontent.com%2FSandler73%2FApotropaios-Firewall-Manager%2Fmain%2Fpyproject.toml&query=%24.project.version&prefix=v&label=version&color=blue&style=flat-square" alt="framework version">
+  <img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2FSandler73%2FApotropaios-Firewall-Manager-Python-Variant%2Fbadges%2Fmypy.json&style=flat-square" alt="mypy strict">
+  <img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2FSandler73%2FApotropaios-Firewall-Manager-Python-Variant%2Fbadges%2Ftests.json&style=flat-square" alt="pytest suite">
+  <img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2FSandler73%2FApotropaios-Firewall-Manager-Python-Variant%2Fbadges%2Fcoverage.json&style=flat-square" alt="coverage">
+  <img src="https://img.shields.io/badge/dynamic/toml?url=https%3A%2F%2Fraw.githubusercontent.com%2FSandler73%2FApotropaios-Firewall-Manager-Python-Variant%2Fmain%2Fpyproject.toml&query=%24.project.version&prefix=v&label=version&color=blue&style=flat-square" alt="framework version">
 </p>
 
 <p align="center">
@@ -323,7 +323,7 @@ Removal mirrors the add logic exactly -- for iptables, both the LOG rule and the
 
 ```bash
 # 1. Clone or download
-git clone https://github.com/Sandler73/Apotropaios-Firewall-Manager-Python.git
+git clone https://github.com/Sandler73/Apotropaios-Firewall-Manager-Python-Variant.git
 cd Apotropaios-Firewall-Manager-Python
 
 # 2. Detect your system (no install needed)
