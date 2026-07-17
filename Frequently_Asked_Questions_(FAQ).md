@@ -74,7 +74,7 @@ The codebase uses modern Python features that require 3.12+: `X | None` union sy
 ### How do I set up a development environment?
 
 ```bash
-git clone https://github.com/Sandler73/Apotropaios-Firewall-Manager-Python.git
+git clone https://github.com/Sandler73/Apotropaios-Firewall-Manager-Python-Variant.git
 cd Apotropaios-Firewall-Manager-Python
 make dev-setup
 source .venv/bin/activate
