@@ -4,7 +4,7 @@
 # Synopsis:     ipset firewall backend implementation
 # Description:  Implements the FirewallBackend ABC for ipset. Manages IP sets
 #               for efficient bulk IP/network matching. ipset works alongside
-#               iptables/nftables — it manages named sets of IPs/networks/ports
+#               iptables/nftables -- it manages named sets of IPs/networks/ports
 #               that can be referenced in firewall rules for O(1) matching.
 #
 #               Supported set types: hash:ip, hash:net, hash:ip,port,
@@ -20,7 +20,7 @@
 #               - Timeout support for temporary entries
 #               - Removes iptables references before destroying sets during reset
 #               - Parity target: bash v1.1.10 lib/firewall/ipset.sh
-# Version:      1.2.1
+# Version:      1.6.2
 # ==============================================================================
 
 from __future__ import annotations
@@ -94,7 +94,7 @@ def _validate_entry(entry: str, set_type: str) -> bool:
     elif set_type == "hash:net":
         _validate_addr(entry, allow_net=True)  # hash:net also accepts plain IPs
     elif set_type in ("hash:ip,port", "hash:net,port"):
-        # Format: addr,[proto:]port — validate both components
+        # Format: addr,[proto:]port -- validate both components
         if "," not in entry:
             raise RuleApplyError(
                 f"Invalid entry format for {set_type}: {entry}",
@@ -107,7 +107,7 @@ def _validate_entry(entry: str, set_type: str) -> bool:
             validate_protocol(proto_part)
         validate_port(port_part)
     elif set_type == "hash:net,iface":
-        # Format: net,iface — validate both components
+        # Format: net,iface -- validate both components
         if "," not in entry:
             raise RuleApplyError(
                 f"Invalid entry format for {set_type}: {entry}",
@@ -341,7 +341,7 @@ class IpsetBackend(FirewallBackend):
             return False
 
         # hash:net rejects a /0 prefix, so full coverage requires the two
-        # complementary /1 networks. Every add is checked — a silent failure
+        # complementary /1 networks. Every add is checked -- a silent failure
         # here would leave the emergency control claiming success while
         # blocking nothing (fail-open).
         failed = False
@@ -365,7 +365,7 @@ class IpsetBackend(FirewallBackend):
                 failed = True
 
         if failed:
-            _log("error", "block-all did NOT fully apply — traffic may still pass")
+            _log("error", "block-all did NOT fully apply -- traffic may still pass")
             return False
 
         _log("info", "All traffic blocked via ipset + iptables")
@@ -380,7 +380,7 @@ class IpsetBackend(FirewallBackend):
         _log("warning", "ipset allow-all: removing block sets")
         _remove_iptables_refs("apotropaios_block")
 
-        # Missing set means nothing to remove — treat as success. Any other
+        # Missing set means nothing to remove -- treat as success. Any other
         # failure is reported so the caller does not assume open traffic.
         check = _run(["ipset", "list", "-n"])
         if "apotropaios_block" in check.stdout.split():
@@ -394,7 +394,7 @@ class IpsetBackend(FirewallBackend):
         return True
 
     def reset(self) -> bool:
-        """Reset ipset — flush all sets and remove iptables references."""
+        """Reset ipset -- flush all sets and remove iptables references."""
         _log("warning", "Resetting ipset (flushing all sets)")
 
         # List all sets
