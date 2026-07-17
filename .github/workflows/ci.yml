@@ -1,0 +1,85 @@
+# ==============================================================================
+# File:         .github/workflows/ci.yml
+# Project:      Apotropaios - Firewall Manager (Python Variant)
+# Synopsis:     Continuous integration pipeline
+# Description:  Runs on every push and PR: mypy strict type checking, pytest
+#               test suite across Python 3.12 and 3.13, and test summary.
+# Version:      0.1.0-dev
+# ==============================================================================
+
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  # ============================================================================
+  # Type Checking (mypy --strict)
+  # ============================================================================
+  typecheck:
+    name: Type Check (mypy --strict)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install mypy
+        run: pip install mypy
+
+      - name: Run mypy strict
+        run: mypy apotropaios/ --strict --python-version 3.12
+
+  # ============================================================================
+  # Test Suite (pytest across Python matrix)
+  # ============================================================================
+  test:
+    name: Test (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.12", "3.13"]
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dev dependencies
+        run: pip install pytest
+
+      - name: Run test suite
+        run: pytest tests/ -v --tb=short
+
+  # ============================================================================
+  # Security Tests (injection, traversal)
+  # ============================================================================
+  security:
+    name: Security Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install pytest
+        run: pip install pytest
+
+      - name: Run security tests
+        run: pytest tests/security/ -v --tb=short

@@ -1,0 +1,70 @@
+# ==============================================================================
+# File:         .github/workflows/release.yml
+# Project:      Apotropaios - Firewall Manager (Python Variant)
+# Synopsis:     Release pipeline for tagged versions
+# Description:  Triggered on version tags (v*). Runs full CI checks, builds
+#               the Python package, and creates a GitHub release with the
+#               dist archive attached.
+# Version:      0.1.0-dev
+# ==============================================================================
+
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  # ============================================================================
+  # Full CI checks before release
+  # ============================================================================
+  ci:
+    name: CI Checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install mypy pytest build
+
+      - name: Type check
+        run: mypy apotropaios/ --strict --python-version 3.12
+
+      - name: Test suite
+        run: pytest tests/ -v --tb=short
+
+  # ============================================================================
+  # Build and Release
+  # ============================================================================
+  release:
+    name: Build & Release
+    needs: ci
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install build tools
+        run: pip install build
+
+      - name: Build package
+        run: python -m build
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*
+          generate_release_notes: true
