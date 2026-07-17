@@ -12,7 +12,7 @@
 #               - Three distribution packages: dist, dist-full, dist-venv
 #               - Python 3.12+ required (checked at runtime)
 #
-# Version:      1.2.1
+# Version:      1.6.2
 # ==============================================================================
 
 SHELL := /bin/bash
@@ -75,7 +75,7 @@ all: lint test
 # ╚════════════════════════════════════════════════════════════════════════════╝
 
 # ==============================================================================
-# Type Check — mypy --strict (fastest meaningful gate)
+# Type Check -- mypy --strict (fastest meaningful gate)
 # ==============================================================================
 typecheck:
 	@echo "==> Running mypy --strict on $(PY_COUNT) source files..."
@@ -83,12 +83,12 @@ typecheck:
 	@echo "==> Type check passed ($(PY_COUNT) files, zero errors)"
 
 # ==============================================================================
-# Lint — type check (mypy is the primary Python linter for this project)
+# Lint -- type check (mypy is the primary Python linter for this project)
 # ==============================================================================
 lint: typecheck
 
 # ==============================================================================
-# Security Scan — static pattern analysis for dangerous patterns
+# Security Scan -- static pattern analysis for dangerous patterns
 # ==============================================================================
 security-scan:
 	@echo "==> Running security pattern scan..."
@@ -162,11 +162,11 @@ security-scan:
 test: lint test-unit test-integration test-security
 	@echo ""
 	@echo "  ================================================"
-	@echo "  ✓ ALL TESTS PASSED — v$(VERSION)"
+	@echo "  ✓ ALL TESTS PASSED -- v$(VERSION)"
 	@echo "  ================================================"
 	@echo ""
 
-## Quick test — unit only, no lint (rapid development feedback)
+## Quick test -- unit only, no lint (rapid development feedback)
 test-quick: test-unit
 	@echo "==> Quick tests passed"
 
@@ -248,7 +248,7 @@ test-injection:
 # ==============================================================================
 test-report:
 	@echo ""
-	@echo "  Apotropaios v$(VERSION) — Test Report"
+	@echo "  Apotropaios v$(VERSION) -- Test Report"
 	@echo "  ══════════════════════════════════════════"
 	@echo ""
 	@for f in $(TEST_FILES); do \
@@ -349,7 +349,7 @@ venv-run: venv
 # ╚════════════════════════════════════════════════════════════════════════════╝
 
 # ==============================================================================
-# Runtime distribution — source package for deployment
+# Runtime distribution -- source package for deployment
 # ==============================================================================
 dist:
 	@echo "==> Building runtime distribution..."
@@ -365,7 +365,7 @@ dist:
 	@echo "==> Built: $(DIST_DIR)/$(PROJECT)-$(VERSION).tar.gz"
 
 # ==============================================================================
-# Full distribution — includes tests, CI, tasks
+# Full distribution -- includes tests, CI, tasks
 # ==============================================================================
 dist-full:
 	@echo "==> Building full distribution..."
@@ -381,7 +381,7 @@ dist-full:
 	@echo "==> Built: $(DIST_DIR)/$(PROJECT)-$(VERSION)-full.tar.gz"
 
 # ==============================================================================
-# Venv distribution — portable, activate/deactivate
+# Venv distribution -- portable, activate/deactivate
 # ==============================================================================
 dist-venv:
 	@echo "==> Building venv distribution..."
@@ -413,14 +413,14 @@ dist-venv:
 	@echo "==> Built: $(DIST_DIR)/$(PROJECT)-$(VERSION)-venv.tar.gz"
 
 # ==============================================================================
-# Release — build ALL packages + unified SHA256SUMS.txt
+# Release -- build ALL packages + unified SHA256SUMS.txt
 # ==============================================================================
 release: dist dist-full dist-venv
 	@echo "==> Generating SHA256SUMS.txt..."
 	@cd $(DIST_DIR) && sha256sum $(PROJECT)-$(VERSION)*.tar.gz > SHA256SUMS.txt
 	@echo ""
 	@echo "  ════════════════════════════════════════════════════"
-	@echo "  Release v$(VERSION) — Packages Built"
+	@echo "  Release v$(VERSION) -- Packages Built"
 	@echo "  ════════════════════════════════════════════════════"
 	@echo ""
 	@ls -lh $(DIST_DIR)/$(PROJECT)-$(VERSION)*.tar.gz
@@ -471,12 +471,12 @@ verify:
 # ╚════════════════════════════════════════════════════════════════════════════╝
 
 # ==============================================================================
-# Dev Setup — install dev dependencies
+# Dev Setup -- install dev dependencies
 # ==============================================================================
 dev-setup:
 	@echo "==> Setting up development environment..."
 	@echo "  [1/3] Creating virtual environment..."
-	@$(PYTHON3) -m venv $(VENV_DIR) 2>/dev/null || echo "    venv module not found — install: sudo apt install python3-venv"
+	@$(PYTHON3) -m venv $(VENV_DIR) 2>/dev/null || echo "    venv module not found -- install: sudo apt install python3-venv"
 	@echo "  [2/3] Installing dev dependencies..."
 	@if [ -f $(VENV_PIP) ]; then \
 		$(VENV_PIP) install --upgrade pip setuptools wheel; \
@@ -494,7 +494,7 @@ dev-setup:
 	@echo "==> Run 'make check' to verify"
 
 # ==============================================================================
-# Dependency Check — verify all required tools
+# Dependency Check -- verify all required tools
 # ==============================================================================
 check-deps:
 	@echo "==> Checking dependencies..."
@@ -535,11 +535,11 @@ check-deps:
 	@echo "==> All required dependencies available"
 
 # ==============================================================================
-# Project Info — version, file counts, quick summary
+# Project Info -- version, file counts, quick summary
 # ==============================================================================
 info:
 	@echo ""
-	@echo "  Apotropaios — Firewall Manager (Python Variant)"
+	@echo "  Apotropaios - Firewall Manager (Python Variant)"
 	@echo "  ════════════════════════════════════════════════════"
 	@echo "  Version:       v$(VERSION)"
 	@echo "  Python:        $$($(PYTHON3) --version 2>&1)"
@@ -549,11 +549,11 @@ info:
 	@echo ""
 
 # ==============================================================================
-# Metrics — detailed project statistics
+# Metrics -- detailed project statistics
 # ==============================================================================
 metrics:
 	@echo ""
-	@echo "  Apotropaios v$(VERSION) — Project Metrics"
+	@echo "  Apotropaios v$(VERSION) -- Project Metrics"
 	@echo "  ══════════════════════════════════════════"
 	@echo ""
 	@echo "  Source Code:"
@@ -609,7 +609,7 @@ clean-all: clean clean-venv clean-data
 
 help:
 	@echo ""
-	@echo "  Apotropaios v$(VERSION) — Makefile Targets"
+	@echo "  Apotropaios v$(VERSION) -- Makefile Targets"
 	@echo "  ═══════════════════════════════════════════"
 	@echo ""
 	@echo "  Quality:"
