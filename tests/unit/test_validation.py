@@ -2,7 +2,9 @@
 # File:         tests/unit/test_validation.py
 # Project:      Apotropaios - Firewall Manager (Python Variant)
 # Synopsis:     Unit tests for the validation module (27 validators + sanitizer)
-# Version:      1.2.1
+# Description:  Verifies all input validators and the sanitizer with valid and
+#               invalid inputs, covering the whitelist boundaries.
+# Version:      1.6.2
 # ==============================================================================
 
 import pytest
