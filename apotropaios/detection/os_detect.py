@@ -6,7 +6,7 @@
 #               and other system identification files. Validates against the
 #               supported OS list. Determines package manager and OS family.
 #               Uses multiple fallback detection methods for robustness:
-#                 1. /etc/os-release (preferred — standard across modern Linux)
+#                 1. /etc/os-release (preferred -- standard across modern Linux)
 #                 2. /etc/lsb-release (Ubuntu/Debian fallback)
 #                 3. /etc/redhat-release (RHEL family fallback)
 #                 4. platform.uname() (minimal fallback)
@@ -20,7 +20,7 @@
 #               - Supports: Ubuntu, Kali, Debian 12, Rocky 9, AlmaLinux 9, Arch
 #               - Thread-safe: no shared mutable state
 #               - Parity target: bash v1.1.10 lib/detection/os_detect.sh
-# Version:      1.2.1
+# Version:      1.6.2
 # ==============================================================================
 
 from __future__ import annotations
@@ -37,7 +37,7 @@ from apotropaios.core.constants import (
     Color,
 )
 
-# Maximum file size for /etc/os-release (security — reject abnormally large files)
+# Maximum file size for /etc/os-release (security -- reject abnormally large files)
 _MAX_RELEASE_FILE_SIZE: Final[int] = 4096
 
 
@@ -167,7 +167,7 @@ def _detect_os_release(result: OSDetectionResult) -> bool:
     if not os.path.isfile(release_file) or not os.access(release_file, os.R_OK):
         return False
 
-    # Validate file size (security — reject abnormally large files)
+    # Validate file size (security -- reject abnormally large files)
     try:
         file_size = os.path.getsize(release_file)
         if file_size > _MAX_RELEASE_FILE_SIZE:
