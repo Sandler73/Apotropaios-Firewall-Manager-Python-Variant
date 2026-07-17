@@ -12,7 +12,7 @@
 #               - Staging dir pattern avoids partial archive writes
 #               - Retention enforced after each backup creation
 #               - Parity target: bash v1.1.10 lib/backup/backup.sh
-# Version:      1.2.1
+# Version:      1.6.2
 # ==============================================================================
 
 from __future__ import annotations
@@ -295,7 +295,7 @@ def _export_single(staging: str, fw_name: str) -> None:
                 with open(output, "w", encoding="utf-8") as f:
                     f.write(result.stdout)
             # Machine-restorable configuration: copy /etc/ufw into the
-            # archive as ufw_etc. The status text alone is not restorable —
+            # archive as ufw_etc. The status text alone is not restorable --
             # restore looks for ufw_etc (save→load round-trip contract).
             ufw_etc_src = "/etc/ufw"
             if os.path.isdir(ufw_etc_src):
