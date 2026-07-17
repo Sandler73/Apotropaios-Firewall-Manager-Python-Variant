@@ -7,7 +7,7 @@
 #               bash-variant parity context for enhancement triage.
 # Notes:        - Requests touching validation, privilege handling, or rule
 #               application flag the security-review checkbox
-# Version:      1.6.0
+# Version:      1.6.2
 # ==============================================================================
 name: Feature Request
 description: Propose an enhancement or new capability
