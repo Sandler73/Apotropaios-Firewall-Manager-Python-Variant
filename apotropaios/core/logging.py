@@ -16,14 +16,14 @@
 #               - Per-execution log files (timestamped) with rotation by size
 #               - Console output to stderr with ANSI color coding
 #               - Thread-safe via stdlib logging's internal locks
-#               - No external dependencies — stdlib only
+#               - No external dependencies -- stdlib only
 #
 # Notes:        - Requires apotropaios.core.constants (LogLevel, Security, Color)
 #               - TRACE level (5) registered as custom stdlib logging level
 #               - Log files written with 0o600 permissions
 #               - All sensitive data masked before writing to any output
 #               - Parity target: bash v1.1.10 lib/core/logging.sh
-# Version:      1.2.1
+# Version:      1.6.2
 # ==============================================================================
 
 from __future__ import annotations
@@ -56,7 +56,7 @@ from apotropaios.core.constants import (
 
 TRACE_LEVEL_NUM: Final[int] = 5  # Below DEBUG (10)
 
-# Register TRACE level with stdlib logging (idempotent — safe to call multiple times)
+# Register TRACE level with stdlib logging (idempotent -- safe to call multiple times)
 if not hasattr(logging, "TRACE"):
     logging.addLevelName(TRACE_LEVEL_NUM, "TRACE")
     logging.TRACE = TRACE_LEVEL_NUM  # type: ignore[attr-defined]
@@ -112,7 +112,7 @@ class LogSanitizer:
             re.IGNORECASE,
         )
 
-        # Family 3: JSON — "key": "value" (with optional whitespace)
+        # Family 3: JSON -- "key": "value" (with optional whitespace)
         self._pattern_json: re.Pattern[str] = re.compile(
             rf'"({self._SENSITIVE_KEYS})"\s*:\s*"[^"]*"',
             re.IGNORECASE,
@@ -446,7 +446,7 @@ class FrameworkLogger:
         """
         # Re-initialization: shut down the previous session first. Without
         # this, the prior stdlib logger stays registered in the logging
-        # manager with its rotating file handler attached — a file
+        # manager with its rotating file handler attached -- a file
         # descriptor leak per re-initialization.
         if self._initialized:
             self.shutdown()
