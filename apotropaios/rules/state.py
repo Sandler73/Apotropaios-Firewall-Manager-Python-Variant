@@ -11,7 +11,7 @@
 #               - State file: rule_id|state|duration_type|ttl|created|expires
 #               - Atomic writes via temp + rename
 #               - Parity target: bash v1.1.10 lib/rules/rule_state.sh
-# Version:      1.2.1
+# Version:      1.6.2
 # ==============================================================================
 
 from __future__ import annotations
