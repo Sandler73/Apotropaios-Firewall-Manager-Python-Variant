@@ -17,7 +17,7 @@
 #               - Snapshots include all firewall configs + rule index
 #               - "No immutable snapshots exist" when count is 0 (Lesson #15)
 #               - Parity target: bash v1.1.10 lib/backup/immutable.sh
-# Version:      1.2.1
+# Version:      1.6.2
 # ==============================================================================
 
 from __future__ import annotations
