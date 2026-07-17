@@ -71,7 +71,7 @@ The fastest way to use Apotropaios. No pip install, no venv, no configuration ne
 
 ```bash
 # Clone the repository
-git clone https://github.com/Sandler73/Apotropaios-Firewall-Manager-Python.git
+git clone https://github.com/Sandler73/Apotropaios-Firewall-Manager-Python-Variant.git
 cd Apotropaios-Firewall-Manager-Python
 
 # Run directly -- no install required
@@ -93,7 +93,7 @@ Apotropaios supports three installation methods. Choose the one that fits your w
 No installation at all. Run directly from the project root:
 
 ```bash
-git clone https://github.com/Sandler73/Apotropaios-Firewall-Manager-Python.git
+git clone https://github.com/Sandler73/Apotropaios-Firewall-Manager-Python-Variant.git
 cd Apotropaios-Firewall-Manager-Python
 
 # Run any command
@@ -117,7 +117,7 @@ make run-help
 Isolates dependencies in a project-local `.venv` directory. Does not touch system Python packages.
 
 ```bash
-git clone https://github.com/Sandler73/Apotropaios-Firewall-Manager-Python.git
+git clone https://github.com/Sandler73/Apotropaios-Firewall-Manager-Python-Variant.git
 cd Apotropaios-Firewall-Manager-Python
 
 # Create venv (one-time setup)
@@ -162,7 +162,7 @@ make venv-run CMD="detect"   # Run command inside venv
 Installs the package system-wide:
 
 ```bash
-git clone https://github.com/Sandler73/Apotropaios-Firewall-Manager-Python.git
+git clone https://github.com/Sandler73/Apotropaios-Firewall-Manager-Python-Variant.git
 cd Apotropaios-Firewall-Manager-Python
 
 # Minimal install (runtime only, no dev tools)
@@ -523,7 +523,7 @@ For contributors and testers:
 
 ```bash
 # Clone
-git clone https://github.com/Sandler73/Apotropaios-Firewall-Manager-Python.git
+git clone https://github.com/Sandler73/Apotropaios-Firewall-Manager-Python-Variant.git
 cd Apotropaios-Firewall-Manager-Python
 
 # Automated setup (creates venv + installs deps)
