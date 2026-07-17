@@ -1,4 +1,4 @@
-# Troubleshooting Guide — Apotropaios Firewall Manager (Python Variant)
+# Troubleshooting Guide -- Apotropaios Firewall Manager (Python Variant)
 
 Guide to diagnosing and resolving issues across installation, runtime, backends, rules, backup, logging, and the interactive menu.
 
@@ -31,7 +31,7 @@ include = ["apotropaios*"]
 exclude = ["tests*", "data*", "docs*", "tasks*", "conf*"]
 ```
 
-**Lesson**: PY-009 — Always configure explicit package discovery in `pyproject.toml` for projects with non-package top-level directories.
+**Lesson**: PY-009 -- Always configure explicit package discovery in `pyproject.toml` for projects with non-package top-level directories.
 
 ### pip3 install fails with license deprecation warning
 
@@ -223,7 +223,7 @@ sudo python3 apotropaios.py list-rules
 
 **Symptom**: Temporary rule remains active past its TTL.
 
-**Root Cause**: The ExpiryMonitor daemon thread only runs during interactive menu mode (30-second check interval). CLI commands execute and exit — no background monitoring.
+**Root Cause**: The ExpiryMonitor daemon thread only runs during interactive menu mode (30-second check interval). CLI commands execute and exit -- no background monitoring.
 
 **Fix**: Use the interactive menu for sessions with temporary rules, or periodically check with:
 ```bash
@@ -247,7 +247,7 @@ sudo python3 apotropaios.py import rules.conf --dry-run
 
 **Root Cause**: Correct behavior. A packet can have only one terminal fate. `drop` and `accept` are both terminal actions.
 
-**Fix**: Use `log,drop` or `log,accept` — combine one non-terminal (log) with one terminal.
+**Fix**: Use `log,drop` or `log,accept` -- combine one non-terminal (log) with one terminal.
 
 ### Rule deactivated but still blocking traffic
 
@@ -284,7 +284,7 @@ sudo python3 apotropaios.py system-rules
 
 **Symptom**: Restore rejects the archive with a path traversal warning.
 
-**Root Cause**: The archive contains entries with `..` components or absolute paths. This is a security check — malicious archives could overwrite system files.
+**Root Cause**: The archive contains entries with `..` components or absolute paths. This is a security check -- malicious archives could overwrite system files.
 
 **Fix**: Recreate the backup from a trusted state. Do not use archives from untrusted sources.
 
@@ -315,7 +315,7 @@ sudo mkdir -p data/logs && sudo chmod 700 data/logs
 
 **Symptom**: Cannot read log files without sudo.
 
-**Root Cause**: Log files are created with 0o600 permissions owned by root (when run with sudo). This is intentional security behavior — log files may contain operational details that should not be world-readable.
+**Root Cause**: Log files are created with 0o600 permissions owned by root (when run with sudo). This is intentional security behavior -- log files may contain operational details that should not be world-readable.
 
 **Fix**: Read with sudo:
 ```bash
@@ -372,7 +372,15 @@ The log FILE always captures all levels regardless of console setting.
 
 **Root Cause**: Cancel detection is case-insensitive and trims whitespace. Recognized keywords: `q`, `quit`, `cancel`, `back`, `b`.
 
-**Fix**: Ensure you are typing one of the exact keywords. Ctrl+C also works as a cancel (caught by the signal handler, triggers clean shutdown).
+**Fix**: Ensure you are typing one of the exact keywords. Ctrl+C also works as a cancel: inside the interactive menu it aborts the current prompt or operation and returns to the menu; in headless CLI use it performs cleanup and exits with status 130.
+
+### Install or update appears to hang
+
+**Symptom**: `install` or `update` produces no output for a long period.
+
+**Explanation**: Package operations run fully non-interactively: stdin is closed on every package-manager invocation, so no prompt can block them (dpkg configuration-file questions are answered with the safe keep-existing default), waits on a concurrent package manager are bounded by a 60-second dpkg lock timeout, and the whole operation is bounded by the long-operation timeout (300 seconds), after which it fails with a timeout error. A status line naming the package, manager, and timeout prints when the operation starts; package-manager output is captured, so silence after that line during a large download is normal.
+
+**Fix**: Wait for the status line's stated timeout before concluding failure. Ctrl+C aborts the operation immediately; from the interactive menu this returns to the Install & Update submenu, and from the CLI it exits with status 130. If a timeout error is reported, check network reachability to the distribution mirrors and whether another package manager holds the dpkg/dnf lock.
 
 ### ExpiryMonitor alerts not appearing
 
