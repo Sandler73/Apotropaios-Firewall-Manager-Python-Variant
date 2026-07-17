@@ -21,9 +21,9 @@
 #               - All public constants use UPPER_SNAKE_CASE naming convention
 #               - All collections are immutable (tuple, frozenset, NamedTuple)
 #               - Compiled regex patterns are thread-safe (re module guarantee)
-#               - No external dependencies — stdlib only
+#               - No external dependencies -- stdlib only
 #               - Parity target: bash v1.1.10 constants.sh
-# Version:      1.2.1
+# Version:      1.6.2
 # ==============================================================================
 
 from __future__ import annotations
@@ -38,7 +38,7 @@ from typing import Final, NamedTuple
 # Version & Identity
 # ==============================================================================
 
-VERSION: Final[str] = "1.2.1"
+VERSION: Final[str] = "1.6.2"
 """Semantic version string for the Python variant."""
 
 PROJECT_NAME: Final[str] = "Apotropaios"
@@ -77,7 +77,7 @@ class DirPath:
 class FileName:
     """Standard file names used by the framework.
 
-    These are basenames only — directory paths are resolved at runtime
+    These are basenames only -- directory paths are resolved at runtime
     by combining with the appropriate DirPath constant.
     """
 
@@ -108,7 +108,7 @@ class OSInfo(NamedTuple):
     family: str
 
 
-# Supported OS definitions — order matches bash variant's parallel arrays.
+# Supported OS definitions -- order matches bash variant's parallel arrays.
 # Each entry carries all metadata in a single NamedTuple (no parallel arrays).
 SUPPORTED_OS: Final[tuple[OSInfo, ...]] = (
     OSInfo(os_id="ubuntu",    display_name="Ubuntu",         pkg_manager="apt",    family="debian"),
@@ -158,7 +158,7 @@ class FirewallInfo(NamedTuple):
     packages: dict[str, str]
 
 
-# Supported firewall backend definitions — replaces bash's parallel arrays.
+# Supported firewall backend definitions -- replaces bash's parallel arrays.
 SUPPORTED_FIREWALLS: Final[tuple[FirewallInfo, ...]] = (
     FirewallInfo(
         fw_id="firewalld",
@@ -346,7 +346,7 @@ DEFAULT_LOG_LEVEL: Final[LogLevel] = LogLevel.WARNING
 # ==============================================================================
 # Validation Patterns (Compiled Regular Expressions)
 #
-# Security: Whitelist patterns — reject everything that doesn't fullmatch().
+# Security: Whitelist patterns -- reject everything that doesn't fullmatch().
 # All patterns are compiled at module import time for performance.
 # Thread-safe by Python re module guarantee.
 # ==============================================================================
@@ -467,7 +467,7 @@ class Pattern:
 
 
 # Shell metacharacters to reject during input sanitization.
-# In Python, this is a single frozenset — no need for bash's per-character patterns.
+# In Python, this is a single frozenset -- no need for bash's per-character patterns.
 # Used by sanitize_input() to detect dangerous characters.
 SHELL_METACHARACTERS: Final[frozenset[str]] = frozenset(
     ';|&`$(){}\\<>!#'
@@ -704,7 +704,7 @@ class _Color:
         self.DIM: str = "\033[2m" if is_tty else ""
 
 
-# Module-level singleton — evaluated once at import time
+# Module-level singleton -- evaluated once at import time
 Color: Final[_Color] = _Color()
 
 
