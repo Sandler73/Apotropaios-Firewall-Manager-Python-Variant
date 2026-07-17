@@ -2,10 +2,16 @@
 # File:         .github/workflows/release.yml
 # Project:      Apotropaios - Firewall Manager (Python Variant)
 # Synopsis:     Release pipeline for tagged versions
-# Description:  Triggered on version tags (v*). Runs full CI checks, builds
-#               the Python package, and creates a GitHub release with the
-#               dist archive attached.
-# Version:      0.1.0-dev
+# Description:  Triggered on version tags (v*). Gates the tag against the
+#               canonical framework version, runs full CI checks (lint,
+#               strict typing, tests, consistency), builds the Python
+#               package, generates a unified SHA256SUMS.txt, uploads build
+#               artifacts, and creates a GitHub release with checksummed
+#               assets attached.
+# Notes:        - A tag that does not match constants.py VERSION fails fast
+#               - Action pins follow the project standard: checkout@v6,
+#                 upload-artifact@v6
+# Version:      1.6.0
 # ==============================================================================
 
 name: Release
@@ -20,27 +26,54 @@ permissions:
 
 jobs:
   # ============================================================================
+  # Tag gate — the tag must match the canonical framework version
+  # ============================================================================
+  version-gate:
+    name: Tag / Version Gate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Verify tag matches canonical version
+        run: |
+          TAG="${GITHUB_REF_NAME#v}"
+          CANONICAL=$(grep -oP 'VERSION: Final\[str\] = "\K[^"]+' apotropaios/core/constants.py)
+          echo "Tag: ${TAG}  Canonical: ${CANONICAL}"
+          test "${TAG}" = "${CANONICAL}"
+
+  # ============================================================================
   # Full CI checks before release
   # ============================================================================
   ci:
     name: CI Checks
+    needs: version-gate
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
 
       - name: Set up Python 3.12
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.12"
+          cache: pip
 
       - name: Install dependencies
-        run: pip install mypy pytest build
+        run: pip3 install mypy pytest pyflakes build
+
+      - name: Lint
+        run: |
+          python3 -m pyflakes apotropaios/ scripts/ tests/
 
       - name: Type check
-        run: mypy apotropaios/ --strict --python-version 3.12
+        run: python3 -m mypy apotropaios/ --strict --python-version 3.12
 
       - name: Test suite
-        run: pytest tests/ -v --tb=short
+        run: python3 -m pytest tests/ -v --tb=short
+
+      - name: Consistency checks
+        run: |
+          python3 scripts/check_version_consistency.py
+          python3 scripts/validate_docs.py
 
   # ============================================================================
   # Build and Release
@@ -53,18 +86,33 @@ jobs:
       - uses: actions/checkout@v6
 
       - name: Set up Python 3.12
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.12"
+          cache: pip
 
       - name: Install build tools
-        run: pip install build
+        run: pip3 install build
 
       - name: Build package
-        run: python -m build
+        run: python3 -m build
+
+      - name: Generate unified SHA256SUMS
+        run: |
+          cd dist
+          sha256sum * > SHA256SUMS.txt
+          sha256sum -c SHA256SUMS.txt
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v6
+        with:
+          name: dist-${{ github.ref_name }}
+          path: dist/
+          retention-days: 90
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: dist/*
+          files: |
+            dist/*
           generate_release_notes: true
