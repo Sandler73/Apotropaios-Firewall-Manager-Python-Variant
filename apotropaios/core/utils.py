@@ -14,10 +14,10 @@
 #               with automatic TTY detection.
 #
 # Notes:        - Requires apotropaios.core.constants (VERSION, Color, Security)
-#               - No external dependencies — stdlib only
+#               - No external dependencies -- stdlib only
 #               - Thread-safe: all functions are stateless/pure
 #               - Parity target: bash v1.1.10 lib/core/utils.sh
-# Version:      1.2.1
+# Version:      1.6.2
 # ==============================================================================
 
 from __future__ import annotations
@@ -386,7 +386,7 @@ def confirm(
 # Terminal Formatting
 # ==============================================================================
 
-# ASCII art banner — verified character by character per BUG-001 lesson
+# ASCII art banner -- verified character by character per BUG-001 lesson
 _BANNER: str = r"""    _                _                         _
    / \   _ __   ___ | |_ _ __ ___  _ __   __ _(_) ___  ___
   / _ \ | '_ \ / _ \| __| '__/ _ \| '_ \ / _` | |/ _ \/ __|
