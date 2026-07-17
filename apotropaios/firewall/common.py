@@ -16,7 +16,7 @@
 #               - Only one backend is active at a time (set via set_backend)
 #               - All operations validate backend availability before dispatch
 #               - Parity target: bash v1.1.10 lib/firewall/common.sh
-# Version:      1.2.1
+# Version:      1.6.2
 # ==============================================================================
 
 from __future__ import annotations
