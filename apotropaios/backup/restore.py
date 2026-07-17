@@ -12,7 +12,7 @@
 #               - Per-backend restore uses native tools (iptables-restore, nft -f, etc.)
 #               - Rule index and state files restored if present in archive
 #               - Parity target: bash v1.1.10 lib/backup/restore.sh
-# Version:      1.2.1
+# Version:      1.6.2
 # ==============================================================================
 
 from __future__ import annotations
@@ -82,7 +82,7 @@ def restore_backup(
                 verify_checksum(backup_file, expected)
                 _log("info", "Backup integrity verified")
         except IntegrityError:
-            _log("error", "Backup integrity check failed — aborting restore")
+            _log("error", "Backup integrity check failed -- aborting restore")
             raise
         except Exception as exc:
             _log("warning", f"Could not verify checksum: {exc}")
@@ -93,7 +93,7 @@ def restore_backup(
         from apotropaios.backup.backup import create_backup
         create_backup("pre_restore", target_backend, rules_dir)
     except Exception as exc:
-        _log("warning", f"Failed to create pre-restore backup: {exc} — proceeding with caution")
+        _log("warning", f"Failed to create pre-restore backup: {exc} -- proceeding with caution")
 
     # Extract to temporary directory
     try:
@@ -238,16 +238,16 @@ def _restore_single(staging: str, fw_name: str, timeout: int) -> bool:
             ufw_etc = os.path.join(staging, "ufw_etc")
             if not os.path.isdir(ufw_etc):
                 # Archive predates machine-restorable ufw backups (status
-                # dump only) — nothing can be restored. Report honestly
+                # dump only) -- nothing can be restored. Report honestly
                 # instead of claiming success.
                 _log(
                     "error",
                     "Archive contains no restorable ufw configuration "
-                    "(ufw_etc missing — status dump is reference-only)",
+                    "(ufw_etc missing -- status dump is reference-only)",
                 )
                 return False
             if not os.path.isdir("/etc/ufw"):
-                _log("error", "/etc/ufw does not exist — cannot restore ufw")
+                _log("error", "/etc/ufw does not exist -- cannot restore ufw")
                 return False
             for item in os.listdir(ufw_etc):
                 src = os.path.join(ufw_etc, item)
