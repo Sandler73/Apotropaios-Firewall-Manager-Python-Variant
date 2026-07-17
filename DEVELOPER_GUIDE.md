@@ -1,8 +1,8 @@
-# Developer Guide — Exhaustive Code Component Catalog
+# Developer Guide -- Exhaustive Code Component Catalog
 
-Authoritative reference for every source file, class, function, and method in Apotropaios. Generated from AST analysis of actual source — all signatures and line counts verified.
+Authoritative reference for every source file, class, function, and method in Apotropaios. Generated from AST analysis of actual source -- all signatures and line counts verified.
 
-**Codebase:** 35 Python files (27 production + 8 __init__.py) · 14,409 lines · mypy --strict: 0 errors · 230 tests
+**Codebase:** 35 Python files (27 production + 8 __init__.py) · 14,545 lines · mypy --strict: 0 errors · 322 tests
 
 ```
 Layer 5 (UI):        cli.py (1,201), __main__.py (57), menu/main.py (790), menu/help_system.py (526)
@@ -13,7 +13,7 @@ Layer 1 (Core):      core/{constants(737),errors(881),validation(1256),logging(7
 ```
 
 
-## Layer 1 — Core Infrastructure
+## Layer 1 -- Core Infrastructure
 
 ### `apotropaios/core/constants.py` (746 lines)
 
@@ -102,9 +102,9 @@ ANSI terminal color codes with automatic TTY detection.
 
 ---
 
-### `apotropaios/core/errors.py` (911 lines)
+### `apotropaios/core/errors.py` (946 lines)
 
-25 exception classes (ApotropaiosError base), CleanupStack (LIFO, recursion guard, thread-safe), SignalHandler (SIGTERM→143, SIGINT→130, SIGHUP→129), retry with exponential backoff, ErrorContext
+25 exception classes (ApotropaiosError base), CleanupStack (LIFO, recursion guard, thread-safe), SignalHandler (SIGTERM→143, SIGHUP→129; SIGINT→130 in headless execution or KeyboardInterrupt inside an interruptible scope for interactive recovery), retry with exponential backoff, ErrorContext
 
 #### class `ApotropaiosError`(Exception)
 
@@ -343,7 +343,8 @@ OS signal handler that triggers cleanup stack execution on termination.
 | `_log` | level, message | `None` | Emit a log message if a logger is available. |
 | `install` |  | `None` | Install signal handlers for SIGTERM, SIGINT, and SIGHUP. |
 | `uninstall` |  | `None` | Restore original signal handlers. |
-| `_handler` | signum, frame | `None` | Signal handler callback. |
+| `_handler` | signum, frame | `None` | Signal handler callback. SIGINT inside an interruptible scope raises KeyboardInterrupt into the running frame; otherwise, and for SIGTERM/SIGHUP always, executes the cleanup stack and exits with the signal code. |
+| `interruptible` |  | `Iterator[None]` | Nestable context scope in which SIGINT aborts the current operation (KeyboardInterrupt) instead of terminating the process; entered for the interactive menu session. |
 
 | Function | Parameters | Returns | Description |
 |:---------|:-----------|:--------|:------------|
@@ -487,9 +488,9 @@ Advisory file lock with timeout and stale lock detection.
 | `release` |  | `None` | Release the advisory file lock. |
 | `_close_fd` |  | `None` | Close the lock file descriptor. |
 | `_check_stale_lock` |  | `None` | Check if the current lock holder is still alive. |
-| `__enter__` |  | `FileLock` | Context manager entry — acquire the lock. |
-| `__exit__` |  | `None` | Context manager exit — release the lock. |
-| `__del__` |  | `None` | Destructor — ensure FD is closed. |
+| `__enter__` |  | `FileLock` | Context manager entry -- acquire the lock. |
+| `__exit__` |  | `None` | Context manager exit -- release the lock. |
+| `__del__` |  | `None` | Destructor -- ensure FD is closed. |
 
 | Function | Parameters | Returns | Description |
 |:---------|:-----------|:--------|:------------|
@@ -542,7 +543,7 @@ UTC timestamps (ISO 8601, epoch, filename-safe), atomic KV file I/O, parallel_ex
 ---
 
 
-## Layer 2 — Detection
+## Layer 2 -- Detection
 
 ### `apotropaios/detection/os_detect.py` (430 lines)
 
@@ -607,7 +608,7 @@ Aggregate result of firewall detection across all backends.
 ---
 
 
-## Layer 3 — Firewall Backends
+## Layer 3 -- Firewall Backends
 
 ### `apotropaios/firewall/base.py` (190 lines)
 
@@ -750,7 +751,7 @@ firewalld firewall backend implementation with zone awareness.
 | `status` |  | `str` | Get backend service status and configuration summary. |
 | `block_all` |  | `bool` | Block all inbound and outbound traffic. |
 | `allow_all` |  | `bool` | Allow all traffic (remove all restrictions). |
-| `reset` |  | `bool` | Reset firewalld — iterates ALL zones (Lesson #10). |
+| `reset` |  | `bool` | Reset firewalld -- iterates ALL zones (Lesson #10). |
 | `save` | path | `bool` | Save current configuration to persistent storage. |
 | `load` | path | `bool` | Reload firewalld configuration from permanent zone files. |
 
@@ -812,7 +813,7 @@ ipset firewall backend implementation.
 | `status` |  | `str` | Get backend service status and configuration summary. |
 | `block_all` |  | `bool` | Block all inbound and outbound traffic. |
 | `allow_all` |  | `bool` | Allow all traffic (remove all restrictions). |
-| `reset` |  | `bool` | Reset ipset — flush all sets and remove iptables references. |
+| `reset` |  | `bool` | Reset ipset -- flush all sets and remove iptables references. |
 | `save` | path | `bool` | Save current configuration to persistent storage. |
 | `load` | path | `bool` | Load configuration from file. |
 
@@ -826,7 +827,7 @@ ipset firewall backend implementation.
 ---
 
 
-## Layer 4 — Engine
+## Layer 4 -- Engine
 
 ### `apotropaios/rules/engine.py` (595 lines)
 
@@ -965,13 +966,15 @@ create_snapshot: chattr +i, SHA-256 integrity files. verify_snapshots: integrity
 
 ---
 
-### `apotropaios/install/installer.py` (262 lines)
+### `apotropaios/install/installer.py` (311 lines)
 
-install_firewall/update_firewall: apt (DEBIAN_FRONTEND=noninteractive), dnf (--allowerasing), pacman (--noconfirm)
+install_firewall/update_firewall: fully non-interactive package operations. Every invocation closes stdin (DEVNULL) so residual prompts receive EOF instead of blocking; apt additionally carries dpkg conffile force options (--force-confdef/--force-confold), a 60-second dpkg lock timeout, DEBIAN_FRONTEND=noninteractive and APT_LISTCHANGES_FRONTEND=none, and single-package upgrades use apt-get install --only-upgrade; dnf uses -y --allowerasing; pacman uses --noconfirm. Both entry points print an operator-visible status line (package, manager, timeout, abort hint) before the operation starts.
 
 | Function | Parameters | Returns | Description |
 |:---------|:-----------|:--------|:------------|
 | `_log` | level, msg | `None` |  |
+| `_notice` | message | `None` | Write an operator-visible status line to stderr; console log level defaults to warning, so info logs alone leave long operations looking hung. |
+| `_apt_env` |  | `dict[str, str]` | Environment for non-interactive apt/dpkg operations (DEBIAN_FRONTEND, APT_LISTCHANGES_FRONTEND). |
 | `set_logger` | logger | `None` | Set the logger for the installer. |
 | `install_firewall` | fw_name, pkg_manager, os_id | `None` | Install a firewall package. |
 | `update_firewall` | fw_name, pkg_manager | `None` | Update a firewall package to latest version. |
@@ -985,9 +988,9 @@ install_firewall/update_firewall: apt (DEBIAN_FRONTEND=noninteractive), dnf (--a
 ---
 
 
-## Layer 5 — User Interface
+## Layer 5 -- User Interface
 
-### `apotropaios/cli.py` (1341 lines)
+### `apotropaios/cli.py` (1353 lines)
 
 21 CLI commands (17 _cmd_* handlers + help inline). Progressive help. Position-independent globals. Full init: logging→errors→security→detection→backends→rules→backup
 
@@ -1033,7 +1036,7 @@ Package entry point for python3 -m apotropaios. Python version check
 
 ---
 
-### `apotropaios/menu/main.py` (789 lines)
+### `apotropaios/menu/main.py` (815 lines)
 
 8-option interactive menu. ExpiryMonitor daemon (30s interval, 600s/10min alerts). Cancel-aware input. Rule wizard
 
@@ -1046,7 +1049,7 @@ Background daemon thread that checks for expired temporary rules.
 | `__init__` | check_interval | `None` |  |
 | `start` |  | `None` | Start the expiry monitor daemon thread. |
 | `stop` |  | `None` | Stop the expiry monitor daemon thread. |
-| `_loop` |  | `None` | Main monitor loop — runs until stop_event is set. |
+| `_loop` |  | `None` | Main monitor loop -- runs until stop_event is set. |
 | `_check` |  | `None` | Check for expired rules and print near-expiry alerts. |
 
 | Function | Parameters | Returns | Description |
@@ -1060,13 +1063,13 @@ Background daemon thread that checks for expired temporary rules.
 | `_menu_rule_management` |  | `None` | Rule Management submenu. |
 | `_menu_quick_actions` |  | `None` | Quick Actions submenu. |
 | `_menu_backup_recovery` |  | `None` | Backup & Recovery submenu. |
-| `_menu_system_info` |  | `None` | System Information submenu — full OS and firewall detection details. |
+| `_menu_system_info` |  | `None` | System Information submenu -- full OS and firewall detection details. |
 | `_menu_install_update` |  | `None` | Install & Update submenu. |
 | `_menu_help` |  | `None` | Help & Documentation submenu with per-command help access. |
 
 ---
 
-### `apotropaios/menu/help_system.py` (526 lines)
+### `apotropaios/menu/help_system.py` (533 lines)
 
 17 @_register-decorated per-command help functions. Synopsis, options, examples, related commands
 
