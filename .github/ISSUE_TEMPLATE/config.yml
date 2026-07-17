@@ -5,7 +5,7 @@
 # Description:  Disables blank issues and routes security disclosures and
 #               questions to the correct channels instead of public issues.
 # Notes:        - Vulnerabilities must never be filed as public issues
-# Version:      1.6.0
+# Version:      1.6.2
 # ==============================================================================
 blank_issues_enabled: false
 contact_links:
