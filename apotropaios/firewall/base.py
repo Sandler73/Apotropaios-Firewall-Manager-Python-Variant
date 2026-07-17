@@ -21,7 +21,7 @@
 #               - All methods that interact with the system require root
 #               - Backends must capture stderr on subprocess calls (Lesson #3)
 #               - Parity target: bash v1.1.10 backend function signatures
-# Version:      1.2.1
+# Version:      1.6.2
 # ==============================================================================
 
 from __future__ import annotations
