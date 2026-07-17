@@ -7,7 +7,7 @@
 #               paths, chain/table names, and rule parameters. Implements
 #               defense-in-depth per OWASP CRG and CWE-20 guidelines.
 #
-#               All validation uses whitelist (positive) matching — everything
+#               All validation uses whitelist (positive) matching -- everything
 #               not explicitly permitted is rejected. Functions raise
 #               ValidationError on invalid input rather than returning boolean,
 #               enabling clean error propagation in Python.
@@ -20,10 +20,10 @@
 #                 rate_limit, numeric, description, syslog_level
 #
 #               Sanitizer (1):
-#                 sanitize_input — whitelist-based character filtering
+#                 sanitize_input -- whitelist-based character filtering
 #
 #               Internal helper:
-#                 _contains_shell_meta — shell metacharacter detection
+#                 _contains_shell_meta -- shell metacharacter detection
 #
 # Notes:        - Requires apotropaios.core.constants (Pattern, Security, etc.)
 #               - Requires apotropaios.core.errors (ValidationError, SanitizationError)
@@ -32,7 +32,7 @@
 #               - Never interpolate raw input into commands or paths
 #               - Thread-safe: all functions are pure (no shared mutable state)
 #               - Parity target: bash v1.1.10 lib/core/validation.sh
-# Version:      1.2.1
+# Version:      1.6.2
 # ==============================================================================
 
 from __future__ import annotations
@@ -267,7 +267,7 @@ def validate_ipv6(value: str) -> str:
 
     # Exact semantic validation: the character-class pattern above cannot
     # reject malformed forms such as ":::" or "1::2::3" (multiple
-    # compressions) — the stdlib parser enforces the full RFC 4291 grammar.
+    # compressions) -- the stdlib parser enforces the full RFC 4291 grammar.
     try:
         ipaddress.IPv6Address(value)
     except ValueError:
@@ -1211,7 +1211,7 @@ def validate_description(value: str) -> str:
 def sanitize_input(value: str) -> str:
     """Sanitize a general input string using a WHITELIST approach.
 
-    Keeps only known-safe characters — everything else is stripped.
+    Keeps only known-safe characters -- everything else is stripped.
     This is a defense-in-depth measure applied after validation.
 
     Allowed characters: alphanumeric, space, dot, comma, underscore,
