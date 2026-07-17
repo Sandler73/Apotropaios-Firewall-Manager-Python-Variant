@@ -46,7 +46,7 @@ Thank you for your interest in contributing to the Apotropaios Firewall Manager 
 - Fix inaccuracies, expand explanations, add examples
 - Both `docs/` and `docs/wiki/` contributions welcome
 - Documentation changes still require `make check` to pass (ensures no code breakage)
-- Documentation should be exhaustive — explain HOW things work, WHY decisions were made, and WHAT edge cases exist
+- Documentation should be exhaustive -- explain HOW things work, WHY decisions were made, and WHAT edge cases exist
 
 ---
 
@@ -64,7 +64,7 @@ make dev-setup
 source .venv/bin/activate
 
 # 4. Verify everything works
-make check         # mypy --strict + 230 tests (MUST pass)
+make check         # mypy --strict + 322 tests (MUST pass)
 make security-scan # 6 static pattern checks (MUST pass)
 
 # 5. Create feature branch from develop
@@ -94,7 +94,7 @@ git checkout -b feature/your-feature-name develop
 ### Makefile Targets for Development
 
 ```bash
-make check           # Full CI: mypy --strict + 230 tests
+make check           # Full CI: mypy --strict + 322 tests
 make test-quick      # Unit tests only (fast feedback loop)
 make test-report     # Detailed per-file pass/fail report
 make security-scan   # Static pattern analysis (6 checks)
@@ -111,7 +111,7 @@ These are the non-negotiable requirements for all code contributions. See [DEVEL
 ### Mandatory Quality Gates
 
 1. **`mypy --strict`**: Zero errors across all 35 source files. No exceptions.
-2. **All 230+ tests passing**: No skipped tests, no xfail, no flakiness.
+2. **All 322+ tests passing**: No skipped tests, no xfail, no flakiness.
 3. **`make security-scan`**: All 6 static checks passing.
 
 ### Code Requirements
@@ -120,13 +120,13 @@ These are the non-negotiable requirements for all code contributions. See [DEVEL
 2. **`from __future__ import annotations`** at the top of every module
 3. **Google-style docstrings** on all public functions and classes
 4. **Module headers** with File, Project, Synopsis, Description, Notes, Version
-5. **No `shell=True`** in any subprocess call — always list-form arguments
+5. **No `shell=True`** in any subprocess call -- always list-form arguments
 6. **Always capture stderr** on subprocess calls
 7. **Validate all input** through `core/validation.py` validators before use
 8. **Atomic writes** for persistent data: temp file → `os.replace()` → `os.chmod(0o600)`
 9. **Thread safety** via `threading.Lock` on shared mutable state
-10. **No circular imports** — strict layer dependency ordering
-11. **No stubs or placeholders** — every function fully implemented when committed
+10. **No circular imports** -- strict layer dependency ordering
+11. **No stubs or placeholders** -- every function fully implemented when committed
 
 ### Layer Dependency Rule
 
@@ -179,20 +179,20 @@ Tests that `import` engine functions and call them directly CAN PASS even when C
 
 ## Pull Request Process
 
-1. **Branch from `develop`** — never from `main`
-2. **One focus per PR** — bug fix, feature, or documentation
-3. **Run `make check` and `make security-scan`** before submitting — both must pass
-4. **Update documentation** — CHANGELOG.md, affected guides, wiki if applicable
+1. **Branch from `develop`** -- never from `main`
+2. **One focus per PR** -- bug fix, feature, or documentation
+3. **Run `make check` and `make security-scan`** before submitting -- both must pass
+4. **Update documentation** -- CHANGELOG.md, affected guides, wiki if applicable
 5. **Update `tasks/sync_function.md`** if adding/modifying modules
 6. **Write descriptive PR title** using conventional commits format
-7. **Reference issues** — e.g., "Fixes #42"
+7. **Reference issues** -- e.g., "Fixes #42"
 8. **Respond to review feedback** promptly
 9. **Squash fixup commits** before merge
 
 ### PR Checklist
 
 ```
-- [ ] `make check` passes (mypy --strict + 230 tests)
+- [ ] `make check` passes (mypy --strict + 322 tests)
 - [ ] `make security-scan` passes (6 checks)
 - [ ] Tests added for new functionality or bug regression
 - [ ] Type annotations on all new functions
@@ -257,8 +257,8 @@ Reviewers will check:
 ## Documentation Contributions
 
 - All documentation lives in `docs/` and `docs/wiki/`
-- Wiki pages must be **standalone** — not just links to docs/
-- Use accurate line counts, function names, and constant values — verify against source code
+- Wiki pages must be **standalone** -- not just links to docs/
+- Use accurate line counts, function names, and constant values -- verify against source code
 - Include examples showing both success AND failure cases
 - Explain WHY design decisions were made, not just WHAT they are
 
