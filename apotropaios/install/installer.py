@@ -13,12 +13,13 @@
 #               - Supports apt (Debian family), dnf (RHEL family), pacman (Arch)
 #               - --allowerasing for dnf (Lesson: RHEL container package conflicts)
 #               - Parity target: bash v1.1.10 lib/install/installer.sh
-# Version:      1.2.1
+# Version:      1.6.2
 # ==============================================================================
 
 from __future__ import annotations
 
 import os
+import sys
 import shutil
 import subprocess
 from typing import Final
@@ -53,6 +54,18 @@ def set_logger(logger: object) -> None:
     """Set the logger for the installer."""
     global _log_fn
     _log_fn = logger
+
+
+def _notice(message: str) -> None:
+    """Write an operator-visible status line to stderr.
+
+    Package operations legitimately run for minutes; the console log level
+    defaults to warning, so info-level logs never reach the operator and a
+    silent long-running operation is indistinguishable from a hang. Status
+    lines go straight to stderr alongside being logged.
+    """
+    sys.stderr.write(f"  {message}\n")
+    sys.stderr.flush()
 
 
 def install_firewall(
@@ -109,6 +122,10 @@ def install_firewall(
         )
 
     _log("info", f"Installing {fw_name} (package: {pkg_name}) via {pkg_manager}")
+    _notice(
+        f"Installing {pkg_name} via {pkg_manager} -- this can take several "
+        f"minutes (timeout {_CMD_T}s); Ctrl+C aborts the operation..."
+    )
 
     # Install
     try:
@@ -204,16 +221,42 @@ def update_firewall(
 
 # --- Package manager operations ---
 
+# Options shared by every apt operation. -y answers apt's own prompts, but
+# dpkg conffile questions and list-changes pagers are separate interactive
+# surfaces: with stdout captured they render invisibly and block on stdin
+# forever, which presents to the operator as a hang. The Dpkg force options
+# keep existing configuration on conflict, the lock timeout bounds waits on
+# a concurrent package manager, and stdin is closed on every invocation so
+# any residual prompt receives EOF instead of blocking.
+_APT_OPTS: Final[list[str]] = [
+    "-y", "-qq",
+    "-o", "Dpkg::Options::=--force-confdef",
+    "-o", "Dpkg::Options::=--force-confold",
+    "-o", "DPkg::Lock::Timeout=60",
+]
+
+
+def _apt_env() -> dict[str, str]:
+    """Environment for non-interactive apt/dpkg operations."""
+    return dict(
+        os.environ,
+        DEBIAN_FRONTEND="noninteractive",
+        APT_LISTCHANGES_FRONTEND="none",
+    )
+
+
 def _apt_install(pkg: str) -> None:
     """Install a package via apt."""
-    env = dict(os.environ, DEBIAN_FRONTEND="noninteractive")
+    env = _apt_env()
     subprocess.run(
-        ["apt-get", "update", "-qq"],
+        ["apt-get", "update", "-qq", "-o", "DPkg::Lock::Timeout=60"],
         capture_output=True, timeout=_CMD_T, env=env,
+        stdin=subprocess.DEVNULL,
     )
     subprocess.run(
-        ["apt-get", "install", "-y", "-qq", pkg],
+        ["apt-get", "install", *_APT_OPTS, pkg],
         capture_output=True, timeout=_CMD_T, env=env, check=True,
+        stdin=subprocess.DEVNULL,
     )
 
 
@@ -222,6 +265,7 @@ def _dnf_install(pkg: str) -> None:
     subprocess.run(
         ["dnf", "install", "-y", "--allowerasing", pkg],
         capture_output=True, timeout=_CMD_T, check=True,
+        stdin=subprocess.DEVNULL,
     )
 
 
@@ -230,19 +274,22 @@ def _pacman_install(pkg: str) -> None:
     subprocess.run(
         ["pacman", "-Sy", "--noconfirm", pkg],
         capture_output=True, timeout=_CMD_T, check=True,
+        stdin=subprocess.DEVNULL,
     )
 
 
 def _apt_update(pkg: str) -> None:
     """Update a package via apt."""
-    env = dict(os.environ, DEBIAN_FRONTEND="noninteractive")
+    env = _apt_env()
     subprocess.run(
-        ["apt-get", "update", "-qq"],
+        ["apt-get", "update", "-qq", "-o", "DPkg::Lock::Timeout=60"],
         capture_output=True, timeout=_CMD_T, env=env,
+        stdin=subprocess.DEVNULL,
     )
     subprocess.run(
-        ["apt-get", "upgrade", "-y", "-qq", pkg],
+        ["apt-get", "install", "--only-upgrade", *_APT_OPTS, pkg],
         capture_output=True, timeout=_CMD_T, env=env, check=True,
+        stdin=subprocess.DEVNULL,
     )
 
 
@@ -251,6 +298,7 @@ def _dnf_update(pkg: str) -> None:
     subprocess.run(
         ["dnf", "update", "-y", pkg],
         capture_output=True, timeout=_CMD_T, check=True,
+        stdin=subprocess.DEVNULL,
     )
 
 
@@ -259,4 +307,5 @@ def _pacman_update(pkg: str) -> None:
     subprocess.run(
         ["pacman", "-Syu", "--noconfirm", pkg],
         capture_output=True, timeout=_CMD_T, check=True,
+        stdin=subprocess.DEVNULL,
     )
