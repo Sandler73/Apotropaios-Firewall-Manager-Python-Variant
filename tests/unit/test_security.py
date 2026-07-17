@@ -1,7 +1,10 @@
 # ==============================================================================
 # File:         tests/unit/test_security.py
+# Project:      Apotropaios - Firewall Manager (Python Variant)
 # Synopsis:     Unit tests for security module
-# Version:      1.2.1
+# Description:  Verifies file locking, secure temp creation, permission
+#               enforcement, and integrity helpers.
+# Version:      1.6.2
 # ==============================================================================
 
 import os
@@ -10,8 +13,7 @@ import pytest
 from apotropaios.core.errors import IntegrityError
 from apotropaios.core.security import (
     FileLock, create_temp_dir, create_temp_file,
-    file_checksum, generate_uuid, secure_dir, secure_file,
-    verify_checksum,
+    file_checksum, generate_uuid, secure_dir, verify_checksum,
 )
 
 
