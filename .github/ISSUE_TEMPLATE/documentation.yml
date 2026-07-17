@@ -7,7 +7,7 @@
 #               docs/ and the wiki.
 # Notes:        - Covers inaccuracies, staleness against source, broken
 #               links, and missing coverage
-# Version:      1.6.0
+# Version:      1.6.2
 # ==============================================================================
 name: Documentation Issue
 description: Report inaccurate, stale, unclear, or missing documentation
