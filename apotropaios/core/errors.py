@@ -13,7 +13,7 @@
 #
 #               Architecture notes:
 #               - Every exception carries an ErrorCode for structured exit codes
-#               - CleanupStack is a singleton — one per process lifetime
+#               - CleanupStack is a singleton -- one per process lifetime
 #               - Signal handlers trigger cleanup then re-raise via sys.exit()
 #               - atexit integration ensures cleanup runs on normal exit too
 #               - Cleanup functions must be idempotent (safe to call multiple times)
@@ -23,7 +23,7 @@
 #                 avoid circular imports (errors.py loads before logging.py)
 #               - All cleanup operations are guarded against recursion
 #               - Parity target: bash v1.1.10 lib/core/errors.sh
-# Version:      1.2.1
+# Version:      1.6.2
 # ==============================================================================
 
 from __future__ import annotations
@@ -34,7 +34,8 @@ import sys
 import threading
 import time
 import traceback
-from collections.abc import Callable
+from collections.abc import Callable, Iterator
+from contextlib import contextmanager
 from typing import Any, Final, NoReturn, TypeVar
 
 from apotropaios.core.constants import Color, ErrorCode
@@ -56,7 +57,7 @@ T = TypeVar("T")
 # Hierarchy:
 #   ApotropaiosError (base)
 #   ├── UsageError            (USAGE)
-#   ├── PermissionError_      (PERMISSION) — trailing underscore avoids builtin clash
+#   ├── PermissionError_      (PERMISSION) -- trailing underscore avoids builtin clash
 #   ├── OSDetectionError      (OS_UNSUPPORTED)
 #   ├── FirewallError         (FW_*)
 #   │   ├── FirewallNotFoundError    (FW_NOT_FOUND)
@@ -441,7 +442,7 @@ class CleanupStack:
     """LIFO stack of cleanup functions executed on process exit or signal.
 
     Cleanup functions are called in reverse registration order (last-in,
-    first-out). Each function must be idempotent — it may be called more
+    first-out). Each function must be idempotent -- it may be called more
     than once if signals race with normal exit.
 
     The stack registers itself with atexit on first use and sets up
@@ -465,7 +466,7 @@ class CleanupStack:
         self._lock: threading.RLock = threading.RLock()
         self._in_progress: bool = False
         self._atexit_registered: bool = False
-        # Logger reference — set after logging module initializes to avoid
+        # Logger reference -- set after logging module initializes to avoid
         # circular import. Uses a simple callable that accepts (level, msg).
         self._log_fn: Callable[[str, str], None] | None = None
 
@@ -559,13 +560,13 @@ class CleanupStack:
                 f"Executing {len(stack_snapshot)} cleanup handlers",
             )
 
-        # LIFO order — reverse the list
+        # LIFO order -- reverse the list
         for func, label in reversed(stack_snapshot):
             self._log("trace", f"Executing cleanup: {label}")
             try:
                 func()
             except Exception as exc:
-                self._log("warning", f"Cleanup function failed: {label} — {exc}")
+                self._log("warning", f"Cleanup function failed: {label} -- {exc}")
 
         with self._lock:
             self._in_progress = False
@@ -620,6 +621,13 @@ class SignalHandler:
         self._original_handlers: dict[int, Any] = {}
         self._installed: bool = False
         self._log_fn: Callable[[str, str], None] | None = None
+        # Depth counter for interruptible scopes. While positive, SIGINT
+        # raises KeyboardInterrupt into the running frame (interrupting the
+        # current operation, which the interactive layer catches to recover)
+        # instead of executing cleanup and terminating the process. The
+        # counter is only touched from the main thread; signal handlers also
+        # run in the main thread, so no lock is required.
+        self._interruptible_depth: int = 0
 
     def set_logger(self, log_fn: Callable[[str, str], None]) -> None:
         """Set the logging function for signal events.
@@ -641,7 +649,7 @@ class SignalHandler:
         """Install signal handlers for SIGTERM, SIGINT, and SIGHUP.
 
         Saves the original handlers for potential restoration. Safe to
-        call multiple times — subsequent calls are no-ops.
+        call multiple times -- subsequent calls are no-ops.
 
         Note: SIGHUP is only available on POSIX systems. On Windows,
         it is silently skipped.
@@ -649,7 +657,7 @@ class SignalHandler:
         if self._installed:
             return
 
-        # Signals to handle — SIGHUP may not exist on all platforms
+        # Signals to handle -- SIGHUP may not exist on all platforms
         signals_to_handle: list[int] = [signal.SIGTERM, signal.SIGINT]
         if hasattr(signal, "SIGHUP"):
             signals_to_handle.append(signal.SIGHUP)
@@ -666,6 +674,24 @@ class SignalHandler:
 
         self._installed = True
         self._log("debug", "Signal handlers installed (SIGTERM, SIGINT, SIGHUP)")
+
+    @contextmanager
+    def interruptible(self) -> Iterator[None]:
+        """Scope in which SIGINT aborts the operation, not the process.
+
+        Intended for interactive contexts: while the scope is active,
+        Ctrl+C raises KeyboardInterrupt into the running frame so the
+        caller can catch it and recover (for example, returning to the
+        menu after aborting a package operation). Scopes nest; process
+        termination semantics resume when the outermost scope exits.
+        Non-interactive executions never enter a scope, so headless CLI
+        behavior (cleanup then exit 130) is unchanged.
+        """
+        self._interruptible_depth += 1
+        try:
+            yield
+        finally:
+            self._interruptible_depth -= 1
 
     def uninstall(self) -> None:
         """Restore original signal handlers.
@@ -691,6 +717,15 @@ class SignalHandler:
         """
         sig_name = signal.Signals(signum).name
         self._log("warning", f"Signal received: {sig_name} (pid={_getpid()})")
+
+        # Inside an interruptible scope (interactive menu), SIGINT aborts
+        # the current operation rather than the process: raising here
+        # propagates KeyboardInterrupt into the interrupted frame, where the
+        # interactive layer catches it and returns control to the menu.
+        # SIGTERM and SIGHUP always terminate regardless of scope.
+        if signum == signal.SIGINT and self._interruptible_depth > 0:
+            self._log("info", "SIGINT in interruptible scope: aborting operation")
+            raise KeyboardInterrupt
 
         # User feedback for Ctrl+C
         if signum == signal.SIGINT:
@@ -795,7 +830,7 @@ def retry(
                         f"All {max_retries} retry attempts failed: {label}",
                     )
 
-    # All retries exhausted — re-raise the last exception. Explicit check
+    # All retries exhausted -- re-raise the last exception. Explicit check
     # rather than assert: asserts are stripped under -O, and raising None
     # would surface as an unrelated TypeError.
     if last_exception is None:
