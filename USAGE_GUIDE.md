@@ -1,4 +1,4 @@
-# Apotropaios — Usage Guide
+# Apotropaios -- Usage Guide
 
 Complete reference for all CLI commands, interactive menu operations, rule creation, and advanced features.
 
@@ -41,7 +41,7 @@ sudo python3 -m apotropaios [OPTIONS] COMMAND [ARGS]
 sudo python3 apotropaios.py --interactive
 ```
 
-**Global options (position-independent — work before or after the command):**
+**Global options (position-independent -- work before or after the command):**
 
 | Option | Description |
 |:-------|:------------|
@@ -63,6 +63,8 @@ sudo python3 apotropaios.py --backend nftables add-rule --dst-port 80 --action a
 
 ## Interactive Menu Mode
 
+Within the interactive menu, Ctrl+C aborts the operation in progress and returns to the menu (the Install & Update submenu recovers in place); it does not terminate the application. In headless CLI use, Ctrl+C performs cleanup and exits with status 130. Package install and update operations print a status line when they start and run fully non-interactively with a bounded timeout.
+
 Launch the interactive menu using the `--interactive` flag:
 
 ```bash
@@ -79,24 +81,24 @@ The main menu presents numbered options. Enter the number and press Enter.
 
 **Main Menu Options:**
 
-1. **Firewall Management** — Select and configure firewall backends. Show service status (running/enabled/version). Start, stop, reset firewalls. View current system rules.
-2. **Rule Management** — Create rules through a guided wizard with cancel support (type `q`, `quit`, `cancel`, or `back` at any prompt). List Apotropaios-tracked rules. List native system rules for the active backend. Remove, activate, deactivate rules by UUID. Import/export with dry-run support.
-3. **Quick Actions** — Block-all or allow-all traffic with confirmation prompts showing the active backend name. Reset firewall to defaults.
-4. **Backup & Recovery** — Create timestamped backups with labels. List available backups. Restore from archive. Create immutable snapshots. Verify snapshot integrity. List snapshots.
-5. **System Information** — Full OS detection display (name, ID, version, family, package manager, supported status). All 5 firewall backends with version, running/stopped, enabled/disabled status. Active backend indicator. Tracked rule count.
-6. **Install & Update** — Install or update firewall packages via apt/dnf/pacman.
-7. **Help & Documentation** — 8-option submenu: general usage, rule management help, backup/recovery help, import/export help, detection help, install/update help, all-commands reference.
-8. **Exit** — Clean shutdown with resource cleanup.
+1. **Firewall Management** -- Select and configure firewall backends. Show service status (running/enabled/version). Start, stop, reset firewalls. View current system rules.
+2. **Rule Management** -- Create rules through a guided wizard with cancel support (type `q`, `quit`, `cancel`, or `back` at any prompt). List Apotropaios-tracked rules. List native system rules for the active backend. Remove, activate, deactivate rules by UUID. Import/export with dry-run support.
+3. **Quick Actions** -- Block-all or allow-all traffic with confirmation prompts showing the active backend name. Reset firewall to defaults.
+4. **Backup & Recovery** -- Create timestamped backups with labels. List available backups. Restore from archive. Create immutable snapshots. Verify snapshot integrity. List snapshots.
+5. **System Information** -- Full OS detection display (name, ID, version, family, package manager, supported status). All 5 firewall backends with version, running/stopped, enabled/disabled status. Active backend indicator. Tracked rule count.
+6. **Install & Update** -- Install or update firewall packages via apt/dnf/pacman.
+7. **Help & Documentation** -- 8-option submenu: general usage, rule management help, backup/recovery help, import/export help, detection help, install/update help, all-commands reference.
+8. **Exit** -- Clean shutdown with resource cleanup.
 
 ### Rule Creation Wizard
 
 The interactive wizard guides you through the rule creation process:
 
-**Step 1: Rule Parameters** — Direction (inbound/outbound/forward), protocol (tcp/udp/icmp/all), destination port, source IP, action (including compound like `log,drop`).
+**Step 1: Rule Parameters** -- Direction (inbound/outbound/forward), protocol (tcp/udp/icmp/all), destination port, source IP, action (including compound like `log,drop`).
 
-**Step 2: Duration** — Permanent or temporary. If temporary, enter TTL in seconds (60-2592000).
+**Step 2: Duration** -- Permanent or temporary. If temporary, enter TTL in seconds (60-2592000).
 
-**Step 3: Description** — Human-readable description (max 256 chars).
+**Step 3: Description** -- Human-readable description (max 256 chars).
 
 At each step, type `q`, `quit`, `cancel`, `back`, or `b` to abort without applying.
 
@@ -123,9 +125,9 @@ sudo python3 apotropaios.py system-rules        # Native firewall rules dump
 ```
 
 **Important distinction:**
-- `status` — Shows service state: running/stopped, enabled/disabled, version, binary path, all backends summary
-- `system-rules` — Dumps actual native rules (iptables -L, nft list ruleset, etc.) — ALL rules, not just ours
-- `list-rules` — Shows only Apotropaios-tracked rules from the rule index
+- `status` -- Shows service state: running/stopped, enabled/disabled, version, binary path, all backends summary
+- `system-rules` -- Dumps actual native rules (iptables -L, nft list ruleset, etc.) -- ALL rules, not just ours
+- `list-rules` -- Shows only Apotropaios-tracked rules from the rule index
 
 ### Rule Operations
 
@@ -180,7 +182,7 @@ python3 apotropaios.py backup --help           # Backup contents and retention
 python3 apotropaios.py import --help           # Config file format reference
 ```
 
-Per-command help **bypasses framework initialization** for instant response — no root required, no firewall detection delay.
+Per-command help **bypasses framework initialization** for instant response -- no root required, no firewall detection delay.
 
 All 18 commands have dedicated help: `menu`, `help`, `detect`, `status`, `add-rule`, `remove-rule`, `activate-rule`, `deactivate-rule`, `list-rules`, `system-rules`, `import`, `export`, `backup`, `restore`, `block-all`, `allow-all`, `install`, `update`.
 
@@ -215,14 +217,14 @@ Rules are tagged with the backend used to create them. When removing or deactiva
 | `--dst-port PORT` | Destination port or range (e.g., 443, 8080-8090) | any |
 | `--action ACTION` | Single or compound: accept, drop, reject, log, log,drop | accept |
 | `--interface IFACE` | Network interface (e.g., eth0, ens33) | any |
-| `--conn-state STATES` | Connection tracking: new,established,related,invalid | — |
+| `--conn-state STATES` | Connection tracking: new,established,related,invalid | -- |
 | `--log-prefix TEXT` | Log message prefix (max 29 chars, when action includes log) | auto |
-| `--log-level LEVEL` | Syslog level: emerg/alert/crit/err/warning/notice/info/debug | — |
-| `--limit RATE` | Rate limit: N/second, N/minute, N/hour, N/day | — |
-| `--limit-burst N` | Burst packets before rate limit applies | — |
+| `--log-level LEVEL` | Syslog level: emerg/alert/crit/err/warning/notice/info/debug | -- |
+| `--limit RATE` | Rate limit: N/second, N/minute, N/hour, N/day | -- |
+| `--limit-burst N` | Burst packets before rate limit applies | -- |
 | `--duration TYPE` | permanent or temporary | permanent |
-| `--ttl SECONDS` | TTL for temporary rules (60-2592000) | — |
-| `--description TEXT` | Human-readable description (max 256 chars) | — |
+| `--ttl SECONDS` | TTL for temporary rules (60-2592000) | -- |
+| `--description TEXT` | Human-readable description (max 256 chars) | -- |
 | `--zone ZONE` | Firewalld zone name | public |
 | `--chain CHAIN` | iptables/nftables chain (auto-set from direction) | auto |
 | `--table TABLE` | iptables table (filter/nat/mangle/raw) or nftables table | filter |
@@ -255,7 +257,7 @@ sudo python3 apotropaios.py add-rule --direction outbound --protocol tcp --dst-p
 Rules can combine non-terminal actions (like `log`) with a terminal action (like `drop`, `accept`, `reject`). Use comma-separated syntax:
 
 ```bash
-# Log and drop — the most common compound action
+# Log and drop -- the most common compound action
 sudo python3 apotropaios.py add-rule --src-ip 10.0.0.0/8 --action log,drop \
     --log-prefix "BLOCKED: " --log-level warning
 
@@ -364,16 +366,16 @@ sudo python3 apotropaios.py add-rule --protocol tcp --dst-port 80 --action accep
 
 Every rule created through Apotropaios follows this lifecycle:
 
-1. **Created** — Parameters validated (27 validators), UUID assigned, tracking comment generated (`apotropaios:<uuid>`)
-2. **Applied** — Rule dispatched to the firewall backend (with compound action translation)
-3. **Indexed** — Rule recorded in the persistent pipe-delimited index with 27 fields
-4. **Active** — Rule is enforced by the firewall
+1. **Created** -- Parameters validated (27 validators), UUID assigned, tracking comment generated (`apotropaios:<uuid>`)
+2. **Applied** -- Rule dispatched to the firewall backend (with compound action translation)
+3. **Indexed** -- Rule recorded in the persistent pipe-delimited index with 27 fields
+4. **Active** -- Rule is enforced by the firewall
 
 From the active state, a rule can be:
 
-- **Deactivated** — Removed from the firewall but retained in the index. Can be re-activated later with all original parameters.
-- **Removed** — Deleted from both the firewall and the index permanently.
-- **Expired** — Temporary rules automatically transition to inactive when their TTL expires.
+- **Deactivated** -- Removed from the firewall but retained in the index. Can be re-activated later with all original parameters.
+- **Removed** -- Deleted from both the firewall and the index permanently.
+- **Expired** -- Temporary rules automatically transition to inactive when their TTL expires.
 
 ### Rule Index Fields
 
@@ -401,7 +403,7 @@ TTL range: 60 seconds (1 minute) to 2,592,000 seconds (30 days).
 
 ### Automatic Expiry Monitoring
 
-In interactive mode, a **background expiry monitor** runs every 30 seconds and automatically deactivates rules when their TTL expires — no manual intervention required. The monitor also prints terminal alerts when a rule is within 10 minutes of expiring, showing the rule ID, description, and time remaining.
+In interactive mode, a **background expiry monitor** runs every 30 seconds and automatically deactivates rules when their TTL expires -- no manual intervention required. The monitor also prints terminal alerts when a rule is within 10 minutes of expiring, showing the rule ID, description, and time remaining.
 
 In CLI mode, expired rules are checked once at each command execution. For ongoing monitoring, use the interactive menu.
 
@@ -424,7 +426,7 @@ Export creates a key-value format file and a SHA-256 checksum sidecar (`.sha256`
 # Import from file
 sudo python3 apotropaios.py import /tmp/my-rules.conf
 
-# Dry-run — validate without applying
+# Dry-run -- validate without applying
 sudo python3 apotropaios.py import /tmp/my-rules.conf --dry-run
 ```
 
@@ -561,7 +563,7 @@ Each entry includes: ISO 8601 UTC timestamp, severity level, component name, cor
 
 From most to least verbose: `TRACE`, `DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL`
 
-The default **console** level is `WARNING` — only warnings and errors appear. The **log file** always captures all levels (TRACE and above), regardless of console setting.
+The default **console** level is `WARNING` -- only warnings and errors appear. The **log file** always captures all levels (TRACE and above), regardless of console setting.
 
 ```bash
 # Maximum diagnostic detail
@@ -570,7 +572,7 @@ sudo python3 apotropaios.py detect --log-level trace
 # Informational messages
 sudo python3 apotropaios.py detect --log-level info
 
-# Production — warnings and above only (default)
+# Production -- warnings and above only (default)
 sudo python3 apotropaios.py add-rule --dst-port 443 --action accept
 ```
 
@@ -583,7 +585,7 @@ Rotation occurs automatically when a log file exceeds 100MB. Up to 10 rotated fi
 - Sensitive data (passwords, tokens, API keys) is automatically masked in log output across 4 formats
 - Control characters are stripped to prevent log injection
 - Log files are created with 0o600 permissions (owner read/write only)
-- Console handler removed before shutdown marker — no post-shutdown noise
+- Console handler removed before shutdown marker -- no post-shutdown noise
 
 ### Diagnostic Commands
 
