@@ -1,6 +1,6 @@
 <a id="top"></a>
 
-<h1 align="center">Apotropaios — Firewall Manager (Python Variant)</h1>
+<h1 align="center">Apotropaios - Firewall Manager (Python Variant)</h1>
 <p align="center">
   A unified, security-focused firewall management framework for Linux<br>supporting five backends with zero external runtime dependencies.
 </p>
@@ -13,10 +13,17 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/mypy-strict%20passing-7B68EE?style=flat-square" alt="mypy strict">
-  <img src="https://img.shields.io/badge/CI-passing-brightgreen?style=flat-square&logo=githubactions&logoColor=white" alt="CI Tests">
-  <img src="https://img.shields.io/badge/pytest-230%20tests-blue?style=flat-square" alt="230 Tests">
-  <img src="https://img.shields.io/badge/security-15%20CWE%20checks-blueviolet?style=flat-square" alt="15 CWE Checks">
+  <a href="https://github.com/Sandler73/Apotropaios-Firewall-Manager/actions/workflows/ci.yml"><img src="https://github.com/Sandler73/Apotropaios-Firewall-Manager/actions/workflows/ci.yml/badge.svg?branch=main" alt="CI"></a>
+  <a href="https://github.com/Sandler73/Apotropaios-Firewall-Manager/actions/workflows/security.yml"><img src="https://github.com/Sandler73/Apotropaios-Firewall-Manager/actions/workflows/security.yml/badge.svg?branch=main" alt="Security"></a>
+  <a href="https://github.com/Sandler73/Apotropaios-Firewall-Manager/actions/workflows/codeql.yml"><img src="https://github.com/Sandler73/Apotropaios-Firewall-Manager/actions/workflows/codeql.yml/badge.svg?branch=main" alt="CodeQL"></a>
+  <a href="https://github.com/Sandler73/Apotropaios-Firewall-Manager/actions/workflows/docs-validate.yml"><img src="https://github.com/Sandler73/Apotropaios-Firewall-Manager/actions/workflows/docs-validate.yml/badge.svg?branch=main" alt="Docs Validate"></a>
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2FSandler73%2FApotropaios-Firewall-Manager%2Fbadges%2Fmypy.json&style=flat-square" alt="mypy strict">
+  <img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2FSandler73%2FApotropaios-Firewall-Manager%2Fbadges%2Ftests.json&style=flat-square" alt="pytest suite">
+  <img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2FSandler73%2FApotropaios-Firewall-Manager%2Fbadges%2Fcoverage.json&style=flat-square" alt="coverage">
+  <img src="https://img.shields.io/badge/dynamic/toml?url=https%3A%2F%2Fraw.githubusercontent.com%2FSandler73%2FApotropaios-Firewall-Manager%2Fmain%2Fpyproject.toml&query=%24.project.version&prefix=v&label=version&color=blue&style=flat-square" alt="framework version">
 </p>
 
 <p align="center">
@@ -92,11 +99,11 @@
 
 ## Overview
 
-Apotropaios (from Greek *apotropaios* — "turning away evil") is a zero-dependency Python 3.12+ framework for unified firewall management across multiple backends and Linux distributions. It wraps the complexity of five different firewall tools — **iptables**, **nftables**, **firewalld**, **ufw**, and **ipset** — into a single, consistent interface with UUID-tracked rule lifecycle management, full backup/recovery, and defense-in-depth security controls at every layer.
+Apotropaios (from Greek *apotropaios* -- "turning away evil") is a zero-dependency Python 3.12+ framework for unified firewall management across multiple backends and Linux distributions. It wraps the complexity of five different firewall tools -- **iptables**, **nftables**, **firewalld**, **ufw**, and **ipset** -- into a single, consistent interface with UUID-tracked rule lifecycle management, full backup/recovery, and defense-in-depth security controls at every layer.
 
-This is the **Python variant** of the [bash Apotropaios framework](https://github.com/Sandler73/Apotropaios-Firewall-Manager), targeting 100% feature parity with v1.1.10. The Python implementation uses strict typing (`mypy --strict` with zero errors), a 5-layer architecture with enforced dependency ordering, and 230 automated tests across unit, integration, and security tiers.
+This is the **Python variant** of the [bash Apotropaios framework](https://github.com/Sandler73/Apotropaios-Firewall-Manager), targeting 100% feature parity with v1.1.10. The Python implementation uses strict typing (`mypy --strict` with zero errors), a 5-layer architecture with enforced dependency ordering, and 322 automated tests across unit, integration, and security tiers.
 
-Every firewall rule created through Apotropaios receives a unique **UUID**, is tracked in a persistent rule index, and supports full lifecycle operations: create, activate, deactivate, remove, and automatic TTL-based expiry. The framework handles the translation between its unified rule model and each backend's native syntax — compound actions like `log,drop` become separate LOG + terminal rules in iptables, single expressions in nftables, rich rule log clauses in firewalld, and extracted terminal actions in ufw.
+Every firewall rule created through Apotropaios receives a unique **UUID**, is tracked in a persistent rule index, and supports full lifecycle operations: create, activate, deactivate, remove, and automatic TTL-based expiry. The framework handles the translation between its unified rule model and each backend's native syntax -- compound actions like `log,drop` become separate LOG + terminal rules in iptables, single expressions in nftables, rich rule log clauses in firewalld, and extracted terminal actions in ufw.
 
 The framework emphasizes security at every layer: 27 whitelist input validators, shell injection prevention via list-form subprocess calls (never `shell=True`), secure file permissions (0o600/0o700), atomic file locking via `fcntl.flock()`, cryptographic integrity verification, and automatic masking of sensitive data in logs across four format families.
 
@@ -108,18 +115,18 @@ The framework emphasizes security at every layer: 27 whitelist input validators,
 
 | | Feature | Description |
 |---|---------|-------------|
-| 🔥 | **Five Firewall Backends** | iptables, nftables, firewalld, ufw, ipset — auto-detected and selectable |
+| 🔥 | **Five Firewall Backends** | iptables, nftables, firewalld, ufw, ipset -- auto-detected and selectable |
 | 🆔 | **UUID Rule Tracking** | Every rule gets a UUID for lifecycle management: create, activate, deactivate, remove, expire |
-| 🔀 | **Compound Actions** | `log,drop` and `log,accept` translated natively per backend — no wrapper scripts |
+| 🔀 | **Compound Actions** | `log,drop` and `log,accept` translated natively per backend -- no wrapper scripts |
 | 📊 | **Connection Tracking** | `new`, `established`, `related`, `invalid`, `untracked` states on any rule |
-| ⏱️ | **Rate Limiting** | `5/minute`, `10/second`, `100/hour` with configurable burst — per-rule granularity |
+| ⏱️ | **Rate Limiting** | `5/minute`, `10/second`, `100/hour` with configurable burst -- per-rule granularity |
 | 🖥️ | **Interactive Menu** | 8-category guided interface with validation, cancel support, and ExpiryMonitor daemon |
 | 💾 | **Backup & Recovery** | Timestamped compressed archives, immutable `chattr +i` snapshots, SHA-256 verification |
 | 📦 | **Import / Export** | Portable rule configurations with integrity verification and dry-run preview |
 | 🛡️ | **Security-First Design** | 27 whitelist validators, CWE-mapped test suite, OWASP/NIST-aligned controls |
 | 📝 | **Structured Logging** | Correlation IDs, 4-family sensitive data masking, secure rotation |
 | ❓ | **Progressive Help** | Two-tier: global `--help`, per-command `COMMAND --help` (18 commands) |
-| ⚡ | **Zero Runtime Dependencies** | Python 3.12+ stdlib only — no pip packages required at runtime |
+| ⚡ | **Zero Runtime Dependencies** | Python 3.12+ stdlib only -- no pip packages required at runtime |
 | 🔒 | **Type-Safe** | `mypy --strict` with zero errors across all 35 source files |
 
 <p align="right">(<a href="#table-of-contents">back to top</a>)</p>
@@ -133,7 +140,7 @@ The framework emphasizes security at every layer: 27 whitelist input validators,
 - **Unified multi-backend management**: Consistent CLI and menu across iptables, nftables, firewalld, ufw, and ipset
 - **Automatic backend detection**: Scans installed firewalls, auto-selects the best available, or lets you choose with `--backend`
 - **UUID rule lifecycle**: Create, activate, deactivate, remove, and automatic TTL-based expiry with full audit trail
-- **Compound actions**: `log,drop`, `log,accept`, `log,reject` — translated to each backend's native representation
+- **Compound actions**: `log,drop`, `log,accept`, `log,reject` -- translated to each backend's native representation
 - **Connection state tracking**: `--conn-state new,established,related` on any rule, mapped to conntrack/ct state per backend
 - **Rate limiting**: `--limit 5/minute --limit-burst 10` for traffic shaping, translated to `-m limit` (iptables), `limit rate` (nftables), or rich rule limit (firewalld)
 - **Configuration portability**: Import/export rule sets with SHA-256 integrity verification and dry-run preview
@@ -145,7 +152,7 @@ The framework emphasizes security at every layer: 27 whitelist input validators,
 ### Input Validation and Security
 
 - 27 whitelist validators for all user-supplied data types (ports, IPs, CIDRs, protocols, hostnames, paths, chains, tables, table families, zones, interfaces, rule IDs, actions, connection states, rate limits, log levels, log prefixes, descriptions)
-- Whitelist-based input sanitization — `sanitize_input()` keeps only known-safe characters via compiled regex
+- Whitelist-based input sanitization -- `sanitize_input()` keeps only known-safe characters via compiled regex
 - Shell metacharacter rejection via O(1) frozenset intersection (`_contains_shell_meta()`)
 - Path traversal detection and null byte injection rejection on all file path parameters
 - Maximum input length enforcement (4096 characters)
@@ -165,7 +172,7 @@ See [SECURITY.md](SECURITY.md) for the full security design, implemented control
 - Sensitive data masking across four format families: key=value, key="quoted", JSON (`"key": "value"`), and HTTP Authorization headers
 - Control character stripping prevents log injection
 - Log files written with 0o600 permissions, log directories with 0o700
-- Console handler removed before shutdown marker — no post-shutdown noise
+- Console handler removed before shutdown marker -- no post-shutdown noise
 
 <p align="right">(<a href="#table-of-contents">back to top</a>)</p>
 
@@ -248,7 +255,7 @@ A compound action like `log,drop` is expressed differently by each backend:
 | **firewalld** | Rich rule with log clause: `rule ... log prefix "..." level info drop` |
 | **ufw** | Terminal action extracted for ufw verb; logging enabled via `ufw logging` |
 
-Removal mirrors the add logic exactly — for iptables, both the LOG rule and the terminal rule are deleted to prevent orphaned kernel rules.
+Removal mirrors the add logic exactly -- for iptables, both the LOG rule and the terminal rule are deleted to prevent orphaned kernel rules.
 
 <p align="right">(<a href="#table-of-contents">back to top</a>)</p>
 
@@ -306,7 +313,7 @@ Removal mirrors the add logic exactly — for iptables, both the LOG rule and th
 
 - Root/sudo access for firewall operations (kernel-level packet filtering)
 - Python 3.12+ for modern type annotation syntax (`X | None`, `dict[str, str]`)
-- No external runtime dependencies — stdlib only, no pip packages required
+- No external runtime dependencies -- stdlib only, no pip packages required
 
 <p align="right">(<a href="#table-of-contents">back to top</a>)</p>
 
@@ -343,7 +350,7 @@ sudo python3 apotropaios.py backup pre-deploy
 
 Quick copy-paste examples for common operations. See the [Usage Guide](USAGE_GUIDE.md) for complete options and operational scenarios.
 
-**Add rules** — Create firewall rules with various options:
+**Add rules** -- Create firewall rules with various options:
 ```bash
 sudo python3 apotropaios.py add-rule --dst-port 443 --action accept --protocol tcp
 sudo python3 apotropaios.py add-rule --src-ip 10.0.0.0/8 --action drop --direction inbound
@@ -351,7 +358,7 @@ sudo python3 apotropaios.py add-rule --dst-port 22 --action log,drop --conn-stat
 sudo python3 apotropaios.py add-rule --dst-port 80 --action accept --duration temporary --ttl 3600
 ```
 
-**Manage rules** — Lifecycle operations on existing rules:
+**Manage rules** -- Lifecycle operations on existing rules:
 ```bash
 sudo python3 apotropaios.py list-rules                    # Show all tracked rules
 sudo python3 apotropaios.py remove-rule <UUID>            # Remove a specific rule
@@ -359,26 +366,26 @@ sudo python3 apotropaios.py deactivate-rule <UUID>        # Deactivate (keep in 
 sudo python3 apotropaios.py activate-rule <UUID>          # Reactivate a deactivated rule
 ```
 
-**Import / Export** — Portable rule configurations:
+**Import / Export** -- Portable rule configurations:
 ```bash
 sudo python3 apotropaios.py export /tmp/my-rules.conf     # Export current rules
 sudo python3 apotropaios.py import /tmp/my-rules.conf     # Import rules from file
 sudo python3 apotropaios.py import rules.conf --dry-run   # Preview without applying
 ```
 
-**Backup / Restore** — Protect your configuration:
+**Backup / Restore** -- Protect your configuration:
 ```bash
 sudo python3 apotropaios.py backup pre-deploy             # Create a named backup
 sudo python3 apotropaios.py restore backup.tar.gz         # Restore from specific backup
 ```
 
-**Quick actions** — Emergency operations:
+**Quick actions** -- Emergency operations:
 ```bash
 sudo python3 apotropaios.py block-all                     # Block all traffic
 sudo python3 apotropaios.py allow-all                     # Allow all traffic
 ```
 
-**System information** — Diagnostics:
+**System information** -- Diagnostics:
 ```bash
 sudo python3 apotropaios.py detect                        # Scan OS and firewalls
 sudo python3 apotropaios.py status                        # Show service state
@@ -714,10 +721,11 @@ apotropaios-python/                    # Repository root
 │   └── menu/                          #   Layer 5: Interactive Menu
 │       ├── main.py                    #     8-category menu, ExpiryMonitor
 │       └── help_system.py             #     Per-command help functions
-├── tests/                             # 230 automated tests
-│   ├── unit/                          #   9 files, 204 tests
-│   ├── integration/                   #   2 files, 11 tests
-│   └── security/                      #   1 file, 15 tests
+├── tests/                             # 322 automated tests
+│   ├── unit/                          #   12 files, 267 tests
+│   ├── integration/                   #   2 files, 13 tests
+│   ├── security/                      #   1 file, 15 tests
+│   └── ci/                            #   1 file, 27 tests (workflow/template meta-tests)
 ├── docs/                              # 12 documentation files + wiki
 │   ├── wiki/                          #   15 standalone wiki pages
 │   └── LICENSE                        #   MIT + 12 supplementary sections
@@ -777,13 +785,14 @@ See [TROUBLESHOOTING.md](TROUBLESHOOTING.md) for troubleshooting details.
 
 ## Testing
 
-230 automated tests across three tiers:
+322 automated tests across four tiers:
 
 | Tier | Tests | Description |
 |------|-------|-------------|
-| **Unit** | 175 | Module-level testing of all 27 validators, error handling, logging, security, detection, backends, rule engine |
-| **Integration** | 11 | End-to-end CLI via subprocess, full rule lifecycle with MockBackend |
+| **Unit** | 267 | Module-level testing of all 27 validators, error handling, logging, security, detection, backends, rule engine, backend re-validation, and audit regressions |
+| **Integration** | 13 | End-to-end CLI via subprocess, base-directory isolation, full rule lifecycle with MockBackend |
 | **Security** | 15 | CWE-mapped injection prevention: shell, path traversal, XSS, hostname |
+| **CI meta** | 27 | Workflow and issue-template validation (YAML, action pins, headers) |
 
 ```bash
 make test              # Full suite: lint + unit + integration + security
@@ -803,13 +812,13 @@ See `make help` for all 56 Makefile targets including individual per-module test
 
 Contributions are welcome. Before submitting:
 
-- Run `make check` (must pass: mypy --strict + 230 tests)
+- Run `make check` (must pass: mypy --strict + 322 tests)
 - Follow coding standards in [DEVELOPMENT_GUIDE.md](DEVELOPMENT_GUIDE.md)
 - All user-supplied inputs must pass through existing validation functions
 - New CLI commands must be added to the parser, help function, and at least one test
 - Update `CHANGELOG.md` with your changes
 - Read and follow the [Code of Conduct](CODE_OF_CONDUCT.md)
-- Report security vulnerabilities privately per [SECURITY.md](SECURITY.md) — do not open public issues for security bugs
+- Report security vulnerabilities privately per [SECURITY.md](SECURITY.md) -- do not open public issues for security bugs
 
 For the complete development guide including environment setup, test architecture, coding standards, and PR process, see [CONTRIBUTING.md](CONTRIBUTING.md) and [DEVELOPMENT_GUIDE.md](DEVELOPMENT_GUIDE.md).
 
@@ -849,15 +858,15 @@ Release-by-release details are maintained exclusively in [CHANGELOG.md](CHANGELO
 
 ## Acknowledgments
 
-- **[netfilter.org](https://www.netfilter.org/)** — iptables, nftables, and ipset — the kernel-level packet filtering framework this tool manages
-- **[firewalld](https://firewalld.org/)** — dynamic firewall management daemon with D-Bus interface
-- **[ufw](https://launchpad.net/ufw)** — Ubuntu's Uncomplicated Firewall providing simplified iptables management
-- **[pytest](https://pytest.org/)** — Python testing framework used for the test suite
-- **[mypy](https://mypy-lang.org/)** — Static type checker for Python
-- **[Contributor Covenant](https://www.contributor-covenant.org/)** — code of conduct framework
-- **[Keep a Changelog](https://keepachangelog.com/)** — changelog format standard
-- **[Shields.io](https://shields.io/)** — badge generation service
-- **OWASP** and **NIST** — security standards referenced throughout
+- **[netfilter.org](https://www.netfilter.org/)** -- iptables, nftables, and ipset -- the kernel-level packet filtering framework this tool manages
+- **[firewalld](https://firewalld.org/)** -- dynamic firewall management daemon with D-Bus interface
+- **[ufw](https://launchpad.net/ufw)** -- Ubuntu's Uncomplicated Firewall providing simplified iptables management
+- **[pytest](https://pytest.org/)** -- Python testing framework used for the test suite
+- **[mypy](https://mypy-lang.org/)** -- Static type checker for Python
+- **[Contributor Covenant](https://www.contributor-covenant.org/)** -- code of conduct framework
+- **[Keep a Changelog](https://keepachangelog.com/)** -- changelog format standard
+- **[Shields.io](https://shields.io/)** -- badge generation service
+- **OWASP** and **NIST** -- security standards referenced throughout
 
 <p align="right">(<a href="#table-of-contents">back to top</a>)</p>
 
@@ -883,7 +892,7 @@ This software is intended for authorized systems administration, network securit
 
 - **Documentation**: Start with the [Wiki](wiki/) and [USAGE_GUIDE.md](USAGE_GUIDE.md)
 - **Built-in Help**: Run `python3 apotropaios.py COMMAND --help` for any of the 18 commands
-- **Security Issues**: See [SECURITY.md](SECURITY.md) — use private reporting for critical vulnerabilities
+- **Security Issues**: See [SECURITY.md](SECURITY.md) -- use private reporting for critical vulnerabilities
 
 **Diagnostic Commands:**
 
@@ -901,7 +910,7 @@ make check-deps                                               # Check all depend
 
 <p align="center">
 
-**Apotropaios** — *Turning away evil since v1.0.0*
+**Apotropaios** -- *Turning away evil*
 
 Made with focus on security, reliability, and simplicity.
 
