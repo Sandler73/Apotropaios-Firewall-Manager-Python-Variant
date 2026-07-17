@@ -6,12 +6,12 @@
 #               management using the nft command-line tool with table family
 #               support (inet/ip/ip6/arp/bridge/netdev), auto-creation of tables
 #               and chains, and compound actions as single nft expressions (e.g.,
-#               "log prefix ... drop" in one rule — unlike iptables which needs
+#               "log prefix ... drop" in one rule -- unlike iptables which needs
 #               separate rules).
 #
 #               Security: All commands use subprocess.run() with list-form args.
 #               nft -f file mode is NOT used (removed in bash variant as injection
-#               vector via semicolons — C4 security fix). The nft command string
+#               vector via semicolons -- C4 security fix). The nft command string
 #               is built from individually validated components and passed via
 #               subprocess stdin or individual nft invocations.
 #
@@ -21,7 +21,7 @@
 #               - Chains auto-created with appropriate hook/priority
 #               - Rule removal by handle number (found via comment match)
 #               - Parity target: bash v1.1.10 lib/firewall/nftables.sh
-# Version:      1.2.1
+# Version:      1.6.2
 # ==============================================================================
 
 from __future__ import annotations
@@ -191,7 +191,7 @@ class NftablesBackend(FirewallBackend):
                 expr_parts.append(protocol)
 
         # Source/Dest IP. nft distinguishes protocol families in the match
-        # keyword itself: IPv4 operands use "ip", IPv6 operands need "ip6" —
+        # keyword itself: IPv4 operands use "ip", IPv6 operands need "ip6" --
         # emitting "ip saddr" for an IPv6 address is a syntax error.
         if src_ip:
             try:
@@ -239,7 +239,7 @@ class NftablesBackend(FirewallBackend):
 
         # Rate limiting (re-validated: values are interpolated into the
         # nft command string, so the whitelist formats below are the only
-        # accepted shapes — defense-in-depth against statement injection)
+        # accepted shapes -- defense-in-depth against statement injection)
         if limit:
             validate_rate_limit(limit)
             expr_parts.append(f"limit rate {limit}")
@@ -252,7 +252,7 @@ class NftablesBackend(FirewallBackend):
             safe_comment = sanitize_input(comment)
             expr_parts.append(f'comment "{safe_comment}"')
 
-        # Verdict — nftables supports compound in single expression: "log prefix ... drop"
+        # Verdict -- nftables supports compound in single expression: "log prefix ... drop"
         action_lower = action.lower().replace(" ", "")
         for apart in action_lower.split(","):
             if apart == "log":
