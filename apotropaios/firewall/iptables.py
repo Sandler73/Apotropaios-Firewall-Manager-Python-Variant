@@ -26,7 +26,7 @@
 #               - iptables-save/iptables-restore for persistence
 #               - Thread-safe: no shared mutable state
 #               - Parity target: bash v1.1.10 lib/firewall/iptables.sh
-# Version:      1.2.1
+# Version:      1.6.2
 # ==============================================================================
 
 from __future__ import annotations
@@ -608,7 +608,7 @@ class IptablesBackend(FirewallBackend):
         """
         _log("warning", "Blocking ALL traffic (inbound + outbound)")
 
-        # Set default policies to DROP — each result is checked: a failed
+        # Set default policies to DROP -- each result is checked: a failed
         # policy change would leave the emergency control claiming success
         # while traffic still passes (fail-open)
         ok = True
@@ -628,7 +628,7 @@ class IptablesBackend(FirewallBackend):
                 _log("warning", f"Failed to add loopback rule: {result.stderr.strip()}")
 
         if not ok:
-            _log("error", "block-all did NOT fully apply — traffic may still pass")
+            _log("error", "block-all did NOT fully apply -- traffic may still pass")
             return False
         _log("info", "All traffic blocked (loopback preserved)")
         return True
