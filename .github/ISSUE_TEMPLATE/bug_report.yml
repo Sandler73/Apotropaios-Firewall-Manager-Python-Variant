@@ -8,7 +8,7 @@
 # Notes:        - Reporters are reminded to sanitize logs before posting
 #               - Security vulnerabilities are routed to SECURITY.md via
 #                 config.yml, never through public issues
-# Version:      1.6.0
+# Version:      1.6.2
 # ==============================================================================
 name: Bug Report
 description: Report a defect in the framework
