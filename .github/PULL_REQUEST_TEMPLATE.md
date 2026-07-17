@@ -6,7 +6,7 @@ Synopsis:     Pull request template
 Description:  Structured change description with verification evidence,
               cascade tracking, and the project quality gates as a
               pre-submission checklist.
-# Version:      1.6.0
+# Version:      1.6.2
 ==============================================================================
 -->
 
