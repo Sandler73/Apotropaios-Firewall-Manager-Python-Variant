@@ -1,4 +1,4 @@
-# Security Policy — Apotropaios Firewall Manager (Python Variant)
+# Security Policy -- Apotropaios Firewall Manager (Python Variant)
 
 ## Table of Contents
 
@@ -49,7 +49,7 @@ Contributors who discover vulnerabilities are expected to follow this process. P
 
 ## Security Design Philosophy
 
-Apotropaios operates at the most sensitive layer of system infrastructure — the network firewall. The framework runs as root, modifies kernel-level packet filtering rules, and manages configuration that determines what traffic enters and exits the system. Every design decision prioritizes security:
+Apotropaios operates at the most sensitive layer of system infrastructure -- the network firewall. The framework runs as root, modifies kernel-level packet filtering rules, and manages configuration that determines what traffic enters and exits the system. Every design decision prioritizes security:
 
 1. **Defense-in-depth**: Multiple independent security controls at every layer. Input is validated, then sanitized, then passed as list-form arguments. Even if one layer fails, the next catches the problem.
 2. **Whitelist over blacklist**: All 27 validators define what IS allowed, not what isn't. A new attack vector doesn't bypass whitelist validation.
@@ -63,7 +63,7 @@ Apotropaios operates at the most sensitive layer of system infrastructure — th
 
 ### 27 Whitelist Validators
 
-Every parameter entering the framework passes through at least one validator in `core/validation.py` (1,256 lines). Validators are pure functions that raise `ValidationError` on invalid input — they never return boolean.
+Every parameter entering the framework passes through at least one validator in `core/validation.py` (1,256 lines). Validators are pure functions that raise `ValidationError` on invalid input -- they never return boolean.
 
 | Validator | Input Type | Validation Logic |
 |:----------|:-----------|:-----------------|
@@ -102,7 +102,7 @@ Every parameter entering the framework passes through at least one validator in 
 1. Rejects None/non-string input (raises `SanitizationError`)
 2. Strips whitespace with `str.strip()`
 3. Removes HTML tags with regex: `<[^>]*>` → empty string (prevents stored XSS)
-4. Applies whitelist regex `[^a-zA-Z0-9 .,_:/+=@~%-]` — removes any character not in this set
+4. Applies whitelist regex `[^a-zA-Z0-9 .,_:/+=@~%-]` -- removes any character not in this set
 5. Truncates to `Security.MAX_INPUT_LENGTH` (4096 chars)
 6. Returns the cleaned string
 
@@ -114,14 +114,14 @@ Every parameter entering the framework passes through at least one validator in 
 
 ## Subprocess Security
 
-**All subprocess calls use list-form arguments — never `shell=True`.** This is the single most important security control in the framework.
+**All subprocess calls use list-form arguments -- never `shell=True`.** This is the single most important security control in the framework.
 
 ```python
-# CORRECT — list-form, no shell interpretation
+# CORRECT -- list-form, no shell interpretation
 subprocess.run(["iptables", "-A", "INPUT", "-p", "tcp", "--dport", port, "-j", "ACCEPT"],
                capture_output=True, text=True, timeout=30)
 
-# FORBIDDEN — shell=True enables injection
+# FORBIDDEN -- shell=True enables injection
 subprocess.run(f"iptables -A INPUT -p tcp --dport {port} -j ACCEPT", shell=True)
 ```
 
@@ -157,15 +157,15 @@ The `make security-scan` target verifies no `shell=True`, `eval()`, `exec()`, or
 
 | Control | Implementation |
 |:--------|:---------------|
-| Directory permissions | Created with `os.chmod(path, 0o700)` — owner-only access |
-| File permissions | Created with `os.chmod(path, 0o600)` — owner read/write only |
-| umask | Set to `0o077` during `init_security()` — blocks group/world on new files |
+| Directory permissions | Created with `os.chmod(path, 0o700)` -- owner-only access |
+| File permissions | Created with `os.chmod(path, 0o600)` -- owner read/write only |
+| umask | Set to `0o077` during `init_security()` -- blocks group/world on new files |
 | Atomic writes | All persistent data: write to `filename.tmp.<PID>` → `os.replace()` → `os.chmod(0o600)` |
 | Path traversal | `validate_file_path()` rejects `..` components anywhere in the path |
 | Null byte injection | `validate_file_path()` rejects `\x00` characters (C-string truncation attack) |
 | Temp files | Created via `tempfile.mkstemp()` with 0o600 permissions |
 | Temp directories | Created via `tempfile.mkdtemp()` with 0o700 permissions |
-| Backup archives | Archive extraction validates all paths — rejects entries containing `..` or absolute paths |
+| Backup archives | Archive extraction validates all paths -- rejects entries containing `..` or absolute paths |
 
 ---
 
@@ -175,7 +175,7 @@ The `make security-scan` target verifies no `shell=True`, `eval()`, `exec()`, or
 |:----------|:----------|:---------------|
 | File checksums | SHA-256 | `hashlib.sha256()` with 64KB chunked reading |
 | Checksum verification | SHA-256 | `hmac.compare_digest()` for constant-time comparison (prevents timing attacks) |
-| UUID generation | UUID v4 | `uuid.uuid4()` — cryptographic quality via OS random source |
+| UUID generation | UUID v4 | `uuid.uuid4()` -- cryptographic quality via OS random source |
 | Backup integrity | SHA-256 | `.sha256` sidecar files generated and verified automatically |
 | Immutable snapshots | SHA-256 + chattr | `.integrity` file + `chattr +i` filesystem attribute |
 
@@ -187,7 +187,7 @@ The `make security-scan` target verifies no `shell=True`, `eval()`, `exec()`, or
 |:--------|:---------------|
 | Root check | `os.geteuid() == 0` verified before firewall operations |
 | umask enforcement | `os.umask(0o077)` set during security initialization |
-| Signal handling | SIGTERM, SIGINT, SIGHUP trapped with CleanupStack integration |
+| Signal handling | SIGTERM, SIGINT, SIGHUP trapped with CleanupStack integration. SIGINT is context-aware: inside the interactive menu it aborts the current operation and recovers to the menu; in headless execution it runs cleanup and exits 130. SIGTERM and SIGHUP always terminate. |
 | File locking | `fcntl.flock()` with stale lock detection (PID validation via `os.kill(pid, 0)`) |
 | Lock timeout | 30 seconds with 1-second retry interval; `LockTimeoutError` on failure |
 | Memory scrubbing | `scrub_sensitive_values()` overwrites registered sensitive strings (best-effort in Python) |
@@ -235,17 +235,17 @@ The `make security-scan` target also performs 6 static pattern checks:
 
 ### Assets Protected
 
-1. **Firewall rules** — Kernel-level packet filtering determining network access
-2. **Rule index** — Persistent tracking of all managed rules
-3. **Backup archives** — Historical firewall configurations
-4. **Log files** — Audit trail of all operations
+1. **Firewall rules** -- Kernel-level packet filtering determining network access
+2. **Rule index** -- Persistent tracking of all managed rules
+3. **Backup archives** -- Historical firewall configurations
+4. **Log files** -- Audit trail of all operations
 
 ### Threat Actors
 
-1. **Untrusted input** — Malicious parameters passed via CLI or import files
-2. **Compromised import files** — Tampered rule configurations
-3. **Local privilege escalation** — Non-root user attempting to modify firewall rules
-4. **Log manipulation** — Injection of misleading log entries
+1. **Untrusted input** -- Malicious parameters passed via CLI or import files
+2. **Compromised import files** -- Tampered rule configurations
+3. **Local privilege escalation** -- Non-root user attempting to modify firewall rules
+4. **Log manipulation** -- Injection of misleading log entries
 
 ### Mitigations
 
@@ -291,7 +291,7 @@ make test-all
 
 ## Known Limitations
 
-1. **Python GC and sensitive memory**: Python's garbage collector does not guarantee timely scrubbing of sensitive memory. `scrub_sensitive_values()` is best-effort — the GC may have already copied string objects.
+1. **Python GC and sensitive memory**: Python's garbage collector does not guarantee timely scrubbing of sensitive memory. `scrub_sensitive_values()` is best-effort -- the GC may have already copied string objects.
 
 2. **Log rotation**: Built-in rotation triggers at 100MB per file with 10 retained. High-traffic environments should use external log rotation (logrotate).
 
