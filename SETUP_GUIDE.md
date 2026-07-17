@@ -1,4 +1,4 @@
-# Apotropaios — Setup & Installation Guide
+# Apotropaios -- Setup & Installation Guide
 
 Installation and setup guide for, configuring, and verifying Apotropaios across all supported platforms.
 
@@ -51,7 +51,7 @@ Installation and setup guide for, configuring, and verifying Apotropaios across 
 | Git | Version control | Cloning, updates, development |
 | `chattr` (e2fsprogs) | Filesystem attributes | Immutable backup snapshots |
 
-**No external runtime dependencies** — Apotropaios uses only the Python 3.12+ standard library. No pip packages are required at runtime. pytest and mypy are only needed for development and testing.
+**No external runtime dependencies** -- Apotropaios uses only the Python 3.12+ standard library. No pip packages are required at runtime. pytest and mypy are only needed for development and testing.
 
 ### Checking Python Version
 
@@ -74,7 +74,7 @@ The fastest way to use Apotropaios. No pip install, no venv, no configuration ne
 git clone https://github.com/Sandler73/Apotropaios-Firewall-Manager-Python.git
 cd Apotropaios-Firewall-Manager-Python
 
-# Run directly — no install required
+# Run directly -- no install required
 sudo python3 apotropaios.py detect
 sudo python3 apotropaios.py status
 sudo python3 apotropaios.py --interactive
@@ -150,7 +150,7 @@ make venv-run CMD="detect"   # Run command inside venv
 
 **Important notes about venv:**
 - The venv only needs to be created once
-- Makefile venv targets auto-activate — no manual activation needed
+- Makefile venv targets auto-activate -- no manual activation needed
 - Firewall operations still require `sudo` even inside a venv
 - When using `sudo` inside a venv, use the full venv Python path:
   ```bash
@@ -171,7 +171,7 @@ sudo pip3 install . --break-system-packages
 # Full install with dev dependencies (pytest, mypy)
 sudo pip3 install ".[dev]" --break-system-packages
 
-# Development install (editable — changes take effect immediately)
+# Development install (editable -- changes take effect immediately)
 sudo pip3 install -e ".[dev]" --break-system-packages
 
 # Now available system-wide
@@ -239,12 +239,12 @@ After activation, `APOTROPAIOS_HOME` is set, the shell prompt is prefixed with `
 These distributions use `apt`. Python 3.12+ is available on Ubuntu 24.04+ and Kali 2024+. For Ubuntu 22.04, use the deadsnakes PPA:
 
 ```bash
-# Ubuntu 22.04 — install Python 3.12 via deadsnakes
+# Ubuntu 22.04 -- install Python 3.12 via deadsnakes
 sudo add-apt-repository ppa:deadsnakes/ppa
 sudo apt update
 sudo apt install python3.12 python3.12-venv
 
-# All Debian-family — install venv module if needed
+# All Debian-family -- install venv module if needed
 sudo apt install python3-venv
 ```
 
@@ -275,7 +275,7 @@ sudo pacman -Sy python
 
 ### Runtime Configuration
 
-Apotropaios reads built-in defaults from `core/constants.py` at import time and additionally loads an optional INI-format configuration file at startup. Every candidate file passes a trust gate before use — it must be owned by root or the current effective user and must not be group- or world-writable — so a tamperable file is skipped entirely rather than partially applied. Search order: `/etc/apotropaios/apotropaios.conf`, then `conf/apotropaios.conf` under the framework base directory, then the copy shipped inside the package. Setting precedence is command line > configuration file > built-in defaults. The file currently drives the console log level and the default firewall backend; other sections are parsed and reserved.
+Apotropaios reads built-in defaults from `core/constants.py` at import time and additionally loads an optional INI-format configuration file at startup. Every candidate file passes a trust gate before use -- it must be owned by root or the current effective user and must not be group- or world-writable -- so a tamperable file is skipped entirely rather than partially applied. Search order: `/etc/apotropaios/apotropaios.conf`, then `conf/apotropaios.conf` under the framework base directory, then the copy shipped inside the package. Setting precedence is command line > configuration file > built-in defaults. The file currently drives the console log level and the default firewall backend; other sections are parsed and reserved. The `APOTROPAIOS_BASE_DIR` environment variable overrides the framework base directory when it names an existing directory, relocating the `data/` tree (logs, rules, backups) and the project-local configuration lookup without touching the installation; an invalid override emits a warning and falls back to the default.
 
 Override configuration at runtime via CLI flags:
 
@@ -319,7 +319,7 @@ On first run, Apotropaios will automatically:
 7. Auto-select the first available firewall backend
 
 ```bash
-# Recommended first command — full system scan
+# Recommended first command -- full system scan
 sudo python3 apotropaios.py detect
 
 # Create initial backup before making any changes
@@ -351,7 +351,7 @@ sudo python3 apotropaios.py detect
 make check-deps
 
 # Run full test suite
-make check    # mypy --strict + 230 tests
+make check    # mypy --strict + 322 tests
 
 # Verify installation (if pip-installed)
 make verify
@@ -535,7 +535,7 @@ source .venv/bin/activate
 pip3 install -e ".[dev]"
 
 # Verify everything works
-make check              # mypy --strict + 230 tests
+make check              # mypy --strict + 322 tests
 make test-report        # Detailed per-file breakdown
 make check-deps         # Show all tool availability
 make metrics            # Project statistics
