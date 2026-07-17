@@ -16,7 +16,7 @@
 #               - Don't read input in daemon thread (Lesson #13)
 #               - Background monitor uses threading.Event for clean shutdown
 #               - Parity target: bash v1.1.10 lib/menu/menu_main.sh
-# Version:      1.2.1
+# Version:      1.6.2
 # ==============================================================================
 
 from __future__ import annotations
@@ -45,7 +45,7 @@ def _log(level: str, msg: str) -> None:
 
 
 # ==============================================================================
-# Expiry Monitor — Background daemon thread
+# Expiry Monitor -- Background daemon thread
 # ==============================================================================
 
 class ExpiryMonitor:
@@ -103,7 +103,7 @@ class ExpiryMonitor:
         _log("debug", "Expiry monitor stopped")
 
     def _loop(self) -> None:
-        """Main monitor loop — runs until stop_event is set."""
+        """Main monitor loop -- runs until stop_event is set."""
         while not self._stop_event.wait(self._interval):
             self._check()
 
@@ -218,31 +218,47 @@ def menu_main(logger: object | None = None) -> None:
     _monitor.start()
     cleanup_stack.register(_monitor.stop, "expiry_monitor_stop")
 
+    from apotropaios.core.errors import signal_handler
+
     try:
-        while True:
-            _render_main_menu()
+        # Interruptible scope for the whole interactive session: within it,
+        # SIGINT aborts the current operation (KeyboardInterrupt) instead of
+        # terminating the process, and the per-iteration handler below
+        # returns control to the main menu.
+        with signal_handler.interruptible():
+            while True:
+                _render_main_menu()
 
-            choice = _read_choice("\n  Select option [1-8]: ", 8)
+                choice = _read_choice("\n  Select option [1-8]: ", 8)
 
-            if choice is None:
-                continue
-            elif choice == 1:
-                _menu_firewall_management()
-            elif choice == 2:
-                _menu_rule_management()
-            elif choice == 3:
-                _menu_quick_actions()
-            elif choice == 4:
-                _menu_backup_recovery()
-            elif choice == 5:
-                _menu_system_info()
-            elif choice == 6:
-                _menu_install_update()
-            elif choice == 7:
-                _menu_help()
-            elif choice == 8:
-                _log("info", "User selected exit")
-                break
+                if choice is None:
+                    continue
+
+                try:
+                    if choice == 1:
+                        _menu_firewall_management()
+                    elif choice == 2:
+                        _menu_rule_management()
+                    elif choice == 3:
+                        _menu_quick_actions()
+                    elif choice == 4:
+                        _menu_backup_recovery()
+                    elif choice == 5:
+                        _menu_system_info()
+                    elif choice == 6:
+                        _menu_install_update()
+                    elif choice == 7:
+                        _menu_help()
+                    elif choice == 8:
+                        _log("info", "User selected exit")
+                        break
+                except KeyboardInterrupt:
+                    # Operation aborted with Ctrl+C: recover to the main menu
+                    sys.stderr.write(
+                        f"\n  {Color.YELLOW}Operation interrupted -- "
+                        f"returning to menu{Color.RESET}\n"
+                    )
+                    _log("info", "Operation interrupted by user; menu recovered")
     except KeyboardInterrupt:
         sys.stderr.write(f"\n{Color.YELLOW}Interrupt received.{Color.RESET}\n")
     finally:
@@ -329,7 +345,7 @@ def _menu_firewall_management() -> None:
             try:
                 fw_result = detect_firewalls()
                 current = get_backend_name()
-                sys.stderr.write(f"\n  {Color.BOLD}Service Status — {current}{Color.RESET}\n")
+                sys.stderr.write(f"\n  {Color.BOLD}Service Status -- {current}{Color.RESET}\n")
                 print_separator("─", 50)
                 bs = fw_result.backends.get(current)
                 if isinstance(bs, FWBackendStatus) and bs.installed:
@@ -395,7 +411,7 @@ def _menu_rule_management() -> None:
         sys.stderr.write(
             f"  {Color.CYAN}1.{Color.RESET} Create new rule (wizard)\n"
             f"  {Color.CYAN}2.{Color.RESET} List Apotropaios rules\n"
-            f"  {Color.CYAN}3.{Color.RESET} List system rules — {backend}\n"
+            f"  {Color.CYAN}3.{Color.RESET} List system rules -- {backend}\n"
             f"  {Color.CYAN}4.{Color.RESET} Remove rule\n"
             f"  {Color.CYAN}5.{Color.RESET} Activate rule\n"
             f"  {Color.CYAN}6.{Color.RESET} Deactivate rule\n"
@@ -449,7 +465,7 @@ def _menu_rule_management() -> None:
             # List native system rules for current backend
             try:
                 output = fw_list_rules()
-                sys.stderr.write(f"\n  {Color.BOLD}System Rules — {backend}:{Color.RESET}\n")
+                sys.stderr.write(f"\n  {Color.BOLD}System Rules -- {backend}:{Color.RESET}\n")
                 sys.stderr.write(f"{output}\n")
             except Exception as exc:
                 sys.stderr.write(f"  {Color.RED}{exc}{Color.RESET}\n")
@@ -626,7 +642,7 @@ def _menu_backup_recovery() -> None:
 
 
 def _menu_system_info() -> None:
-    """System Information submenu — full OS and firewall detection details."""
+    """System Information submenu -- full OS and firewall detection details."""
     from apotropaios.detection.os_detect import detect_os
     from apotropaios.detection.fw_detect import detect_firewalls
     from apotropaios.firewall.common import get_backend_name
@@ -707,6 +723,16 @@ def _menu_install_update() -> None:
             else:
                 update_firewall(fw)
                 sys.stderr.write(f"  {Color.GREEN}{fw} updated{Color.RESET}\n")
+        except KeyboardInterrupt:
+            # Ctrl+C during the package operation: the child process in the
+            # foreground process group received SIGINT as well and has
+            # terminated; recover to this submenu rather than the process
+            # exiting or falling back to the main menu
+            sys.stderr.write(
+                f"\n  {Color.YELLOW}Operation interrupted -- "
+                f"returning to Install & Update menu{Color.RESET}\n"
+            )
+            _log("info", f"{'Install' if choice == 1 else 'Update'} of {fw} interrupted by user")
         except Exception as exc:
             sys.stderr.write(f"  {Color.RED}{exc}{Color.RESET}\n")
 
