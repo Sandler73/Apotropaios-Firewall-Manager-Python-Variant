@@ -10,7 +10,7 @@
 #               - Each test gets a fresh environment (no state leakage)
 #               - Mock backend avoids needing root/real firewall for unit tests
 #               - Parity target: bash v1.1.10 tests/helpers/test_helper.bash
-# Version:      1.2.1
+# Version:      1.6.2
 # ==============================================================================
 
 from __future__ import annotations
@@ -24,9 +24,7 @@ import pytest
 # Ensure project root is on path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
-from apotropaios.core.constants import SUPPORTED_FW_IDS
 from apotropaios.firewall.base import FirewallBackend
-from apotropaios.firewall.common import register_backend, _registry
 from apotropaios.rules.index import RuleIndex, RULE_INDEX_FIELDS
 
 
