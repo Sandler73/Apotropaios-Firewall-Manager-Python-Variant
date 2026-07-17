@@ -25,7 +25,7 @@
 #               - UUID via uuid module (stdlib, cryptographic quality)
 #               - Thread-safe: locking operations use threading.Lock guard
 #               - Parity target: bash v1.1.10 lib/core/security.sh
-# Version:      1.2.1
+# Version:      1.6.2
 # ==============================================================================
 
 from __future__ import annotations
@@ -67,7 +67,7 @@ _sensitive_lock: Final[threading.Lock] = threading.Lock()
 _temp_items: list[str] = []
 _temp_lock: Final[threading.Lock] = threading.Lock()
 
-# Logger reference — set by init_security() to avoid circular import at module level
+# Logger reference -- set by init_security() to avoid circular import at module level
 _log_fn: None | object = None
 
 
@@ -432,7 +432,7 @@ class FileLock:
             # unlinked (by this or another process) and recreated, an fd
             # opened earlier would point at the unlinked inode, and a
             # flock taken on it would coexist with a lock on the new file
-            # — two holders at once (CWE-367). Re-opening guarantees the
+            # -- two holders at once (CWE-367). Re-opening guarantees the
             # flock is always taken on the current directory entry.
             import time
             elapsed = 0.0
@@ -454,7 +454,7 @@ class FileLock:
 
                 try:
                     fcntl.flock(self._fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
-                    # Lock acquired — write PID for identification
+                    # Lock acquired -- write PID for identification
                     os.ftruncate(self._fd, 0)
                     os.lseek(self._fd, 0, os.SEEK_SET)
                     os.write(self._fd, str(os.getpid()).encode())
@@ -462,13 +462,13 @@ class FileLock:
                     _log("debug", f"Lock acquired: {self._lock_path}")
                     return True
                 except OSError:
-                    # Lock held by another process — check for stale lock.
+                    # Lock held by another process -- check for stale lock.
                     # (BlockingIOError is an OSError subclass.)
                     self._check_stale_lock()
                     time.sleep(retry_interval)
                     elapsed += retry_interval
 
-            # Timeout — clean up FD
+            # Timeout -- clean up FD
             self._close_fd()
             _log(
                 "error",
@@ -531,7 +531,7 @@ class FileLock:
                 try:
                     os.kill(pid, 0)  # Signal 0 = check existence
                 except ProcessLookupError:
-                    # PID is dead — stale lock
+                    # PID is dead -- stale lock
                     _log(
                         "warning",
                         f"Removing stale lock file "
@@ -542,21 +542,21 @@ class FileLock:
                     except OSError:
                         pass
                 except PermissionError:
-                    pass  # PID exists but we can't signal it — lock is valid
+                    pass  # PID exists but we can't signal it -- lock is valid
         except (OSError, ValueError):
             pass
 
     def __enter__(self) -> FileLock:
-        """Context manager entry — acquire the lock."""
+        """Context manager entry -- acquire the lock."""
         self.acquire()
         return self
 
     def __exit__(self, *args: object) -> None:
-        """Context manager exit — release the lock."""
+        """Context manager exit -- release the lock."""
         self.release()
 
     def __del__(self) -> None:
-        """Destructor — ensure FD is closed."""
+        """Destructor -- ensure FD is closed."""
         self._close_fd()
 
 
