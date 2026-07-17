@@ -12,7 +12,7 @@
 # Notes:        - Documentation carries no version identifiers outside the
 #                 changelogs (fact-of policy) — enforced here
 #               - Action pins follow the project standard: checkout@v6
-# Version:      1.6.0
+# Version:      1.6.2
 # ==============================================================================
 
 name: Docs Validate
