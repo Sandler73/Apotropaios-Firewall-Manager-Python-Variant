@@ -1,7 +1,10 @@
 # ==============================================================================
 # File:         tests/unit/test_logging.py
+# Project:      Apotropaios - Firewall Manager (Python Variant)
 # Synopsis:     Unit tests for logging module
-# Version:      1.2.1
+# Description:  Verifies logger initialization, sanitization, rotation settings,
+#               and correlation identifiers.
+# Version:      1.6.2
 # ==============================================================================
 
 import os
