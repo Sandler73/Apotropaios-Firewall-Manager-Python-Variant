@@ -1,4 +1,4 @@
-# Frequently Asked Questions (FAQ) — Apotropaios Firewall Manager
+# Frequently Asked Questions (FAQ) -- Apotropaios Firewall Manager
 
 ## Table of Contents
 
@@ -18,7 +18,7 @@
 
 ### What does "Apotropaios" mean?
 
-From Greek ἀποτρόπαιος (*apotropaios*) — "averting evil." In ancient Greek culture, apotropaic objects and rituals were used to ward off evil spirits and harmful influences. The name reflects the framework's purpose: defending systems against malicious network traffic.
+From Greek ἀποτρόπαιος (*apotropaios*) -- "averting evil." In ancient Greek culture, apotropaic objects and rituals were used to ward off evil spirits and harmful influences. The name reflects the framework's purpose: defending systems against malicious network traffic.
 
 ### What firewalls does Apotropaios support?
 
@@ -30,7 +30,7 @@ Ubuntu (22.04, 24.04), Debian (11, 12), Kali Linux (2024+), Rocky Linux (8, 9), 
 
 ### Does Apotropaios require external Python packages?
 
-No. The runtime is **stdlib-only** — zero external dependencies. Dev dependencies (pytest, mypy) are optional and only needed for development/testing. No pip packages are required at runtime.
+No. The runtime is **stdlib-only** -- zero external dependencies. Dev dependencies (pytest, mypy) are optional and only needed for development/testing. No pip packages are required at runtime.
 
 ### Does Apotropaios replace my existing firewall?
 
@@ -38,11 +38,11 @@ No. Apotropaios is a management layer that sits on top of your existing firewall
 
 ### What is the difference between the bash and Python variants?
 
-The bash variant (`Sandler73/Apotropaios-Firewall-Manager`) is the reference implementation at v1.1.10. The Python variant targets 100% feature parity with the bash reference, using Python 3.12+ with strict typing, a 5-layer architecture, and 230 automated tests. Both share the same feature set, rule format, backup format, and CLI commands.
+The bash variant (`Sandler73/Apotropaios-Firewall-Manager`) is the reference implementation at v1.1.10. The Python variant targets 100% feature parity with the bash reference, using Python 3.12+ with strict typing, a 5-layer architecture, and 322 automated tests. Both share the same feature set, rule format, backup format, and CLI commands.
 
 ### How large is the codebase?
 
-35 production source files, 14,409 lines of Python. 12 test files, 230 automated tests. 27 documentation files, 5,000+ lines. Zero external runtime dependencies.
+35 production source files, 14,545 lines of Python. 12 test files, 322 automated tests. 27 documentation files, 5,000+ lines. Zero external runtime dependencies.
 
 ---
 
@@ -78,7 +78,7 @@ git clone https://github.com/Sandler73/Apotropaios-Firewall-Manager-Python.git
 cd Apotropaios-Firewall-Manager-Python
 make dev-setup
 source .venv/bin/activate
-make check    # Must pass: mypy --strict + 230 tests
+make check    # Must pass: mypy --strict + 322 tests
 ```
 
 ---
@@ -113,7 +113,7 @@ Or in interactive mode: Firewall Management → Select backend.
 
 | Command | Shows | Scope |
 |:--------|:------|:------|
-| `status` | Service state — running/stopped, enabled/disabled, version, binary path | Active backend + all backends summary |
+| `status` | Service state -- running/stopped, enabled/disabled, version, binary path | Active backend + all backends summary |
 | `system-rules` | Native firewall rules dump (iptables -L, nft list ruleset, etc.) | ALL rules in the backend, not just Apotropaios-tracked |
 | `list-rules` | Apotropaios-tracked rules table with UUIDs, states, parameters | Only rules created through this framework |
 
@@ -189,7 +189,7 @@ Yes. The firewalld backend is zone-aware. Specify a zone with `--zone public` (o
 
 ### Is Apotropaios safe to use in production?
 
-The framework passes 230 automated tests and mypy --strict with zero errors, and has completed multiple internal security audit passes. It has not undergone independent third-party security audit. See [SECURITY.md](SECURITY.md) and the LICENSE for full disclaimers.
+The framework passes 322 automated tests and mypy --strict with zero errors, and has completed multiple internal security audit passes. It has not undergone independent third-party security audit. See [SECURITY.md](SECURITY.md) and the LICENSE for full disclaimers.
 
 ### How does Apotropaios prevent command injection?
 
@@ -244,7 +244,7 @@ sudo cat $(ls -t data/logs/*.log | head -1) | grep -E '\[ERROR\]|\[CRITICAL\]|\[
 
 ### Why do log files require sudo to read?
 
-Log files are created with 0o600 permissions (owner read/write only) when run as root via sudo. This is intentional security behavior — log files may contain operational details that should not be world-readable.
+Log files are created with 0o600 permissions (owner read/write only) when run as root via sudo. This is intentional security behavior -- log files may contain operational details that should not be world-readable.
 
 ---
 
@@ -253,7 +253,7 @@ Log files are created with 0o600 permissions (owner read/write only) when run as
 ### How do I run the tests?
 
 ```bash
-make check         # Full CI: mypy --strict + 230 tests
+make check         # Full CI: mypy --strict + 322 tests
 make test-quick    # Unit tests only (fast feedback)
 make test-report   # Per-file breakdown
 make security-scan # Static pattern analysis
@@ -275,3 +275,8 @@ mypy is a static type checker for Python. `--strict` mode enforces the most rigo
 8. `make check` must pass
 
 See [DEVELOPMENT_GUIDE.md](DEVELOPMENT_GUIDE.md) for full details.
+
+
+**Q: What does Ctrl+C do?**
+
+Inside the interactive menu, Ctrl+C aborts the operation or prompt in progress and returns to the menu (the Install & Update submenu recovers in place); it does not terminate the application. In headless CLI use, Ctrl+C runs the cleanup stack and exits with status 130. Package install and update operations cannot block on hidden prompts and are bounded by a 300-second timeout.
