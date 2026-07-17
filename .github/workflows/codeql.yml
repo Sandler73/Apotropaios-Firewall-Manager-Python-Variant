@@ -6,9 +6,14 @@
 #               to main, pull requests targeting main, and a weekly schedule.
 #               Results publish to the repository Security tab.
 # Notes:        - security-events write permission is required for upload
-#               - If the repository has code-scanning DEFAULT SETUP enabled,
-#                 this advanced workflow's uploads are rejected; disable
-#                 default setup under Settings > Code security to use it
+#               - Code scanning must be ENABLED in the repository settings
+#                 (Settings > Code security > Code scanning) or the upload
+#                 step fails with "Code scanning is not enabled for this
+#                 repository" even though analysis itself succeeds; the
+#                 SARIF artifact below preserves results regardless
+#               - If the repository has code-scanning DEFAULT SETUP enabled
+#                 instead, this advanced workflow's uploads are rejected;
+#                 use exactly one of the two modes
 #               - CodeQL Action v4 (Node.js 24 runtime); v3 enters deprecation
 #                 December 2026
 #               - Action pins follow the project standard: checkout@v6,
@@ -59,3 +64,14 @@ jobs:
         uses: github/codeql-action/analyze@v4
         with:
           category: "/language:python"
+          output: sarif-results
+
+      - name: Preserve SARIF results as artifact
+        # Runs even when the code-scanning upload fails (feature disabled),
+        # so analysis results remain accessible from the run page
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: codeql-sarif
+          path: sarif-results
+          retention-days: 30
