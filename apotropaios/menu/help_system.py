@@ -4,9 +4,9 @@
 # Synopsis:     Progressive layered help system
 # Description:  Per-command help system with synopsis, options, and examples.
 #               Implements a 3-tier help architecture:
-#                 Tier 1: Global help (--help) — handled by cli.py
-#                 Tier 2: Command help (COMMAND --help) — this module
-#                 Tier 3: Interactive menu help — in-app guidance (Sprint 3.3)
+#                 Tier 1: Global help (--help) -- handled by cli.py
+#                 Tier 2: Command help (COMMAND --help) -- this module
+#                 Tier 3: Interactive menu help -- in-app guidance (Sprint 3.3)
 #
 #               Each per-command help page includes: synopsis, description,
 #               options/arguments, examples, related commands, and notes.
@@ -17,7 +17,7 @@
 #               - dispatch uses dynamic lookup via function name convention
 #               - No external dependencies
 #               - Parity target: bash v1.1.10 lib/menu/help_system.sh
-# Version:      1.2.1
+# Version:      1.6.2
 # ==============================================================================
 
 from __future__ import annotations
@@ -41,7 +41,7 @@ from apotropaios.core.constants import (
 def _header(command: str, synopsis: str) -> None:
     """Print standardized help header for a command."""
     sys.stderr.write(
-        f"\n{Color.BOLD}{command} — {synopsis}{Color.RESET}\n"
+        f"\n{Color.BOLD}{command} -- {synopsis}{Color.RESET}\n"
     )
     sys.stderr.write(
         f"{Color.DIM}{FULL_NAME} v{VERSION}{Color.RESET}\n"
@@ -128,11 +128,11 @@ def _help_cmd_menu() -> None:
 
     _section("Synopsis")
     sys.stderr.write(f"  {ME} --interactive             "
-                     f"{Color.DIM}(preferred — explicit interactive mode){Color.RESET}\n")
+                     f"{Color.DIM}(preferred -- explicit interactive mode){Color.RESET}\n")
     sys.stderr.write(f"  {ME} [OPTIONS] menu            "
                      f"{Color.DIM}(backward compatible subcommand){Color.RESET}\n")
     sys.stderr.write(f"  {ME} [OPTIONS]                 "
-                     f"{Color.DIM}(backward compatible — no args = menu){Color.RESET}\n")
+                     f"{Color.DIM}(backward compatible -- no args = menu){Color.RESET}\n")
 
     _section("Description")
     sys.stderr.write(
@@ -146,14 +146,14 @@ def _help_cmd_menu() -> None:
 
     _section("Menu Structure")
     sys.stderr.write(
-        "  1. Firewall Management   — Select backend, start/stop, status\n"
-        "  2. Rule Management       — Create, list, remove, activate/deactivate\n"
-        "  3. Quick Actions         — One-click block-all or allow-all\n"
-        "  4. Backup & Recovery     — Create backups, restore, immutable snapshots\n"
-        "  5. System Information    — OS details, firewall status, framework info\n"
-        "  6. Install & Update      — Install or update firewall packages\n"
-        "  7. Help & Documentation  — In-app help reference\n"
-        "  8. Exit                  — Clean shutdown\n"
+        "  1. Firewall Management   -- Select backend, start/stop, status\n"
+        "  2. Rule Management       -- Create, list, remove, activate/deactivate\n"
+        "  3. Quick Actions         -- One-click block-all or allow-all\n"
+        "  4. Backup & Recovery     -- Create backups, restore, immutable snapshots\n"
+        "  5. System Information    -- OS details, firewall status, framework info\n"
+        "  6. Install & Update      -- Install or update firewall packages\n"
+        "  7. Help & Documentation  -- In-app help reference\n"
+        "  8. Exit                  -- Clean shutdown\n"
     )
     sys.stderr.write("\n")
 
@@ -174,8 +174,8 @@ def _help_cmd_detect() -> None:
     )
 
     _related(
-        f"{ME} status          — Show active backend status",
-        f"{ME} --interactive   — Launch interactive menu",
+        f"{ME} status          -- Show active backend status",
+        f"{ME} --interactive   -- Launch interactive menu",
     )
     sys.stderr.write("\n")
 
@@ -195,7 +195,7 @@ def _help_cmd_status() -> None:
     )
 
     _related(
-        f"{ME} detect          — Scan for all available backends",
+        f"{ME} detect          -- Scan for all available backends",
     )
     sys.stderr.write("\n")
 
@@ -267,11 +267,11 @@ def _help_cmd_add_rule() -> None:
     _tip("Rules are tracked by UUID. Use list-rules to see all tracked rules.")
 
     _related(
-        f"{ME} list-rules         — Show all Apotropaios-tracked rules",
-        f"{ME} remove-rule ID     — Remove a rule by its UUID",
-        f"{ME} activate-rule ID   — Re-activate a deactivated rule",
-        f"{ME} deactivate-rule ID — Deactivate without deleting",
-        f"{ME} import FILE        — Bulk-import rules from a file",
+        f"{ME} list-rules         -- Show all Apotropaios-tracked rules",
+        f"{ME} remove-rule ID     -- Remove a rule by its UUID",
+        f"{ME} activate-rule ID   -- Re-activate a deactivated rule",
+        f"{ME} deactivate-rule ID -- Deactivate without deleting",
+        f"{ME} import FILE        -- Bulk-import rules from a file",
     )
     sys.stderr.write("\n")
 
@@ -288,8 +288,8 @@ def _help_cmd_remove_rule() -> None:
         "  persistent rule index. The rule UUID is required.\n"
     )
     _related(
-        f"{ME} list-rules         — Find rule UUIDs",
-        f"{ME} deactivate-rule ID — Deactivate without deleting",
+        f"{ME} list-rules         -- Find rule UUIDs",
+        f"{ME} deactivate-rule ID -- Deactivate without deleting",
     )
     sys.stderr.write("\n")
 
@@ -374,7 +374,7 @@ def _help_cmd_allow_all() -> None:
     _section("Description")
     sys.stderr.write(
         "  Removes all firewall restrictions, allowing all traffic through.\n"
-        "  Use with caution — this effectively disables the firewall.\n"
+        "  Use with caution -- this effectively disables the firewall.\n"
     )
     sys.stderr.write("\n")
 
@@ -391,8 +391,8 @@ def _help_cmd_enable() -> None:
         "  Uses systemctl for systemd-managed services.\n"
     )
     _related(
-        f"{ME} disable         — Stop the firewall backend",
-        f"{ME} status          — Check current backend state",
+        f"{ME} disable         -- Stop the firewall backend",
+        f"{ME} status          -- Check current backend state",
     )
     sys.stderr.write("\n")
 
@@ -409,8 +409,8 @@ def _help_cmd_disable() -> None:
         "  in the kernel until reboot but no new connections are filtered.\n"
     )
     _related(
-        f"{ME} enable          — Start the firewall backend",
-        f"{ME} status          — Check current backend state",
+        f"{ME} enable          -- Start the firewall backend",
+        f"{ME} status          -- Check current backend state",
     )
     sys.stderr.write("\n")
 
@@ -429,8 +429,8 @@ def _help_cmd_reset() -> None:
         "  zeroes counters, sets policies to ACCEPT.\n"
     )
     _related(
-        f"{ME} status          — Check current backend state",
-        f"{ME} backup          — Create backup before resetting",
+        f"{ME} status          -- Check current backend state",
+        f"{ME} backup          -- Create backup before resetting",
     )
     sys.stderr.write("\n")
 
@@ -447,7 +447,7 @@ def _help_cmd_import() -> None:
         "  active backend. Supports dry-run preview and validation.\n"
     )
     _related(
-        f"{ME} export FILE    — Export current rules to a file",
+        f"{ME} export FILE    -- Export current rules to a file",
     )
     sys.stderr.write("\n")
 
@@ -479,7 +479,7 @@ def _help_cmd_backup() -> None:
         "  (default: 'manual').\n"
     )
     _related(
-        f"{ME} restore FILE   — Restore from a backup archive",
+        f"{ME} restore FILE   -- Restore from a backup archive",
     )
     sys.stderr.write("\n")
 
@@ -507,7 +507,10 @@ def _help_cmd_install() -> None:
     _section("Description")
     sys.stderr.write(
         "  Installs the specified firewall package using the system's\n"
-        "  package manager (apt, dnf, or pacman).\n"
+        "  package manager (apt, dnf, or pacman). The operation runs fully\n"
+        "  non-interactively (no prompt can block it), prints a status line\n"
+        "  when it starts, and is bounded by a 300-second timeout. Ctrl+C\n"
+        "  aborts it; from the interactive menu this returns to the menu.\n"
     )
     sys.stderr.write("\n")
 
@@ -521,6 +524,10 @@ def _help_cmd_update() -> None:
     _section("Description")
     sys.stderr.write(
         "  Updates the specified firewall package to the latest available\n"
-        "  version using the system's package manager.\n"
+        "  version using the system's package manager. The operation runs\n"
+        "  fully non-interactively (no prompt can block it), prints a status\n"
+        "  line when it starts, and is bounded by a 300-second timeout.\n"
+        "  Ctrl+C aborts it; from the interactive menu this returns to the\n"
+        "  menu.\n"
     )
     sys.stderr.write("\n")
