@@ -17,7 +17,7 @@ This guide defines the coding standards, development workflow, and contribution 
 
 ```bash
 # Clone
-git clone https://github.com/Sandler73/Apotropaios-Firewall-Manager-Python.git
+git clone https://github.com/Sandler73/Apotropaios-Firewall-Manager-Python-Variant.git
 cd Apotropaios-Firewall-Manager-Python
 
 # Option A: venv (recommended)
