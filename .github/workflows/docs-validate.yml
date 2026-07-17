@@ -1,0 +1,59 @@
+# ==============================================================================
+# File:         .github/workflows/docs-validate.yml
+# Project:      Apotropaios - Firewall Manager (Python Variant)
+# Synopsis:     Documentation and repository-metadata validation pipeline
+# Description:  Runs on every push and pull request touching documentation,
+#               source, templates, or workflows: verifies version consistency
+#               across all version-bearing files, documentation accuracy
+#               against source (line counts, test counts, command counts,
+#               version-identifier policy, internal links), issue template
+#               YAML validity, and workflow YAML validity via the CI
+#               meta-test suite.
+# Notes:        - Documentation carries no version identifiers outside the
+#                 changelogs (fact-of policy) — enforced here
+#               - Action pins follow the project standard: checkout@v6
+# Version:      1.6.0
+# ==============================================================================
+
+name: Docs Validate
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: docs-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ============================================================================
+  # Documentation & metadata verification
+  # ============================================================================
+  validate:
+    name: Validate Documentation & Metadata
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install pytest and PyYAML
+        run: pip3 install pytest pyyaml
+
+      - name: Verify version consistency
+        run: python3 scripts/check_version_consistency.py
+
+      - name: Verify documentation accuracy
+        run: python3 scripts/validate_docs.py
+
+      - name: Run CI meta-test suite (workflows + templates)
+        run: python3 -m pytest tests/ci/ -v --tb=short

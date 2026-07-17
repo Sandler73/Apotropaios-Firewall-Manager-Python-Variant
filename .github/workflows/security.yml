@@ -1,0 +1,90 @@
+# ==============================================================================
+# File:         .github/workflows/security.yml
+# Project:      Apotropaios - Firewall Manager (Python Variant)
+# Synopsis:     Static application security testing pipeline
+# Description:  Runs bandit SAST over the production package on every push,
+#               pull request, and a weekly schedule; uploads the findings
+#               report as a build artifact; and executes the dedicated
+#               security test suite. Fails on medium-or-higher severity
+#               findings at medium-or-higher confidence.
+# Notes:        - B404/B603 (subprocess module/list-form usage) are audited
+#                 design decisions in this framework and excluded; every
+#                 subprocess call site uses validated list-form arguments
+#               - Action pins follow the project standard: checkout@v6,
+#                 upload-artifact@v6
+# Version:      1.6.0
+# ==============================================================================
+
+name: Security
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: "17 4 * * 1"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: security-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ============================================================================
+  # SAST (bandit)
+  # ============================================================================
+  sast:
+    name: SAST (bandit)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install bandit
+        run: pip3 install bandit
+
+      - name: Run bandit (report artifact, non-blocking pass)
+        run: |
+          python3 -m bandit -r apotropaios/ scripts/ -f json -o bandit-report.json || true
+
+      - name: Upload SAST report
+        uses: actions/upload-artifact@v6
+        with:
+          name: bandit-report
+          path: bandit-report.json
+          retention-days: 30
+
+      - name: Run bandit (blocking gate, medium+/medium+)
+        run: |
+          python3 -m bandit -r apotropaios/ scripts/ \
+            --severity-level medium --confidence-level medium \
+            --skip B404,B603
+
+  # ============================================================================
+  # Security test suite
+  # ============================================================================
+  security-tests:
+    name: Security Test Suite
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install pytest
+        run: pip3 install pytest
+
+      - name: Run security tests
+        run: python3 -m pytest tests/security/ -v --tb=short

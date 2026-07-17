@@ -1,0 +1,56 @@
+# ==============================================================================
+# File:         .github/workflows/codeql.yml
+# Project:      Apotropaios - Firewall Manager (Python Variant)
+# Synopsis:     CodeQL semantic code analysis pipeline
+# Description:  Runs GitHub CodeQL security analysis for Python on every push
+#               to main, pull requests targeting main, and a weekly schedule.
+#               Results publish to the repository Security tab.
+# Notes:        - security-events write permission is required for upload
+#               - CodeQL Action v4 (Node.js 24 runtime); v3 enters deprecation
+#                 December 2026
+#               - Action pins follow the project standard: checkout@v6,
+#                 setup-python@v6
+# Version:      1.6.0
+# ==============================================================================
+
+name: CodeQL
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: "31 5 * * 1"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: codeql-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ============================================================================
+  # CodeQL Analysis (Python)
+  # ============================================================================
+  analyze:
+    name: Analyze (python)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v4
+        with:
+          languages: python
+          queries: security-and-quality
+
+      - name: Perform CodeQL analysis
+        uses: github/codeql-action/analyze@v4
+        with:
+          category: "/language:python"
