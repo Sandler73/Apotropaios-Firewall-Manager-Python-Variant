@@ -18,11 +18,11 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thank you for reporting a defect. Please complete every required field —
+        Thank you for reporting a defect. Please complete every required field -
         complete reports are triaged significantly faster.
 
         **Do not report security vulnerabilities here.** Follow the private
-        disclosure process in [SECURITY.md](https://github.com/Sandler73/Apotropaios-Firewall-Manager/blob/main/docs/SECURITY.md).
+        disclosure process in [SECURITY.md](https://github.com/Sandler73/Apotropaios-Firewall-Manager-Python-Variant/blob/main/docs/SECURITY.md).
   - type: checkboxes
     id: preflight
     attributes:
