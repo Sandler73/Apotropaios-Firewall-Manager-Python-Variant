@@ -1,7 +1,10 @@
 # ==============================================================================
 # File:         tests/unit/test_errors.py
+# Project:      Apotropaios - Firewall Manager (Python Variant)
 # Synopsis:     Unit tests for exception hierarchy, cleanup stack, retry
-# Version:      1.2.1
+# Description:  Verifies the exception hierarchy, error codes, retry helper,
+#               cleanup stack, and error context recording.
+# Version:      1.6.2
 # ==============================================================================
 
 import pytest
