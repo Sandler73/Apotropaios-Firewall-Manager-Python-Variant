@@ -7,7 +7,7 @@
 #               requests to support additional platforms or backends.
 # Notes:        - Detection architecture: ID match, then ID_LIKE family
 #               fallback, then package-manager probing
-# Version:      1.6.0
+# Version:      1.6.2
 # ==============================================================================
 name: Platform / Backend Support Request
 description: Request support for an additional Linux distribution or firewall backend
