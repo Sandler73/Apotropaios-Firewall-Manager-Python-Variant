@@ -16,7 +16,7 @@
 #               - Backend-agnostic: delegates all FW operations to common.py
 #               - Thread-safe: index and state singletons handle locking
 #               - Parity target: bash v1.1.10 lib/rules/rule_engine.sh
-# Version:      1.2.1
+# Version:      1.6.2
 # ==============================================================================
 
 from __future__ import annotations
@@ -265,7 +265,7 @@ def rule_create(params: dict[str, str]) -> str:
     try:
         rule_index.add(record)
     except Exception as exc:
-        _log("error", f"Failed to index rule {rule_id} — rule was applied but not tracked: {exc}")
+        _log("error", f"Failed to index rule {rule_id} -- rule was applied but not tracked: {exc}")
 
     # --- Update state tracking ---
     rule_state.set(rule_id, "active", duration_type, ttl_int)
@@ -385,7 +385,7 @@ def rule_deactivate(rule_id: str) -> None:
         except Exception:
             pass
 
-    # Update index and state — preserve the rule's duration designation
+    # Update index and state -- preserve the rule's duration designation
     # and TTL so a temporary rule does not silently become permanent in
     # the state tracker when deactivated.
     rule_index.update_field(rule_id, "state", "inactive")
@@ -495,7 +495,7 @@ def rule_block_all() -> str:
     try:
         rule_index.add(record)
     except Exception as exc:
-        _log("error", f"Failed to index block-all rule {rule_id} — applied but not tracked: {exc}")
+        _log("error", f"Failed to index block-all rule {rule_id} -- applied but not tracked: {exc}")
 
     _log("info", f"All traffic blocked (rule_id={rule_id})")
     return rule_id
@@ -528,7 +528,7 @@ def rule_allow_all() -> str:
     try:
         rule_index.add(record)
     except Exception as exc:
-        _log("error", f"Failed to index allow-all rule {rule_id} — applied but not tracked: {exc}")
+        _log("error", f"Failed to index allow-all rule {rule_id} -- applied but not tracked: {exc}")
 
     _log("info", f"All traffic allowed (rule_id={rule_id})")
     return rule_id
