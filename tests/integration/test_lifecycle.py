@@ -1,11 +1,14 @@
 # ==============================================================================
 # File:         tests/integration/test_lifecycle.py
+# Project:      Apotropaios - Firewall Manager (Python Variant)
 # Synopsis:     Integration tests for full rule lifecycle with mock backend
-# Version:      1.2.1
+# Description:  Drives create/deactivate/activate/remove through the rule engine
+#               with a registered mock backend and temporary rule storage,
+#               verifying index and state fidelity across transitions.
+# Version:      1.6.2
 # ==============================================================================
 
 import os
-import tempfile
 import pytest
 from tests.conftest import MockBackend
 from apotropaios.firewall.common import _registry, set_backend
@@ -30,7 +33,7 @@ def lifecycle_env(tmp_path: object) -> tuple[RuleIndex, RuleState, MockBackend]:
     _registry["iptables"] = mock
     set_backend("iptables")
 
-    # Patch singletons used by engine — both the module attr and engine's import
+    # Patch singletons used by engine -- both the module attr and engine's import
     import apotropaios.rules.index as idx_mod
     import apotropaios.rules.state as st_mod
     import apotropaios.rules.engine as eng_mod
