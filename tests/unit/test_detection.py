@@ -1,14 +1,17 @@
 # ==============================================================================
 # File:         tests/unit/test_detection.py
+# Project:      Apotropaios - Firewall Manager (Python Variant)
 # Synopsis:     Unit tests for OS and firewall detection modules
-# Version:      1.2.1
+# Description:  Verifies os-release parsing, family determination, and package
+#               manager mapping across supported and derivative platforms.
+# Version:      1.6.2
 # ==============================================================================
 
 import os
 import pytest
 from apotropaios.detection.os_detect import (
     OSDetectionResult, detect_os, _detect_os_release,
-    _detect_lsb_release, _detect_uname, print_os_info,
+    _detect_uname, print_os_info,
 )
 from apotropaios.detection.fw_detect import (
     FWBackendStatus, FWDetectionResult, detect_firewalls, detect_single,
