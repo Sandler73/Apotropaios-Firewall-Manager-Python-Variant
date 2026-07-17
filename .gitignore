@@ -202,8 +202,12 @@ docker-compose.override.yml
 *.log
 *.cache
 *.dump
-core
-core.*
+# Core-dump files only. A bare "core" pattern matches any path component and
+# silently excluded the apotropaios/core/ package from the repository; the
+# leading slash anchors the rule to the repository root, and the numeric
+# suffix pattern matches kernel core dumps without matching Python modules.
+/core
+core.[0-9]*
 
 # Compressed archives (keep only in dist/)
 *.gz
