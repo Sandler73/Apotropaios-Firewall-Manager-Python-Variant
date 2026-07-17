@@ -1,14 +1,17 @@
 # ==============================================================================
 # File:         tests/unit/test_backends.py
+# Project:      Apotropaios - Firewall Manager (Python Variant)
 # Synopsis:     Unit tests for firewall backend ABC, registry, and dispatch
-# Version:      1.2.1
+# Description:  Verifies backend registration, selection, unified dispatch, and
+#               failure propagation using the mock backend.
+# Version:      1.6.2
 # ==============================================================================
 
 import pytest
 from apotropaios.core.errors import FirewallNotFoundError
 from apotropaios.firewall.base import FirewallBackend
 from apotropaios.firewall.common import (
-    _registry, fw_add_rule, fw_block_all, fw_list_rules,
+    fw_add_rule, fw_block_all, fw_list_rules,
     fw_remove_rule, fw_status, get_backend, get_backend_name,
     get_registered_backends, register_backend, require_backend,
     set_backend,
@@ -35,11 +38,10 @@ class TestABCEnforcement:
 
 class TestBackendRegistry:
     def test_all_five_registered_on_import(self) -> None:
-        import apotropaios.firewall.iptables  # noqa: F401
-        import apotropaios.firewall.nftables  # noqa: F401
-        import apotropaios.firewall.firewalld  # noqa: F401
-        import apotropaios.firewall.ufw  # noqa: F401
-        import apotropaios.firewall.ipset  # noqa: F401
+        # Side-effect imports: each backend module registers itself on import
+        import importlib
+        for _mod in ("iptables", "nftables", "firewalld", "ufw", "ipset"):
+            importlib.import_module(f"apotropaios.firewall.{_mod}")
 
         backends = get_registered_backends()
         assert set(backends) == {"iptables", "nftables", "firewalld", "ufw", "ipset"}
