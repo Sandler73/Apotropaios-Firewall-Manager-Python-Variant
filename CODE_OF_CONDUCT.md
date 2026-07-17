@@ -1,4 +1,4 @@
-# Code of Conduct — Apotropaios Firewall Manager
+# Code of Conduct -- Apotropaios Firewall Manager
 
 ## Our Pledge
 
