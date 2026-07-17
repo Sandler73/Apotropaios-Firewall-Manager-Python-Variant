@@ -15,7 +15,7 @@
 #               - Checksum verification if .sha256 sidecar exists
 #               - Dry run validates without applying
 #               - Parity target: bash v1.1.10 lib/rules/rule_import.sh
-# Version:      1.2.1
+# Version:      1.6.2
 # ==============================================================================
 
 from __future__ import annotations
