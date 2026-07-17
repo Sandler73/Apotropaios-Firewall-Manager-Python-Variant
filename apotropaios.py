@@ -18,7 +18,7 @@
 # Notes:        - Requires Python 3.12+
 #               - No pip install or venv needed
 #               - All arguments passed through to CLI
-# Version:      1.2.1
+# Version:      1.6.2
 # ==============================================================================
 
 import os
@@ -38,10 +38,10 @@ if __name__ == "__main__":
         # Re-raise SystemExit to preserve exit code
         raise
     except KeyboardInterrupt:
-        # Clean Ctrl+C — no traceback exposed
+        # Clean Ctrl+C -- no traceback exposed
         sys.stderr.write("\n")
         sys.exit(130)
     except Exception as exc:
-        # Catch-all — no full traceback exposed to user
+        # Catch-all -- no full traceback exposed to user
         sys.stderr.write(f"Fatal error: {exc}\n")
         sys.exit(1)
