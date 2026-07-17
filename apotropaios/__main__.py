@@ -19,7 +19,7 @@
 #               python -m apotropaios add-rule --dst-port 443 --action accept
 #               python -m apotropaios --backend iptables status
 #               python -m apotropaios add-rule --help
-# Version:      1.2.1
+# Version:      1.6.2
 # ==============================================================================
 
 from __future__ import annotations
@@ -43,11 +43,11 @@ def main() -> None:
         # die(), or sys.exit() in signal handlers)
         raise
     except KeyboardInterrupt:
-        # Clean Ctrl+C handling — print newline and exit 130 (128 + SIGINT)
+        # Clean Ctrl+C handling -- print newline and exit 130 (128 + SIGINT)
         sys.stderr.write("\n")
         sys.exit(130)
     except Exception as exc:
-        # Catch-all for unhandled exceptions — log and exit 1
+        # Catch-all for unhandled exceptions -- log and exit 1
         sys.stderr.write(f"Fatal error: {exc}\n")
         sys.exit(1)
 
