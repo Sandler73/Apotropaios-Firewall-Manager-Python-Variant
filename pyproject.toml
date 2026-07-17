@@ -5,7 +5,7 @@
 # Description:  Defines project metadata, dependencies (stdlib-only runtime),
 #               dev dependencies (pytest, mypy), and tool configuration for
 #               pytest, mypy strict mode, and code formatting.
-# Version:      1.0.0
+# Version:      1.6.2
 # ==============================================================================
 
 [build-system]
@@ -14,7 +14,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "apotropaios"
-version = "1.2.1"
+version = "1.6.2"
 description = "Multi-backend Linux firewall management framework"
 readme = {file = "docs/README.md", content-type = "text/markdown"}
 requires-python = ">=3.12"
@@ -38,7 +38,7 @@ keywords = [
     "security", "linux", "network", "rule-management",
 ]
 
-# Runtime: stdlib-only — no external dependencies
+# Runtime: stdlib-only -- no external dependencies
 dependencies = []
 
 [project.optional-dependencies]
