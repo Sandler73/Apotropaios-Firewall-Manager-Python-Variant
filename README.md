@@ -15,7 +15,7 @@
 <p align="center">
   <a href="https://github.com/Sandler73/Apotropaios-Firewall-Manager-Python-Variant/actions/workflows/ci.yml"><img src="https://github.com/Sandler73/Apotropaios-Firewall-Manager-Python-Variant/actions/workflows/ci.yml/badge.svg?branch=main" alt="CI"></a>
   <a href="https://github.com/Sandler73/Apotropaios-Firewall-Manager-Python-Variant/actions/workflows/security.yml"><img src="https://github.com/Sandler73/Apotropaios-Firewall-Manager-Python-Variant/actions/workflows/security.yml/badge.svg?branch=main" alt="Security"></a>
-  <a href="https://github.com/Sandler73/Apotropaios-Firewall-Manager-Python-Variant/actions/workflows/codeql.yml"><img src="https://github.com/Sandler73/Apotropaios-Firewall-Manager-Python-Variant/actions/workflows/codeql.yml/badge.svg?branch=main" alt="CodeQL"></a>
+#  <a href="https://github.com/Sandler73/Apotropaios-Firewall-Manager-Python-Variant/actions/workflows/codeql.yml"><img src="https://github.com/Sandler73/Apotropaios-Firewall-Manager-Python-Variant/actions/workflows/codeql.yml/badge.svg?branch=main" alt="CodeQL"></a>
   <a href="https://github.com/Sandler73/Apotropaios-Firewall-Manager-Python-Variant/actions/workflows/docs-validate.yml"><img src="https://github.com/Sandler73/Apotropaios-Firewall-Manager-Python-Variant/actions/workflows/docs-validate.yml/badge.svg?branch=main" alt="Docs Validate"></a>
 </p>
 
