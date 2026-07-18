@@ -99,7 +99,7 @@
 
 ## Overview
 
-Apotropaios (from Greek *apotropaios* -- "turning away evil") is a zero-dependency Python 3.12+ framework for unified firewall management across multiple backends and Linux distributions. It wraps the complexity of five different firewall tools -- **iptables**, **nftables**, **firewalld**, **ufw**, and **ipset** -- into a single, consistent interface with UUID-tracked rule lifecycle management, full backup/recovery, and defense-in-depth security controls at every layer.
+Apotrópaios (from Greek *ἀποτρόπαιος* -- "turning away evil") is a zero-dependency Python 3.12+ framework for unified firewall management across multiple backends and Linux distributions. It wraps the complexity of five different firewall tools -- **iptables**, **nftables**, **firewalld**, **ufw**, and **ipset** -- into a single, consistent interface with UUID-tracked rule lifecycle management, full backup/recovery, and defense-in-depth security controls at every layer.
 
 This is the **Python variant** of the [bash Apotropaios framework](https://github.com/Sandler73/Apotropaios-Firewall-Manager), targeting 100% feature parity with v1.1.10. The Python implementation uses strict typing (`mypy --strict` with zero errors), a 5-layer architecture with enforced dependency ordering, and 322 automated tests across unit, integration, and security tiers.
 
