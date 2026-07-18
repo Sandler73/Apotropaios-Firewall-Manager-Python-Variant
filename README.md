@@ -1,5 +1,9 @@
 <a id="top"></a>
 
+<p align="center">
+  <img src="assets/images/header-apotropaios.png" alt="Apotropaios Firewall Manager" width="50%" />
+</p>
+
 <h1 align="center">Apotropaios - Firewall Manager (Python Variant)</h1>
 <p align="center">
   A unified, security-focused firewall management framework for Linux<br>supporting five backends with zero external runtime dependencies.
